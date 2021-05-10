@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "chickenhelper-70bc6": {
+      "hosting": {
+        "app": [
+          "chickenhelper-70bc6"
+        ]
+      }
+    }
+  }
+}

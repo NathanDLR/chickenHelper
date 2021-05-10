@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrarse</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <form [formGroup]="registerForm"> 
+      
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-input #email placeholder="Escribe tu email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Contraseña</ion-label>
+        <ion-input type="password" #pwd placeholder="Escribe tu contraseña" formControlName="pwd"></ion-input>
+      </ion-item>
+
+      <ion-button (click)="register(email.value, pwd.value)" type="submit" expand="block">
+        Registrarse
+      </ion-button><br />
+
+    </form>
+
+    <ion-row>
+      <ion-col>
+        <p class="ion-text-end">
+        <a routerLink="/login">¿Ya tienes una cuenta?</a>
+        </p>
+      </ion-col>
+    </ion-row>
+
+
+
+  </div>
+</ion-content>
