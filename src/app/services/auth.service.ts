@@ -158,18 +158,7 @@ export class AuthService {
       await alert.present();
 
     }
-
-    if(errorCode == 2){
-      const alert = await this.alert.create({
-        header: 'Correo no válido',
-        message: 'Esta dirección de correo no es válida, por favor, vuelve a intentarlo',
-        buttons: ['OK']
-      });
-
-      await alert.present();
-
-    }
-
+    
     // Contraseña incorrecta
     if(errorCode == 2){
       const alert = await this.alert.create({
