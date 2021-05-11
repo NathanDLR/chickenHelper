@@ -53,11 +53,12 @@ export class ModalArticuloPage implements OnInit {
   addArticulo(name: string, ingredients: string, alergies: string, price: string){
     console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
     
-    // Añadimos el artículo a la colección de artículos
+    // Obtenemos el uid para guardarlo en la colección, así después podremos obtener todos los artículos por el uid
     let uid = this.user.uid
     console.log(uid)
-
-    let collection = 'articulos' + uid
+    
+    // Añadimos el artículo a la colección de artículos
+    let collection = 'articulos'
 
     db.collection(collection).add({
       nombre: name,
