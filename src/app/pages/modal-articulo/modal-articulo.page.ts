@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import db from '../../../environments/environment';
+import {User} from 'src/app/shared/user.interface';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-modal-articulo',
@@ -10,9 +12,15 @@ import db from '../../../environments/environment';
 })
 export class ModalArticuloPage implements OnInit {
 
+  user: firebase.default.User
   articuloForm: FormGroup
 
-  constructor(public alertController: AlertController, public modalController: ModalController) { }
+  constructor(public alertController: AlertController, public modalController: ModalController, private fireAuth: AngularFireAuth)
+  { 
+    fireAuth.user.subscribe((data => {
+      this.user = data;
+    }));
+  }
 
   ngOnInit() {
     // Formulario en código
@@ -42,15 +50,20 @@ export class ModalArticuloPage implements OnInit {
   }
 
   // Añadir artículo
-  addArticulo(name: String, ingredients: String, alergies: String, price: number){
+  addArticulo(name: string, ingredients: string, alergies: string, price: string){
     console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
     
     // Añadimos el artículo a la colección de artículos
-    db.collection('articulos').add({
+    let uid = this.user.uid
+    console.log(uid)
+
+    let collection = 'articulos' + uid
+
+    db.collection(collection).add({
       nombre: name,
       ingredientes: ingredients,
       alergenos: alergies,
-      precio: price
+      precio: parseInt(price)
     })
 
     // Limpiamos los inputs
