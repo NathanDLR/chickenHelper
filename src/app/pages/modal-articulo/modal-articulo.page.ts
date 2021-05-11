@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
+import db from '../../../environments/environment';
 
 @Component({
   selector: 'app-modal-articulo',
@@ -36,7 +37,25 @@ export class ModalArticuloPage implements OnInit {
   }
 
   // Validación del formulario
-  async validate(name, desc, alergies, price){
+  async validate(name: String, ingredients: String, alergies: String, price: number){
+
+  }
+
+  // Añadir artículo
+  addArticulo(name: String, ingredients: String, alergies: String, price: number){
+    console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
+    
+    // Añadimos el artículo a la colección de artículos
+    db.collection('articulos').add({
+      nombre: name,
+      ingredientes: ingredients,
+      alergenos: alergies,
+      precio: price
+    })
+
+    // Limpiamos los inputs
+
+    // Mostramos un mensaje para informar al usuario
 
   }
 
