@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recupera tu contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <form [formGroup]="pwdForm" >
+
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-input type="text" #email placeholder="Escribe tu email" formControlName="email"></ion-input>
+      </ion-item>
+
+    </form>
+  </div>
+
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="resetPwd(email.value)" expand="block">
+        Restablecer contraseña
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-button routerLink="/home" expand="block">Volver al inicio</ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
