@@ -10,9 +10,16 @@ import { ModalOfertaPage } from '../modal-oferta/modal-oferta.page';
 })
 export class OfertasArticulosPage implements OnInit {
 
+  // Listas de Ofertas y Artículos
+  ofertas: any[];
+  articulos: any[]
+
   constructor(public modalController: ModalController) { }
 
   ngOnInit() {
+    // Inicializamos los arrays
+    this.ofertas = [];
+    this.articulos = [];
   }
 
   async presentModalOferta(){
