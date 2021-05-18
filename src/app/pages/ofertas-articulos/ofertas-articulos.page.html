@@ -6,13 +6,15 @@
 
 <ion-content>
   <ion-card>
-    <ion-card-title>Lista de Ofertas</ion-card-title>
+    <ion-card-title>&nbsp; Lista de Ofertas</ion-card-title>
+    <ion-card-content *ngIf="ofertas.length == 0">Todavía no ha añadido ninguna oferta</ion-card-content>
   </ion-card>
 
   <ion-button (click)="presentModalOferta()" expand="block">Añadir Oferta</ion-button>
 
   <ion-card>
-    <ion-card-title>Lista de Artículos</ion-card-title>
+    <ion-card-title> &nbsp;  Lista de Artículos</ion-card-title>
+    <ion-card-content *ngIf="articulos.length == 0">Todavía no ha añadido ningún artículo</ion-card-content>
   </ion-card>
 
   <ion-button (click)="presentModalArticulo()" expand="block">Añadir Artículo</ion-button>

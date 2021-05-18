@@ -55,18 +55,28 @@ export class ModalArticuloPage implements OnInit {
   }
 
   // Validación del formulario
-  validate(name: String, ingredients: String, alergies: String, price: string): Boolean{  
+  validate(name: string, ingredients: string, alergies: string, price: string): Boolean{  
     let ok = true;
 
-    if(name == "" || ingredients == "" || alergies == "" || price == "") ok = false
-
-    try{
-      parseInt(price);
-    }
-    catch(error){
+    // Comprobamos que se han rellenado todos los campos
+    if(name == "" || ingredients == "" || alergies == "" || price == ""){
+      
       ok = false
+
+      // Pedimos al usuario que revise los inputs
+      this.presentToast('Debe rellenar todos los campos')
+
+    } 
+
+    // Comprobamos que el precio es un número 
+    if(isNaN(parseInt(price)) && ok == true){
+      ok = false
+
+      // Pedimos al usuario que revise el precio
+      this.presentToast('El precio debe ser un número')
+
     }
-    
+
     return ok;
   }
 
@@ -91,18 +101,18 @@ export class ModalArticuloPage implements OnInit {
         nombre: name,
         ingredientes: ingredients,
         alergenos: alergies,
-        precio: parseInt(price)
+        precio: price
       })
 
       // Limpiamos los inputs
       this.clearInputs()
 
-      // Mostramos un mensaje para informar al usuario
-      this.presentToast();  
-    }
-    else{
-      // Pedimos al usuario que revise los inputs
+      // Cerramos el modal
+      this.dismissModal();
 
+      // Mostramos un mensaje para informar al usuario
+      this.presentToast('Artículo añadido correctamente a la Base de Datos');  
+      
     }
   }
 
@@ -119,10 +129,10 @@ export class ModalArticuloPage implements OnInit {
   }
 
   // Toast message
-  presentToast(){
+  presentToast(message: string){
     this.toastCtrl.create({
       animated: true,
-      message: 'Artículo añadido correctamente a la Base de Datos',
+      message: message,
       duration: 2000,
       translucent: true,
     }).then((obj) => {
