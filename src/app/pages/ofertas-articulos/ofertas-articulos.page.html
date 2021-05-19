@@ -20,8 +20,8 @@
       <ion-item *ngFor="let articulo of articulos">
         <ion-label><strong>Artículo:</strong> {{articulo.nombre}}</ion-label>
         <ion-label><strong>Precio:</strong> {{articulo.precio}}</ion-label>
-        <ion-button color="primary">Editar</ion-button>
-        <ion-button color="danger">Eliminar</ion-button>
+        <ion-button color="primary" (click)="editArticulo(articulo.uid, articulo.nombre)" >Editar</ion-button>
+        <ion-button color="danger" (click)="deleteArticulo(articulo.uid)" >Eliminar</ion-button>
       </ion-item>
       </ion-list>
 
