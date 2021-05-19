@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ModalArticuloPage } from '../modal-articulo/modal-articulo.page';
 import { ModalOfertaPage } from '../modal-oferta/modal-oferta.page';
+import db from '../../../environments/environment';
+import { Articulo } from 'src/app/classes/articulo';
+
 
 @Component({
   selector: 'app-ofertas-articulos',
@@ -11,8 +14,8 @@ import { ModalOfertaPage } from '../modal-oferta/modal-oferta.page';
 export class OfertasArticulosPage implements OnInit {
 
   // Listas de Ofertas y Artículos
-  ofertas: any[];
-  articulos: any[]
+  ofertas: Articulo[];
+  articulos: any[];
 
   constructor(public modalController: ModalController) { }
 
@@ -20,8 +23,34 @@ export class OfertasArticulosPage implements OnInit {
     // Inicializamos los arrays
     this.ofertas = [];
     this.articulos = [];
+    
+    // Añadimos los datos a nuestro array para trabajar con ellos
+    db.collection('articulos').onSnapshot( snap => {
+
+      this.articulos = [];
+
+      snap.forEach( snapHijo => {
+
+        // Obtenemos los datos del artículo
+        let uid = snapHijo.id;
+        let nombre = snapHijo.data().nombre;
+        let ingredientes = snapHijo.data().ingredientes;
+        let alergenos = snapHijo.data().alergenos;
+        let precio = snapHijo.data().precio;
+        let uidAsador = snapHijo.data().uidAsador;
+
+        // Creamos un nuevo objeto artículo
+        let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
+
+        // Lo introducimos en la base de datos
+        this.articulos.push(articulo);
+
+      })
+    })
+
   }
 
+  // Presentar modal oferta
   async presentModalOferta(){
     const modal = await this.modalController.create({
       component: ModalOfertaPage
@@ -30,6 +59,7 @@ export class OfertasArticulosPage implements OnInit {
     return await modal.present();
   }
 
+  // Presentar modal artículo
   async presentModalArticulo(){
     const modal = await this.modalController.create({
       component: ModalArticuloPage
@@ -38,5 +68,29 @@ export class OfertasArticulosPage implements OnInit {
     return await modal.present();
   }
 
+  // Eliminar un artículo
+  deleteArticulo(uid: string){
+    // console.log("Uid del artículo: ", uid);
+    
+    // Borramos el documento que representa el artículo 
+    db.collection('articulos').doc(uid).delete();
+
+  }
+
+  // Editar un artículo
+  async editArticulo(uid: string, nombre: string){
+
+    // Abrimos el modal artículo pero le pasamos el uid
+    const modal = await this.modalController.create({
+      component: ModalArticuloPage,
+      componentProps: {
+        'uid': uid,
+        'nombre': nombre
+      }
+    });
+
+    return await modal.present();
+
+  }
   
 }

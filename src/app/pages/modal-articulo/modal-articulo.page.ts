@@ -12,8 +12,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class ModalArticuloPage implements OnInit {
 
-  user: firebase.default.User
-  articuloForm: FormGroup
+  user: firebase.default.User;
+  articuloForm: FormGroup;
+  uid: string;
+  nombre: string;
 
   // Textboxes del template
   @ViewChild('name') nameInput: IonInput;
@@ -28,7 +30,7 @@ export class ModalArticuloPage implements OnInit {
     fireAuth.user.subscribe((data => {
       this.user = data;
     }));
-
+    
   }
 
   ngOnInit() {
@@ -52,6 +54,15 @@ export class ModalArticuloPage implements OnInit {
       ])
 
     })
+
+    // Intentamos recoger el uid si nos lo mandan
+    //if(typeof(this.uid) != 'undefined'){
+      //console.log(this.nombre);
+
+      
+
+    //}
+
   }
 
   // Validación del formulario
@@ -97,7 +108,7 @@ export class ModalArticuloPage implements OnInit {
       let collection = 'articulos'
 
       db.collection(collection).add({
-        uid: uid,
+        uidAsador: uid,
         nombre: name,
         ingredientes: ingredients,
         alergenos: alergies,
