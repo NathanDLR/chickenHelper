@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonInput, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonButton, IonInput, ModalController, ToastController } from '@ionic/angular';
 import db from '../../../environments/environment';
 import {User} from 'src/app/shared/user.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -14,15 +14,20 @@ export class ModalArticuloPage implements OnInit {
 
   user: firebase.default.User;
   articuloForm: FormGroup;
+  
+  // Datos que obtenemos de la página ofertas-articulos
   uid: string;
   nombre: string;
+  ingredientes: string;
+  alergenos: string;
+  precio: number;
 
   // Textboxes del template
   @ViewChild('name') nameInput: IonInput;
   @ViewChild('ingredients') ingredientsInput: IonInput;
   @ViewChild('alergies') alergiesInput: IonInput;
   @ViewChild('price') priceInput: IonInput;
-
+  @ViewChild('addBtn') addBtn: IonButton;
 
   constructor(public alertController: AlertController, public modalController: ModalController, private fireAuth: AngularFireAuth, private toastCtrl: ToastController)
   { 
@@ -56,12 +61,20 @@ export class ModalArticuloPage implements OnInit {
     })
 
     // Intentamos recoger el uid si nos lo mandan
-    //if(typeof(this.uid) != 'undefined'){
-      //console.log(this.nombre);
+    if(typeof(this.uid) != 'undefined'){
+      db.collection('articulos').doc(this.uid).get().then(doc =>{
+        this.nombre = doc.data().nombre;
+        this.ingredientes = doc.data().ingredientes;
+        this.alergenos = doc.data().alergenos;
+        this.precio = doc.data().precio;
+      })
 
-      
+      // Cambiamos el texto del btn añadir
+      // this.addBtn.
 
-    //}
+    }
+
+    console.log(typeof(this.nameInput));
 
   }
 

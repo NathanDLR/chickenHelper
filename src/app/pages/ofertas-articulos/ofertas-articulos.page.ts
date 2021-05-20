@@ -78,14 +78,13 @@ export class OfertasArticulosPage implements OnInit {
   }
 
   // Editar un artículo
-  async editArticulo(uid: string, nombre: string){
+  async editArticulo(uid: string){
 
     // Abrimos el modal artículo pero le pasamos el uid
     const modal = await this.modalController.create({
       component: ModalArticuloPage,
       componentProps: {
-        'uid': uid,
-        'nombre': nombre
+        'uid': uid
       }
     });
 
