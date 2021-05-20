@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonInput, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonButton, IonInput, IonTitle, ModalController, ToastController } from '@ionic/angular';
 import db from '../../../environments/environment';
 import {User} from 'src/app/shared/user.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -14,15 +14,20 @@ export class ModalArticuloPage implements OnInit {
 
   user: firebase.default.User;
   articuloForm: FormGroup;
+  title: string;
+  
+  // Datos que obtenemos de la página ofertas-articulos
   uid: string;
   nombre: string;
+  ingredientes: string;
+  alergenos: string;
+  precio: number;
 
   // Textboxes del template
   @ViewChild('name') nameInput: IonInput;
   @ViewChild('ingredients') ingredientsInput: IonInput;
   @ViewChild('alergies') alergiesInput: IonInput;
   @ViewChild('price') priceInput: IonInput;
-
 
   constructor(public alertController: AlertController, public modalController: ModalController, private fireAuth: AngularFireAuth, private toastCtrl: ToastController)
   { 
@@ -34,6 +39,9 @@ export class ModalArticuloPage implements OnInit {
   }
 
   ngOnInit() {
+
+    // Título para nuevo artículo
+    this.title = "Nuevo Artículo";
 
     // Formulario en código
     this.articuloForm = new FormGroup({
@@ -56,12 +64,18 @@ export class ModalArticuloPage implements OnInit {
     })
 
     // Intentamos recoger el uid si nos lo mandan
-    //if(typeof(this.uid) != 'undefined'){
-      //console.log(this.nombre);
+    if(typeof(this.uid) != 'undefined'){
+      db.collection('articulos').doc(this.uid).get().then(doc =>{
+        this.nombre = doc.data().nombre;
+        this.ingredientes = doc.data().ingredientes;
+        this.alergenos = doc.data().alergenos;
+        this.precio = doc.data().precio;
+      })
 
-      
+      // Título para cuando se edita el artículo
+      this.title = 'Editar Artículo';
 
-    //}
+    }
 
   }
 
@@ -127,6 +141,42 @@ export class ModalArticuloPage implements OnInit {
     }
   }
 
+  // Actualizar artículo
+  // Añadir artículo
+  updateArticulo(name: string, ingredients: string, alergies: string, price: string){
+    // console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
+
+    // Validación de los inputs
+    let ok = this.validate(name, ingredients, alergies, price);
+
+    if(ok){
+
+      // Obtenemos el uid para guardarlo en la colección, así después podremos obtener todos los artículos por el uid
+      let uid = this.user.uid
+      // console.log(uid)
+      
+      // Añadimos el artículo a la colección de artículos
+      let collection = 'articulos'
+
+      db.collection(collection).doc(this.uid).update({
+        nombre: name,
+        ingredientes: ingredients,
+        alergenos: alergies,
+        precio: price
+      })
+
+      // Limpiamos los inputs
+      this.clearInputs()
+
+      // Cerramos el modal
+      this.dismissModal();
+
+      // Mostramos un mensaje para informar al usuario
+      this.presentToast('Artículo modificado correctamente');  
+      
+    }
+  }
+
   dismissModal(){
     this.modalController.dismiss();
   }
@@ -150,6 +200,11 @@ export class ModalArticuloPage implements OnInit {
       obj.present();
     })
     
+  }
+
+  // Obtener el tipo
+  getType(variable){
+    return typeof(variable)
   }
 
 }
