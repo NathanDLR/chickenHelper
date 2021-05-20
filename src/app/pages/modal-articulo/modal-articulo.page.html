@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nuevo Artículo</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,8 +9,8 @@
     <form [formGroup]="articuloForm">
 
       <ion-item>
-        <ion-label>Nombre del Artículo</ion-label>
-        <ion-input #name type="text" placeholder="Nombre" value={{nombre}} formControlName="name" [ngClass]="{
+        <ion-label><strong>Nombre</strong></ion-label>
+        <ion-input #name type="text" placeholder="Nombre del artículo" value={{nombre}} formControlName="name" [ngClass]="{
           'invalidInput': articuloForm.controls.name.invalid && articuloForm.controls.name.touched,
           'validInput': articuloForm.controls.name.valid && articuloForm.controls.name.touched
         }">
@@ -18,8 +18,8 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Ingredientes del Artículo</ion-label>
-        <ion-input #ingredients type="text" placeholder="Ingredientes" value={{ingredientes}} formControlName="ingredients" [ngClass]="{
+        <ion-label><strong>Ingredientes</strong></ion-label>
+        <ion-input #ingredients type="text" placeholder="Ingredientes que lo forman" value={{ingredientes}} formControlName="ingredients" [ngClass]="{
           'invalidInput': articuloForm.controls.ingredients.invalid && articuloForm.controls.ingredients.touched,
           'validInput': articuloForm.controls.ingredients.valid && articuloForm.controls.ingredients.touched
         }">
@@ -27,8 +27,8 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Información de Alérgenos</ion-label>
-        <ion-input #alergies type="text" placeholder="Alérgenos" value={{alergenos}} formControlName="alergies" [ngClass]="{
+        <ion-label><strong>Información de Alérgenos</strong></ion-label>
+        <ion-input #alergies type="text" placeholder="Alérgenos que contiene" value={{alergenos}} formControlName="alergies" [ngClass]="{
           'invalidInput': articuloForm.controls.alergies.invalid && articuloForm.controls.alergies.touched,
           'validInput': articuloForm.controls.alergies.valid && articuloForm.controls.alergies.touched
           }">
@@ -36,8 +36,8 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Precio del artículo</ion-label>
-        <ion-input #price type="text" placeholder="Precio" value={{precio}} formControlName="price" [ngClass] = "{
+        <ion-label><strong>precio</strong></ion-label>
+        <ion-input #price type="text" placeholder="Precio del artículo" value={{precio}} formControlName="price" [ngClass] = "{
           'invalidInput': articuloForm.controls.price.invalid && articuloForm.controls.price.touched,
           'validInput': articuloForm.controls.price.valid && articuloForm.controls.price.touched
         }">
@@ -46,8 +46,12 @@
 
     </form>
 
-    <ion-button #addBtn expand="block" (click)="addArticulo(name.value, ingredients.value, alergies.value, price.value)">
+    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addArticulo(name.value, ingredients.value, alergies.value, price.value)">
       Añadir
+    </ion-button>
+
+    <ion-button expand="block" *ngIf="getType(uid) != 'undefined'" (click)="updateArticulo(name.value, ingredients.value, alergies.value, price.value)">
+      Actualizar
     </ion-button>
 
     <ion-button color="danger" (click)="dismissModal()" expand="block">

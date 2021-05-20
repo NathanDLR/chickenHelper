@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonButton, IonInput, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonButton, IonInput, IonTitle, ModalController, ToastController } from '@ionic/angular';
 import db from '../../../environments/environment';
 import {User} from 'src/app/shared/user.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -14,6 +14,7 @@ export class ModalArticuloPage implements OnInit {
 
   user: firebase.default.User;
   articuloForm: FormGroup;
+  title: string;
   
   // Datos que obtenemos de la página ofertas-articulos
   uid: string;
@@ -27,7 +28,6 @@ export class ModalArticuloPage implements OnInit {
   @ViewChild('ingredients') ingredientsInput: IonInput;
   @ViewChild('alergies') alergiesInput: IonInput;
   @ViewChild('price') priceInput: IonInput;
-  @ViewChild('addBtn') addBtn: IonButton;
 
   constructor(public alertController: AlertController, public modalController: ModalController, private fireAuth: AngularFireAuth, private toastCtrl: ToastController)
   { 
@@ -39,6 +39,9 @@ export class ModalArticuloPage implements OnInit {
   }
 
   ngOnInit() {
+
+    // Título para nuevo artículo
+    this.title = "Nuevo Artículo";
 
     // Formulario en código
     this.articuloForm = new FormGroup({
@@ -69,12 +72,10 @@ export class ModalArticuloPage implements OnInit {
         this.precio = doc.data().precio;
       })
 
-      // Cambiamos el texto del btn añadir
-      // this.addBtn.
+      // Título para cuando se edita el artículo
+      this.title = 'Editar Artículo';
 
     }
-
-    console.log(typeof(this.nameInput));
 
   }
 
@@ -140,6 +141,42 @@ export class ModalArticuloPage implements OnInit {
     }
   }
 
+  // Actualizar artículo
+  // Añadir artículo
+  updateArticulo(name: string, ingredients: string, alergies: string, price: string){
+    // console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
+
+    // Validación de los inputs
+    let ok = this.validate(name, ingredients, alergies, price);
+
+    if(ok){
+
+      // Obtenemos el uid para guardarlo en la colección, así después podremos obtener todos los artículos por el uid
+      let uid = this.user.uid
+      // console.log(uid)
+      
+      // Añadimos el artículo a la colección de artículos
+      let collection = 'articulos'
+
+      db.collection(collection).doc(this.uid).update({
+        nombre: name,
+        ingredientes: ingredients,
+        alergenos: alergies,
+        precio: price
+      })
+
+      // Limpiamos los inputs
+      this.clearInputs()
+
+      // Cerramos el modal
+      this.dismissModal();
+
+      // Mostramos un mensaje para informar al usuario
+      this.presentToast('Artículo modificado correctamente');  
+      
+    }
+  }
+
   dismissModal(){
     this.modalController.dismiss();
   }
@@ -163,6 +200,11 @@ export class ModalArticuloPage implements OnInit {
       obj.present();
     })
     
+  }
+
+  // Obtener el tipo
+  getType(variable){
+    return typeof(variable)
   }
 
 }
