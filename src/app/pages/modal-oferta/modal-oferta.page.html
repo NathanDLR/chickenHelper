@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nueva Oferta</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,8 +9,8 @@
     <form [formGroup]="ofertaForm">
       
       <ion-item>
-        <ion-label>Nombre de la Oferta</ion-label>
-        <ion-input #name placeholder="Nombre" formControlName="name" [ngClass]="{
+        <ion-label><strong>Nombre</strong></ion-label> 
+        <ion-input #name type="text" value={{nombre}} placeholder="Nombre de la Oferta" formControlName="name" [ngClass]="{
           'invalidInput': ofertaForm.controls.name.invalid && ofertaForm.controls.name.touched,
           'validInput': ofertaForm.controls.name.valid && ofertaForm.controls.name.touched
         }">
@@ -18,15 +18,17 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Artículos que componen la Oferta</ion-label>
-        <!--
-          Input o dropdownlist?
-        -->
+        <ion-label><strong>Artículos</strong></ion-label>
+        <ion-input #articles type="text" value={{articulos}} placeholder="Todos los artículos que forman la oferta" formControlName="name" [ngClass]="{
+          'invalidInput': ofertaForm.controls.name.invalid && ofertaForm.controls.name.touched,
+          'validInput': ofertaForm.controls.name.valid && ofertaForm.controls.name.touched
+        }">
+        </ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Precio de la Oferta</ion-label>
-        <ion-input #price placeholder="Precio" formControlName="price" [ngClass]="{
+        <ion-label><strong>Precio</strong></ion-label>
+        <ion-input #price type="text" value={{precio}} placeholder="Precio de la oferta" formControlName="price" [ngClass]="{
           'invalidInput': ofertaForm.controls.price.invalid && ofertaForm.controls.price.touched,
           'validInput': ofertaForm.controls.price.valid && ofertaForm.controls.price.touched  
           }">
@@ -35,11 +37,15 @@
 
     </form>
 
-    <ion-button expand="block">
-      Añadir Oferta
+    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addOferta(name.value, articles.value, price.value)">
+      Añadir
     </ion-button>
 
-    <ion-button color="danger" (click)="dismissModal()" expand="block">
+    <ion-button expand="block" *ngIf="getType(uid) != 'undefined'" (click)="updateOferta(name.value, articles.value, price.value)">
+      Actualizar
+    </ion-button>
+
+    <ion-button color="danger"  (click)="dismissModal()" expand="block">
       Salir
     </ion-button>
 
