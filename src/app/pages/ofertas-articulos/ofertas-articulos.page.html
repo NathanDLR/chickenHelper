@@ -2,7 +2,13 @@
   <ion-card>
     <ion-card-title>&nbsp; Lista de Ofertas</ion-card-title>
     <ion-card-content *ngIf="ofertas.length == 0">Todavía no has añadido ninguna oferta</ion-card-content>
-    <ion-card-content></ion-card-content>
+    <ion-list>
+      <ion-item *ngFor="let oferta of ofertas">
+        <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
+        <ion-button color="primary" (click)="editOferta(oferta.uid)" >Ver Info y Editar</ion-button>
+        <ion-button color="danger" (click)="deleteOferta(oferta.uid)" >Eliminar</ion-button>
+      </ion-item>
+      </ion-list>
   </ion-card>
 
   <ion-button (click)="presentModalOferta()" expand="block">Añadir Oferta</ion-button>
@@ -13,7 +19,7 @@
     <ion-list>
       <ion-item *ngFor="let articulo of articulos">
         <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
-        <ion-button color="primary" (click)="editArticulo(articulo.uid, articulo.nombre)" >Ver Info y Editar</ion-button>
+        <ion-button color="primary" (click)="editArticulo(articulo.uid)" >Ver Info y Editar</ion-button>
         <ion-button color="danger" (click)="deleteArticulo(articulo.uid)" >Eliminar</ion-button>
       </ion-item>
       </ion-list>

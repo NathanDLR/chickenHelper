@@ -12,8 +12,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class ModalArticuloPage implements OnInit {
 
-  user: firebase.default.User;
   articuloForm: FormGroup;
+  user: firebase.default.User;
   title: string;
   
   // Datos que obtenemos de la página ofertas-articulos
@@ -86,20 +86,19 @@ export class ModalArticuloPage implements OnInit {
     // Comprobamos que se han rellenado todos los campos
     if(name == "" || ingredients == "" || alergies == "" || price == ""){
       
-      ok = false
+      ok = false;
 
       // Pedimos al usuario que revise los inputs
-      this.presentToast('Debe rellenar todos los campos')
+      this.presentToast('Debe rellenar todos los campos');
 
     } 
 
     // Comprobamos que el precio es un número 
     if(isNaN(parseInt(price)) && ok == true){
-      ok = false
+      ok = false;
 
       // Pedimos al usuario que revise el precio
-      this.presentToast('El precio debe ser un número')
-
+      this.presentToast('El precio debe ser un número');
     }
 
     return ok;
@@ -115,22 +114,20 @@ export class ModalArticuloPage implements OnInit {
     if(ok){
 
       // Obtenemos el uid para guardarlo en la colección, así después podremos obtener todos los artículos por el uid
-      let uid = this.user.uid
+      let uid = this.user.uid;
       // console.log(uid)
       
       // Añadimos el artículo a la colección de artículos
-      let collection = 'articulos'
-
-      db.collection(collection).add({
+      db.collection('articulos').add({
         uidAsador: uid,
         nombre: name,
         ingredientes: ingredients,
         alergenos: alergies,
         precio: price
-      })
+      });
 
       // Limpiamos los inputs
-      this.clearInputs()
+      this.clearInputs();
 
       // Cerramos el modal
       this.dismissModal();
@@ -142,7 +139,6 @@ export class ModalArticuloPage implements OnInit {
   }
 
   // Actualizar artículo
-  // Añadir artículo
   updateArticulo(name: string, ingredients: string, alergies: string, price: string){
     // console.log('Nombre:', name, 'Ingredientes:', ingredients, 'Alérgenos:', alergies, 'Precio:', price);
 
@@ -150,26 +146,19 @@ export class ModalArticuloPage implements OnInit {
     let ok = this.validate(name, ingredients, alergies, price);
 
     if(ok){
-
-      // Obtenemos el uid para guardarlo en la colección, así después podremos obtener todos los artículos por el uid
-      let uid = this.user.uid
-      // console.log(uid)
-      
-      // Añadimos el artículo a la colección de artículos
-      let collection = 'articulos'
-
-      db.collection(collection).doc(this.uid).update({
+      // Modificamos el artículo de la colección de artículos
+      db.collection('articulos').doc(this.uid).update({
         nombre: name,
         ingredientes: ingredients,
         alergenos: alergies,
         precio: price
       })
 
-      // Limpiamos los inputs
-      this.clearInputs()
-
       // Cerramos el modal
       this.dismissModal();
+
+      // Limpiamos los inputs
+      this.clearInputs();
 
       // Mostramos un mensaje para informar al usuario
       this.presentToast('Artículo modificado correctamente');  
