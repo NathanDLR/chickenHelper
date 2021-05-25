@@ -12,4 +12,8 @@ export class PedidosPage implements OnInit {
   ngOnInit() {
   }
 
+  iconClick(){
+    console.log("hola")
+  }
+
 }
