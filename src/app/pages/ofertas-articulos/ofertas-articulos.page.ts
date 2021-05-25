@@ -57,14 +57,14 @@ export class OfertasArticulosPage implements OnInit {
 
       snap.forEach( snapHijo => {
 
-        // Obtenemos los datos del artículo
+        // Obtenemos los datos de la oferta
         let uid = snapHijo.id;
         let nombre = snapHijo.data().nombre;
         let articulos = snapHijo.data().articulos;
         let precio = snapHijo.data().precio;
         let uidAsador = snapHijo.data().uidAsador;
 
-        // Creamos un nuevo objeto artículo
+        // Creamos un nuevo objeto oferta
         let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
 
         // Lo introducimos en la base de datos
