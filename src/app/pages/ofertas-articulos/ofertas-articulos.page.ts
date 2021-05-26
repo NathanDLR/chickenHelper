@@ -46,8 +46,8 @@ export class OfertasArticulosPage implements OnInit {
         // Lo introducimos en nuestro array
         this.articulos.push(articulo);
 
-      })
-    })
+      });
+    });
 
     // Añadimos los datos a nuestro array de ofertas para trabajar con ellos
     db.collection('ofertas').onSnapshot( snap => {
