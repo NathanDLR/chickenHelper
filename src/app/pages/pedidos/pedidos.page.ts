@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Pedido } from 'src/app/classes/pedido';
+import db from '../../../environments/environment';
 
 @Component({
   selector: 'app-pedidos',
@@ -8,38 +10,43 @@ import { Component, OnInit } from '@angular/core';
 export class PedidosPage implements OnInit {
 
   // Array con los pedidos
-  pedidos: any[];
+  pedidos: Pedido[];
 
   constructor() { }
 
   ngOnInit() {
 
     // TODO: Traer los pedidos de la base de datos y crear objetos pedido
-    this.pedidos = [
-      {
-        hora: '12.45',
-        concepto: 'Medio pollo con patatas',
-        cliente: 'Pepito Pérez',
-        info: 'Poco hecho',
-        total: '6€'
-      },
+    this.pedidos = [];
 
-      {
-        hora: '13.45',
-        concepto: 'Pollo con patatas, cuarto de croquetas',
-        cliente: 'Antonio Rodríguez',
-        info: 'Las patatas en el mismo envase',
-        total: '12€'
-      },
+    // Obtenemos los datos de la colección de pedidos
+    db.collection('pedidos').onSnapshot(snap => {
 
-      {
-        hora: '14.45',
-        concepto: 'Tortilla de pimiento',
-        cliente: 'Juanito Mi Compare',
-        info: 'Con mayonesa',
-        total: '4€'
-      }
-    ]
+      // Vaciamos el array para que no se dupliquen los pedidos
+      this.pedidos = [];
+
+      snap.forEach(snapHijo => {
+
+        // Obtenemos los datos del pedido
+        let uid = snapHijo.id;
+        let hora = snapHijo.data().hora.toDate();
+        let concepto = snapHijo.data().concepto;
+        let cliente = snapHijo.data().cliente;
+        let info = snapHijo.data().info;
+        let total = snapHijo.data().total;
+
+        // Nuevo objeto pedido
+        let pedido = new Pedido(uid, hora, concepto, cliente, info, total);
+
+        // Lo introducimos en el array
+        this.pedidos.push(pedido);
+
+        console.log(hora);
+      })
+
+
+    })
+
 
   }
 
