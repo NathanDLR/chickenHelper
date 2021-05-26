@@ -43,11 +43,11 @@ export class OfertasArticulosPage implements OnInit {
         // Creamos un nuevo objeto artículo
         let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
 
-        // Lo introducimos en la base de datos
+        // Lo introducimos en nuestro array
         this.articulos.push(articulo);
 
-      })
-    })
+      });
+    });
 
     // Añadimos los datos a nuestro array de ofertas para trabajar con ellos
     db.collection('ofertas').onSnapshot( snap => {
@@ -67,7 +67,7 @@ export class OfertasArticulosPage implements OnInit {
         // Creamos un nuevo objeto oferta
         let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
 
-        // Lo introducimos en la base de datos
+        // Lo introducimos en nuestro array
         this.ofertas.push(oferta);
 
       })
