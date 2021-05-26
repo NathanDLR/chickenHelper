@@ -35,7 +35,8 @@
         <ion-col class="tableHeader" size="2.5" text-align="center">
           <ion-header>Editar</ion-header>
         </ion-col>
-
+      </ion-row>
+      
       <ion-row *ngFor="let pedido of pedidos">
         <ion-col class="tableCol" size="1">
           <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
