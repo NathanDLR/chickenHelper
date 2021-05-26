@@ -3,7 +3,13 @@
     <ion-card-title> &nbsp; Lista de Pedidos</ion-card-title>
   </ion-card>
 
+  <ion-button expand="block" (click)="presentModalPedido()">Nuevo pedido</ion-button>
+  <ion-button expand="block" color="success">Añadir Venta</ion-button>
+
   <ion-card>
+
+    <ion-card-content *ngIf="pedidos.length == 0" >No hay pedidos para hoy de momento...</ion-card-content>
+
     <ion-grid>
       <ion-row>
         <ion-col class="tableHeader" size="1" text-align="center">
@@ -34,23 +40,23 @@
 
       <ion-row *ngFor="let pedido of pedidos">
         <ion-col class="tableCol" size="1">
-          <ion-header>{{pedido.hora | date:'shortTime'}}</ion-header>
+          <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
         </ion-col>
   
         <ion-col class="tableCol" size="3.5">
-          <ion-header>{{pedido.concepto}}</ion-header>
+          <ion-label>{{pedido.concepto}}</ion-label>
         </ion-col>
   
         <ion-col class="tableCol" size="2">
-          <ion-header>{{pedido.cliente}}</ion-header>
+          <ion-label>{{pedido.cliente}}</ion-label>
         </ion-col>
   
         <ion-col class="tableCol" size="2">
-          <ion-header>{{pedido.info}}</ion-header>
+          <ion-label>{{pedido.info}}</ion-label>
         </ion-col>
   
         <ion-col class="tableCol" size="1">
-          <ion-header>{{pedido.total}}€</ion-header>
+          <ion-label>{{pedido.total}}€</ion-label>
         </ion-col>
   
         <ion-col size="2.5" class="tableCol">

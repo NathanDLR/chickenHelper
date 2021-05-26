@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
+import { ModalPedidosPage } from '../modal-pedidos/modal-pedidos.page';
 
 @Component({
   selector: 'app-pedidos',
@@ -12,11 +14,9 @@ export class PedidosPage implements OnInit {
   // Array con los pedidos
   pedidos: Pedido[];
 
-  constructor() { }
+  constructor(public modalController: ModalController, private toastCtrl: ToastController) { }
 
   ngOnInit() {
-
-    // TODO: Traer los pedidos de la base de datos y crear objetos pedido
     this.pedidos = [];
 
     // Obtenemos los datos de la colección de pedidos
@@ -40,13 +40,8 @@ export class PedidosPage implements OnInit {
 
         // Lo introducimos en el array
         this.pedidos.push(pedido);
-
-        console.log(hora);
-      })
-
-
-    })
-
+      });
+    });
 
   }
 
@@ -63,6 +58,15 @@ export class PedidosPage implements OnInit {
   // Borrar pedido
   delete(){
 
+  }
+
+  // Presentar modal pedido
+  async presentModalPedido(){
+    const modal = await this.modalController.create({
+      component: ModalPedidosPage
+    });
+
+    return await modal.present();
   }
 
 }

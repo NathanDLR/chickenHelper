@@ -53,6 +53,10 @@ const routes: Routes = [
     path: 'modal-oferta',
     loadChildren: () => import('./pages/modal-oferta/modal-oferta.module').then( m => m.ModalOfertaPageModule)
   },
+  {
+    path: 'modal-pedidos',
+    loadChildren: () => import('./pages/modal-pedidos/modal-pedidos.module').then( m => m.ModalPedidosPageModule)
+  },
 ];
 
 @NgModule({
