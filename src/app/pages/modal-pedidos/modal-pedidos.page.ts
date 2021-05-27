@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IonInput, IonSelect, ModalController } from '@ionic/angular';
+import { IonDatetime, IonInput, IonSelect, ModalController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
 import { Pedido } from 'src/app/classes/pedido';
@@ -101,6 +101,28 @@ export class ModalPedidosPage implements OnInit {
 
   }
 
+  // Añadir pedido
+  addPedido(hora: IonDatetime, concepto: string, cliente: string, info: string){
+    // Validamos los inputs
+    let ok = this.validate(hora, concepto, cliente, info);
+
+    // Si todo es correcto añadimos el pedido a la base de datos
+    if(ok){
+      
+    }
+
+  }
+
+  // Validación del formulario
+  validate(hora: IonDatetime, concepto: string, cliente: string, info: string): Boolean{
+    let ok = false;
+    
+    // Comprobamos que todos los campos estén rellenos
+
+
+    return ok;
+  }
+
   // Dismiss modal
   dismissModal(){
     this.modalControlller.dismiss();
@@ -109,7 +131,7 @@ export class ModalPedidosPage implements OnInit {
   // Select changed
   selectChanged(){
     // Actualizamos el precio total
-    
+    console.log(this.conceptoSelect.selectedText)
   }
 
 }
