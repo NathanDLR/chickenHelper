@@ -17,7 +17,7 @@
       
       <ion-item>
         <ion-label><strong>Concepto</strong></ion-label>
-        <ion-select #concepto placeholder="Ofertas y Artículos" multiple="true" cancelText="Cancelar" (ionChange)="selectChanged()">
+        <ion-select #concepto placeholder="Ofertas y Artículos" multiple="true" cancelText="Cancelar">
           <ion-select-option *ngFor="let i of ofertasArticulos" value="{{i.uid}}">{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -37,12 +37,6 @@
           'validInput': pedidoForm.controls.info.valid && pedidoForm.controls.info.touched
         }"></ion-input>
       </ion-item>
-
-      <ion-item>
-        <ion-label><strong>Total</strong></ion-label>
-        <ion-label text-align="left">{{total}}€</ion-label>
-      </ion-item>
-
     </form>
 
     <ion-button color="primary" (click)="addPedido(hora.value, concepto.value, cliente.value, info.value)" expand="block">

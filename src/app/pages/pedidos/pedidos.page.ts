@@ -56,8 +56,8 @@ export class PedidosPage implements OnInit {
   }
 
   // Borrar pedido
-  delete(){
-
+  delete(uid: string){
+    db.collection('pedidos').doc(uid).delete();
   }
 
   // Presentar modal pedido
