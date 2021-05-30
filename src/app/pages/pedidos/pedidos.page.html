@@ -10,7 +10,7 @@
 
     <ion-card-content *ngIf="pedidos.length == 0" >No hay pedidos para hoy de momento...</ion-card-content>
 
-    <ion-grid>
+    <ion-grid *ngIf="pedidos.length > 0">
       <ion-row>
         <ion-col class="tableHeader" size="1" text-align="center">
           <ion-header>Hora</ion-header>

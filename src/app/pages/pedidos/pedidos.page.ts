@@ -19,7 +19,7 @@ export class PedidosPage implements OnInit {
   ngOnInit() {
     this.pedidos = [];
 
-    // Obtenemos los datos de la colección de pedidos
+    // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual
     db.collection('pedidos').onSnapshot(snap => {
 
       // Vaciamos el array para que no se dupliquen los pedidos
@@ -45,12 +45,12 @@ export class PedidosPage implements OnInit {
 
   }
 
-  // Marcar pedido como recogido
+  //TODO: Marcar pedido como recogido
   check(){
 
   }
 
-  // Editar pedido
+  //TODO: Editar pedido
   edit(){
 
   }

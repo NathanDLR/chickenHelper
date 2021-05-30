@@ -18,6 +18,7 @@ export class ModalPedidosPage implements OnInit {
   title: string;
   precio: string;
   user: firebase.default.User;
+  minutes: number[]; 
 
   @ViewChild('concepto') conceptoSelect: IonSelect;
   @ViewChild('total') lblTotal: IonLabel;
@@ -36,6 +37,9 @@ export class ModalPedidosPage implements OnInit {
 
     // Inicializar array
     this.ofertasArticulos = [];
+
+    // Minutos que se muestran para escoger la hora del pedido
+    this.minutes= [0, 15, 30, 45];
 
     // Título para nuevo artículo
     this.title = "Nuevo Artículo";
@@ -109,7 +113,10 @@ export class ModalPedidosPage implements OnInit {
   }
 
   // Añadir pedido
-  addPedido(hora: string, concepto: string[], cliente: string, info: string){
+  addPedido(hora: string, concepto: string[], cliente: string, info: string){    
+    // Precio total del pedido
+    let total = 0;
+
     // Validamos los inputs
     let ok = this.validate(hora, concepto, cliente, info);
 
@@ -122,20 +129,39 @@ export class ModalPedidosPage implements OnInit {
       // Convertimos la hora a Date
       let date = new Date(hora);
 
-      console.log(uid);
+      // Recorremos el array de artículos y ofertas para ir sumando los precios
+      for(let i=0; i < concepto.length; i++){
+        db.collection('ofertas').doc(concepto[i]).get().then(doc =>{
+          if(typeof(doc.data()) != 'undefined'){
+            let precio = doc.data().precio;
+            total += parseInt(precio);
+          }
+        });  
+  
+        db.collection('articulos').doc(concepto[i]).get().then(doc =>{
+          if(typeof(doc.data()) != 'undefined'){
+            let precio = doc.data().precio;            
+            total += parseInt(precio);  
+          }
+        }).then( () => {
+          if(i == concepto.length - 1){
+            // Añadimos el pedido a la colección TODO: El precio debe ser float para tener en cuenta los decimales
+            db.collection('pedidos').add({
+              uidAsador: uid,
+              hora: date,
+              concepto: concepto,
+              cliente: cliente,
+              info: info,
+              total: total
+            });
+          }
+        })
+      }   
 
-      // Obtenemos el precio total de los artículos
-      let total = this.getTotal(concepto)
+      // Toast para informar al usuario
 
-      // Añadimos el pedido a la colección
-      db.collection('pedidos').add({
-        uidAsador: uid,
-        hora: date,
-        concepto: concepto,
-        cliente: cliente,
-        info: info,
-        total: total
-      })
+      // Cerramos el modal 
+      this.dismissModal();
 
     }
 
@@ -152,37 +178,16 @@ export class ModalPedidosPage implements OnInit {
   }
 
   // Precio total del pedido
-  getTotal(concepto: string[]): number{
-    var total = 0;
-
-    // Recorremos el array y obtenemos el precio de cada artículo
-    for (let i = 0; i < concepto.length; i++) {
-      let uid = concepto[i];
-
-      // Buscamos las ofertas y artículos
-      db.collection('ofertas').doc(uid).get().then(doc =>{
-        if(typeof(doc.data()) != 'undefined'){
-          let precio = doc.data().precio;
-          total = total + parseInt(precio);
-        }
-      });
-
-      db.collection('articulos').doc(uid).get().then(doc =>{
-        if(typeof(doc.data()) != 'undefined'){
-          console.log("Entra en articulos");
-          let precio = doc.data().precio
-          total += parseInt(precio);
-        }
-      });     
-    }
-
-    console.log(total);
-    return total;
-  }
+  async getPrecio(concepto: string){}
 
   // Dismiss modal
   dismissModal(){
     this.modalControlller.dismiss();
+  }
+
+  // Presentar un mensaje con un toast
+  presentToast(msg: string){
+
   }
 
 }
