@@ -134,18 +134,18 @@ export class ModalPedidosPage implements OnInit {
         db.collection('ofertas').doc(concepto[i]).get().then(doc =>{
           if(typeof(doc.data()) != 'undefined'){
             let precio = doc.data().precio;
-            total += parseInt(precio);
+            total += parseFloat(precio);
           }
         });  
   
         db.collection('articulos').doc(concepto[i]).get().then(doc =>{
           if(typeof(doc.data()) != 'undefined'){
             let precio = doc.data().precio;            
-            total += parseInt(precio);  
+            total += parseFloat(precio);  
           }
         }).then( () => {
           if(i == concepto.length - 1){
-            // Añadimos el pedido a la colección TODO: El precio debe ser float para tener en cuenta los decimales
+            // Añadimos el pedido a la colección
             db.collection('pedidos').add({
               uidAsador: uid,
               hora: date,
@@ -167,7 +167,7 @@ export class ModalPedidosPage implements OnInit {
 
   }
 
-  // Validación del formulario
+  // TODO: Validación del formulario
   validate(hora: string, concepto: string[], cliente: string, info: string): Boolean{
     let ok = true;
     
@@ -177,15 +177,12 @@ export class ModalPedidosPage implements OnInit {
     return ok;
   }
 
-  // Precio total del pedido
-  async getPrecio(concepto: string){}
-
   // Dismiss modal
   dismissModal(){
     this.modalControlller.dismiss();
   }
 
-  // Presentar un mensaje con un toast
+  //TODO: Presentar un mensaje con un toast
   presentToast(msg: string){
 
   }

@@ -20,7 +20,7 @@ export class PedidosPage implements OnInit {
     this.pedidos = [];
 
     // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual
-    db.collection('pedidos').onSnapshot(snap => {
+    db.collection('pedidos').orderBy('hora').onSnapshot(snap => {
 
       // Vaciamos el array para que no se dupliquen los pedidos
       this.pedidos = [];
@@ -35,6 +35,22 @@ export class PedidosPage implements OnInit {
         let info = snapHijo.data().info;
         let total = snapHijo.data().total;
 
+        let conceptoNombres = new Array();
+
+        for(let i = 0; i < concepto.length; i++){
+          db.collection('ofertas').doc(concepto[i]).get().then(doc =>{
+            if(typeof(doc.data()) != 'undefined'){
+              conceptoNombres.push(doc.data().nombre);
+            }
+          });
+
+          db.collection('articulos').doc(concepto[i]).get().then(doc =>{
+            if(typeof(doc.data()) != 'undefined'){
+              conceptoNombres.push(doc.data().nombre);
+            }
+          });
+        }
+
         // Nuevo objeto pedido
         let pedido = new Pedido(uid, hora, concepto, cliente, info, total);
 
@@ -42,6 +58,8 @@ export class PedidosPage implements OnInit {
         this.pedidos.push(pedido);
       });
     });
+
+    
 
   }
 
