@@ -19,7 +19,7 @@ export class PedidosPage implements OnInit {
   ngOnInit() {
     this.pedidos = [];
 
-    // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual
+    // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual para el día de hoy
     db.collection('pedidos').orderBy('hora').onSnapshot(snap => {
 
       // Vaciamos el array para que no se dupliquen los pedidos

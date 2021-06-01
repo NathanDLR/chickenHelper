@@ -89,7 +89,7 @@ export class ModalArticuloPage implements OnInit {
       ok = false;
 
       // Pedimos al usuario que revise los inputs
-      this.presentToast('Debe rellenar todos los campos');
+      this.presentToast('Debes rellenar todos los campos');
 
     } 
 

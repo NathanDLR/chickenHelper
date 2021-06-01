@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IonDatetime, IonInput, IonLabel, IonSelect, ModalController } from '@ionic/angular';
+import { IonDatetime, IonInput, IonLabel, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
 import { Pedido } from 'src/app/classes/pedido';
@@ -26,7 +26,7 @@ export class ModalPedidosPage implements OnInit {
   // Array para guardar las ofertas y artículos y mostrarlos en el select
   ofertasArticulos: any[];
 
-  constructor(public modalControlller: ModalController, private fireAuth: AngularFireAuth){
+  constructor(public modalControlller: ModalController, private fireAuth: AngularFireAuth, private toastCtlr: ToastController){
     // Datos del usuario actual
     fireAuth.user.subscribe((data => {
       this.user = data;
@@ -159,6 +159,7 @@ export class ModalPedidosPage implements OnInit {
       }   
 
       // Toast para informar al usuario
+      this.presentToast("Pedido añadido correctamente");
 
       // Cerramos el modal 
       this.dismissModal();
@@ -167,12 +168,15 @@ export class ModalPedidosPage implements OnInit {
 
   }
 
-  // TODO: Validación del formulario
+  // Validación del formulario
   validate(hora: string, concepto: string[], cliente: string, info: string): Boolean{
     let ok = true;
     
     // Comprobamos que todos los campos estén rellenos
-
+    if(hora == "" || typeof(concepto) == 'undefined' || cliente == "" || info == ""){
+      this.presentToast("Debes rellenar todos los campos")
+      ok = false
+    }
 
     return ok;
   }
@@ -182,9 +186,16 @@ export class ModalPedidosPage implements OnInit {
     this.modalControlller.dismiss();
   }
 
-  //TODO: Presentar un mensaje con un toast
+  // Presentar un mensaje con un toast
   presentToast(msg: string){
-
+    this.toastCtlr.create({
+      animated: true,
+      message: msg,
+      duration: 2000,
+      translucent: true
+    }).then((obj) => {
+      obj.present();
+    });
   }
 
 }
