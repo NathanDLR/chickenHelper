@@ -34,32 +34,34 @@ export class PedidosPage implements OnInit {
         let cliente = snapHijo.data().cliente;
         let info = snapHijo.data().info;
         let total = snapHijo.data().total;
+        let conceptoNombres = "";
 
-        let conceptoNombres = new Array();
-
+        // Obtenemos los nombres de los artículos y ofertas del pedido
         for(let i = 0; i < concepto.length; i++){
           db.collection('ofertas').doc(concepto[i]).get().then(doc =>{
             if(typeof(doc.data()) != 'undefined'){
-              conceptoNombres.push(doc.data().nombre);
+              conceptoNombres += doc.data().nombre + " ";
             }
           });
 
           db.collection('articulos').doc(concepto[i]).get().then(doc =>{
             if(typeof(doc.data()) != 'undefined'){
-              conceptoNombres.push(doc.data().nombre);
+              conceptoNombres += doc.data().nombre + " ";  
+            }
+          }).then(() => {
+            // Una vez hayan llegado los datos de la bd creamos el nuevo objeto pedido y lo introducimos en el array
+            if(i == concepto.length - 1){
+              
+              // Nuevo objeto pedido
+              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, conceptoNombres);
+              
+              // Lo introducimos en el array
+              this.pedidos.push(pedido);
             }
           });
-        }
-
-        // Nuevo objeto pedido
-        let pedido = new Pedido(uid, hora, concepto, cliente, info, total);
-
-        // Lo introducimos en el array
-        this.pedidos.push(pedido);
+        }        
       });
-    });
-
-    
+    }); 
 
   }
 
@@ -75,6 +77,7 @@ export class PedidosPage implements OnInit {
 
   // Borrar pedido
   delete(uid: string){
+    // TODO: Preguntamos al usuario si está seguro de borrar el pedido
     db.collection('pedidos').doc(uid).delete();
   }
 
