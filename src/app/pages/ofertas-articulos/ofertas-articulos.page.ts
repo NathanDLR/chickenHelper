@@ -5,6 +5,7 @@ import { ModalOfertaPage } from '../modal-oferta/modal-oferta.page';
 import db from '../../../environments/environment';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -18,60 +19,70 @@ export class OfertasArticulosPage implements OnInit {
   ofertas: Oferta[];
   articulos: Articulo[];
 
-  constructor(public modalController: ModalController, private toastCtrl: ToastController) { }
+  // Usuario actual
+  user: firebase.default.User;
+
+  constructor(public modalController: ModalController, private toastCtrl: ToastController, private fireAuth: AngularFireAuth) { }
 
   ngOnInit() {
     // Inicializamos los arrays
     this.ofertas = [];
     this.articulos = [];
     
-    // Añadimos los datos a nuestro array de artículos para trabajar con ellos
-    db.collection('articulos').onSnapshot( snap => {
+    this.fireAuth.user.subscribe(data => {
 
-      // Vacíamos el array para que no se dupliquen los datos
-      this.articulos = [];
+      // Datos del usuario actual
+      this.user = data;
+      let uid = this.user.uid;
 
-      snap.forEach( snapHijo => {
-        // Obtenemos los datos del artículo
-        let uid = snapHijo.id;
-        let nombre = snapHijo.data().nombre;
-        let ingredientes = snapHijo.data().ingredientes;
-        let alergenos = snapHijo.data().alergenos;
-        let precio = snapHijo.data().precio;
-        let uidAsador = snapHijo.data().uidAsador;
+      // Añadimos los datos a nuestro array de artículos para trabajar con ellos
+      db.collection('articulos').where("uidAsador", "==", uid).onSnapshot( snap => {
 
-        // Creamos un nuevo objeto artículo
-        let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
+        // Vacíamos el array para que no se dupliquen los datos
+        this.articulos = [];
 
-        // Lo introducimos en nuestro array
-        this.articulos.push(articulo);
+        snap.forEach( snapHijo => {
+          // Obtenemos los datos del artículo
+          let uid = snapHijo.id;
+          let nombre = snapHijo.data().nombre;
+          let ingredientes = snapHijo.data().ingredientes;
+          let alergenos = snapHijo.data().alergenos;
+          let precio = snapHijo.data().precio;
+          let uidAsador = snapHijo.data().uidAsador;
 
+          // Creamos un nuevo objeto artículo
+          let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
+
+          // Lo introducimos en nuestro array
+          this.articulos.push(articulo);
+
+        });
       });
+
+      // Añadimos los datos a nuestro array de ofertas para trabajar con ellos
+      db.collection('ofertas').where("uidAsador", "==", uid).onSnapshot( snap => {
+
+        // Vacíamos el array para que no se dupliquen los datos
+        this.ofertas = [];
+
+        snap.forEach( snapHijo => {
+
+          // Obtenemos los datos de la oferta
+          let uid = snapHijo.id;
+          let nombre = snapHijo.data().nombre;
+          let articulos = snapHijo.data().articulos;
+          let precio = snapHijo.data().precio;
+          let uidAsador = snapHijo.data().uidAsador;
+
+          // Creamos un nuevo objeto oferta
+          let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
+
+          // Lo introducimos en nuestro array
+          this.ofertas.push(oferta);
+
+        });
     });
-
-    // Añadimos los datos a nuestro array de ofertas para trabajar con ellos
-    db.collection('ofertas').onSnapshot( snap => {
-
-      // Vacíamos el array para que no se dupliquen los datos
-      this.ofertas = [];
-
-      snap.forEach( snapHijo => {
-
-        // Obtenemos los datos de la oferta
-        let uid = snapHijo.id;
-        let nombre = snapHijo.data().nombre;
-        let articulos = snapHijo.data().articulos;
-        let precio = snapHijo.data().precio;
-        let uidAsador = snapHijo.data().uidAsador;
-
-        // Creamos un nuevo objeto oferta
-        let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
-
-        // Lo introducimos en nuestro array
-        this.ofertas.push(oferta);
-
-      })
-    })
+    });
 
   }
 

@@ -9,16 +9,18 @@ export class Pedido {
     private cliente: string;
     private info: string;
     private total: number;
+    private recogido: boolean;
     private conceptoNombres: string;
 
     // Constructor
-    constructor(uid: string, hora: IonDatetime, concepto: string, cliente: string, info: string, total: number, conceptoNombres: string){
+    constructor(uid: string, hora: IonDatetime, concepto: string, cliente: string, info: string, total: number, recogido: boolean, conceptoNombres: string){
         this.uid = uid;
         this.hora = hora;
         this.concepto = concepto;
         this.cliente = cliente;
         this.info = info;
         this.total = total;
+        this.recogido = recogido;
         this.conceptoNombres = conceptoNombres;
     }
 

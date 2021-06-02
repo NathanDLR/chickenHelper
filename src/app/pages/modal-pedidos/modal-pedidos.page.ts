@@ -20,6 +20,13 @@ export class ModalPedidosPage implements OnInit {
   user: firebase.default.User;
   minutes: number[]; 
 
+  // Datos que obtenemos de la página pedidos
+  uid: string;
+  hora: Date;
+  concepto: string;
+  cliente: string;
+  info: string;
+
   @ViewChild('concepto') conceptoSelect: IonSelect;
   @ViewChild('total') lblTotal: IonLabel;
 
@@ -64,7 +71,6 @@ export class ModalPedidosPage implements OnInit {
       ]),
 
       // No ponemos el total como input porque se calcula en base a los artículos y ofertas seleccionados
-    
     })
 
     // Obtenemos las ofertas y artículos
@@ -110,6 +116,21 @@ export class ModalPedidosPage implements OnInit {
       });
     });
 
+    // Intentamos recoger el uid si nos lo mandan
+    if(typeof(this.uid) != 'undefined'){
+      db.collection('pedidos').doc(this.uid).get().then(doc => {
+        this.concepto = doc.data().concepto;
+        this.hora = doc.data().hora;
+        this.cliente = doc.data().cliente;
+        this.info = doc.data().info;
+        this.concepto = doc.data().concepto;
+      });
+
+      // Título cuando se edita el pedido
+      this.title = "Editar Pedido";
+
+    }
+
   }
 
   // Añadir pedido
@@ -152,7 +173,8 @@ export class ModalPedidosPage implements OnInit {
               concepto: concepto,
               cliente: cliente,
               info: info,
-              total: total
+              total: total,
+              recogido: false
             });
           }
         })
@@ -196,6 +218,11 @@ export class ModalPedidosPage implements OnInit {
     }).then((obj) => {
       obj.present();
     });
+  }
+
+  // Obtener el tipo
+  getType(variable){
+    return typeof(variable)
   }
 
 }

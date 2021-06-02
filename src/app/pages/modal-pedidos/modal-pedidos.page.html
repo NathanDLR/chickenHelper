@@ -12,19 +12,19 @@
 
       <ion-item>
         <ion-label><strong>Hora</strong></ion-label>
-        <ion-datetime #hora formControlname="hora" #date displayFormat="H:mm" placeholder="Selecciona una hora" minuteValues="{{minutes}}"></ion-datetime>
+        <ion-datetime #hora formControlname="hora" value={{hora}} displayFormat="H:mm" placeholder="Selecciona una hora" minuteValues="{{minutes}}"></ion-datetime>
       </ion-item>
       
       <ion-item>
         <ion-label><strong>Concepto</strong></ion-label>
-        <ion-select #concepto placeholder="Ofertas y Artículos" multiple="true" cancelText="Cancelar">
+        <ion-select #concepto value={{concepto}} placeholder="Ofertas y Artículos" multiple="true" cancelText="Cancelar">
           <ion-select-option *ngFor="let i of ofertasArticulos" value="{{i.uid}}">{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label><strong>Cliente</strong></ion-label>
-        <ion-input #cliente type="text" placeholder="Nombre del cliente" formControlName="cliente" [ngClass]="{
+        <ion-input #cliente value={{cliente}} type="text" placeholder="Nombre del cliente" formControlName="cliente" [ngClass]="{
           'invalidInput': pedidoForm.controls.cliente.touched && pedidoForm.controls.cliente.invalid,
           'validInput': pedidoForm.controls.cliente.touched && pedidoForm.controls.cliente.valid
         }"></ion-input>
@@ -32,15 +32,19 @@
 
       <ion-item>
         <ion-label><strong>Info</strong></ion-label>
-        <ion-input #info type="text" placeholder="Información extra" formControlName="info" [ngClass]="{
+        <ion-input #info value={{info}} type="text" placeholder="Información extra" formControlName="info" [ngClass]="{
           'invalidInput': pedidoForm.controls.info.invalid && pedidoForm.controls.info.touched,
           'validInput': pedidoForm.controls.info.valid && pedidoForm.controls.info.touched
         }"></ion-input>
       </ion-item>
     </form>
 
-    <ion-button color="primary" (click)="addPedido(hora.value, concepto.value, cliente.value, info.value)" expand="block">
+    <ion-button color="primary" *ngIf="getType(uid) == 'undefined'" (click)="addPedido(hora.value, concepto.value, cliente.value, info.value)" expand="block">
       Añadir
+    </ion-button>
+
+    <ion-button color="primary" *ngIf="getType(uid) != 'undefined'" (click)="updatePedido(hora.value, concepto.value, cliente.value, info.value)" expand="block">
+      Actualizar
     </ion-button>
 
     <ion-button color="danger" (click)="dismissModal()" expand="block">

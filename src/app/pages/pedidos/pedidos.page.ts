@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 import { ModalPedidosPage } from '../modal-pedidos/modal-pedidos.page';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-pedidos',
@@ -11,16 +12,27 @@ import { ModalPedidosPage } from '../modal-pedidos/modal-pedidos.page';
 })
 export class PedidosPage implements OnInit {
 
+  // Usuario actual
+  user: firebase.default.User;
+
   // Array con los pedidos
   pedidos: Pedido[];
 
-  constructor(public modalController: ModalController, private toastCtrl: ToastController) { }
+  constructor(public modalController: ModalController, private toastCtrl: ToastController, private fireAuth: AngularFireAuth, private alertCtrl: AlertController){
+    
+  }
 
   ngOnInit() {
     this.pedidos = [];
 
-    // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual para el día de hoy
-    db.collection('pedidos').orderBy('hora').onSnapshot(snap => {
+    this.fireAuth.user.subscribe(data => {
+      
+    // Datos del usuario actual
+      this.user = data;
+      let uid = this.user.uid;
+      
+      // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual para el día de hoy
+      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('hora').onSnapshot(snap => {
 
       // Vaciamos el array para que no se dupliquen los pedidos
       this.pedidos = [];
@@ -53,7 +65,7 @@ export class PedidosPage implements OnInit {
             if(i == concepto.length - 1){
               
               // Nuevo objeto pedido
-              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, conceptoNombres);
+              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, false, conceptoNombres); // Ponemos siempre recogido como false
               
               // Lo introducimos en el array
               this.pedidos.push(pedido);
@@ -63,22 +75,53 @@ export class PedidosPage implements OnInit {
       });
     }); 
 
+    });
   }
 
   //TODO: Marcar pedido como recogido
-  check(){
-
+  check(uid: string){
+    db.collection('pedidos').doc(uid).update({
+      recogido: true
+    })
   }
 
   //TODO: Editar pedido
-  edit(){
+  async edit(uid: string){
+    // Abrimos el modal pedidos pero pasando el uid
+    const modal = await this.modalController.create({
+      component: ModalPedidosPage,
+      componentProps: {
+        'uid': uid
+      }
+    });
 
+    return await modal.present();
   }
 
   // Borrar pedido
-  delete(uid: string){
-    // TODO: Preguntamos al usuario si está seguro de borrar el pedido
-    db.collection('pedidos').doc(uid).delete();
+  async delete(uid: string){
+
+    // Preguntamos al usuario si está seguro de borrar el pedido
+    const alert = await this.alertCtrl.create({
+      header: '¿Estás seguro?',
+      message: 'Vas a borrar este pedido y no lo podrás recuperar',
+      buttons: [
+        {
+          text: 'Borrar',
+          handler: () => {
+            // Borramos el pedido e informamos al usuario
+            db.collection('pedidos').doc(uid).delete();
+            this.presentToast("Pedido borrado correctamente");
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }
+      ]
+    });
+    await alert.present();
   }
 
   // Presentar modal pedido
@@ -89,5 +132,26 @@ export class PedidosPage implements OnInit {
 
     return await modal.present();
   }
+
+  //TODO: Presentar modal venta
+  async presentModalVenta(){
+    const modal = await this.modalController.create({
+      component: ModalPedidosPage
+    });
+
+    return await modal.present();
+  }
+
+  // Toast message
+  presentToast(message: string){
+    this.toastCtrl.create({
+      animated: true,
+      message: message,
+      duration: 2000,
+      translucent: true,
+    }).then((obj) => {
+      obj.present();
+    })
+  };
 
 }
