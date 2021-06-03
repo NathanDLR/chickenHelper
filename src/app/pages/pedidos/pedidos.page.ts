@@ -85,13 +85,14 @@ export class PedidosPage implements OnInit {
     })
   }
 
-  //TODO: Editar pedido
-  async edit(uid: string){
+  // Editar pedido
+  async edit(uid: string, hora: Date){
     // Abrimos el modal pedidos pero pasando el uid
     const modal = await this.modalController.create({
       component: ModalPedidosPage,
       componentProps: {
-        'uid': uid
+        'uid': uid,
+        'hora': hora // De momento pasamos la hora así porque da problemas al traerla de la bd
       }
     });
 

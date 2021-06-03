@@ -152,7 +152,7 @@ export class ModalArticuloPage implements OnInit {
         ingredientes: ingredients,
         alergenos: alergies,
         precio: price
-      })
+      });
 
       // Cerramos el modal
       this.dismissModal();

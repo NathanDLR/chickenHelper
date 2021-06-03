@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { ModalArticuloPage } from '../modal-articulo/modal-articulo.page';
 import { ModalOfertaPage } from '../modal-oferta/modal-oferta.page';
 import db from '../../../environments/environment';
@@ -22,7 +22,7 @@ export class OfertasArticulosPage implements OnInit {
   // Usuario actual
   user: firebase.default.User;
 
-  constructor(public modalController: ModalController, private toastCtrl: ToastController, private fireAuth: AngularFireAuth) { }
+  constructor(public modalController: ModalController, private toastCtrl: ToastController, private alertCtrl: AlertController, private fireAuth: AngularFireAuth) { }
 
   ngOnInit() {
     // Inicializamos los arrays
@@ -105,25 +105,54 @@ export class OfertasArticulosPage implements OnInit {
   }
 
   // Eliminar un artículo
-  deleteArticulo(uid: string){
-    // console.log("Uid del artículo: ", uid);
-    
-    // Borramos el documento que representa el artículo 
-    db.collection('articulos').doc(uid).delete();
-
-    // Mensaje para avisar al usuario
-    this.presentToast('El artículo se ha eliminado');
+  async deleteArticulo(uid: string){
+    // Preguntamos al usuario si está seguro de borrar el pedido
+    const alert = await this.alertCtrl.create({
+      header: '¿Estás seguro?',
+      message: 'Vas a borrar este artículo y no lo podrás recuperar',
+      buttons: [
+        {
+          text: 'Borrar',
+          handler: () => {
+            // Borramos el artículo e informamos al usuario
+            db.collection('articulos').doc(uid).delete();
+            this.presentToast("Artículo borrado correctamente");
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }
+      ]
+    });
+    await alert.present();
 
   }
 
   // Eliminar una oferta
-  deleteOferta(uid: string){
-    
-    // Borramos el documento que representa la oferta
-    db.collection('ofertas').doc(uid).delete();
-
-    // Mensaje para el usuario
-    this.presentToast('La oferta se ha eliminado');
+  async deleteOferta(uid: string){
+    // Preguntamos al usuario si está seguro de borrar el pedido
+    const alert = await this.alertCtrl.create({
+      header: '¿Estás seguro?',
+      message: 'Vas a borrar esta oferta y no la podrás recuperar',
+      buttons: [
+        {
+          text: 'Borrar',
+          handler: () => {
+            // Borramos el documento que representa la oferta
+            db.collection('oferta').doc(uid).delete();
+            this.presentToast("Oferta borrada correctamente");
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }
+      ]
+    });
+    await alert.present();
 
   }
 

@@ -20,14 +20,16 @@ export class ModalPedidosPage implements OnInit {
   user: firebase.default.User;
   minutes: number[]; 
 
-  // Datos que obtenemos de la página pedidos
+  // Uid que obtenemos de la página pedidos
   uid: string;
   hora: Date;
-  concepto: string;
-  cliente: string;
-  info: string;
 
+  // Inputs del template para meterle los datos si editamos el pedido
+  // Está hecho de forma diferente que en los artículos y ofertas porque no funcionaba así
+  @ViewChild('hora') datePHora: IonDatetime;
   @ViewChild('concepto') conceptoSelect: IonSelect;
+  @ViewChild('cliente') inputCliente: IonInput;
+  @ViewChild('info') inputInfo: IonInput;
   @ViewChild('total') lblTotal: IonLabel;
 
   // Array para guardar las ofertas y artículos y mostrarlos en el select
@@ -119,16 +121,16 @@ export class ModalPedidosPage implements OnInit {
     // Intentamos recoger el uid si nos lo mandan
     if(typeof(this.uid) != 'undefined'){
       db.collection('pedidos').doc(this.uid).get().then(doc => {
-        this.concepto = doc.data().concepto;
-        this.hora = doc.data().hora;
-        this.cliente = doc.data().cliente;
-        this.info = doc.data().info;
-        this.concepto = doc.data().concepto;
+        // Rellenamos los campos con los datos de la bd
+        this.datePHora.value = this.hora.toString();
+        this.conceptoSelect.value = doc.data().concepto;
+        this.inputCliente.value = doc.data().cliente;
+        this.inputInfo.value = doc.data().info;
       });
 
       // Título cuando se edita el pedido
       this.title = "Editar Pedido";
-
+      
     }
 
   }
@@ -188,6 +190,55 @@ export class ModalPedidosPage implements OnInit {
 
     }
 
+  }
+
+  // Actualizar pedido
+  updatePedido(hora: string, concepto: string[], cliente: string, info: string){
+    // Precio total del pedido
+    let total = 0;
+
+    // Validamos los inputs
+    let ok = this.validate(hora, concepto, cliente, info);
+
+    if(ok){
+      // Convertimos la hora a Date
+      let date = new Date(hora);
+
+      // Recorremos el array de artículos y ofertas para ir sumando los precios
+      for(let i=0; i < concepto.length; i++){
+        db.collection('ofertas').doc(concepto[i]).get().then(doc =>{
+          if(typeof(doc.data()) != 'undefined'){
+            let precio = doc.data().precio;
+            total += parseFloat(precio);
+          }
+        });  
+  
+        db.collection('articulos').doc(concepto[i]).get().then(doc =>{
+          if(typeof(doc.data()) != 'undefined'){
+            let precio = doc.data().precio;            
+            total += parseFloat(precio);  
+          }
+        }).then( () => {
+          if(i == concepto.length - 1){
+            // Modificamos el pedido
+            db.collection('pedidos').doc(this.uid).update({
+              hora: date,
+              concepto: concepto,
+              cliente: cliente,
+              info: info,
+              total: total
+            });
+          }
+        })
+      }
+
+      // Cerramos el modal
+      this.dismissModal();
+
+      // Mostramos un mensaje para informar al usuario
+      this.presentToast('Pedido modificado correctamente'); 
+
+    }
   }
 
   // Validación del formulario

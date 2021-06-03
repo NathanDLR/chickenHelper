@@ -12,7 +12,7 @@
 
       <ion-item>
         <ion-label><strong>Hora</strong></ion-label>
-        <ion-datetime #hora formControlname="hora" value={{hora}} displayFormat="H:mm" placeholder="Selecciona una hora" minuteValues="{{minutes}}"></ion-datetime>
+        <ion-datetime #hora formControlname="hora" displayFormat="H:mm" placeholder="Selecciona una hora" minuteValues="{{minutes}}" cancelText="Cancelar" doneText="OK"></ion-datetime>
       </ion-item>
       
       <ion-item>
@@ -24,7 +24,7 @@
 
       <ion-item>
         <ion-label><strong>Cliente</strong></ion-label>
-        <ion-input #cliente value={{cliente}} type="text" placeholder="Nombre del cliente" formControlName="cliente" [ngClass]="{
+        <ion-input #cliente type="text" value={{cliente}} placeholder="Nombre del cliente" formControlName="cliente" [ngClass]="{
           'invalidInput': pedidoForm.controls.cliente.touched && pedidoForm.controls.cliente.invalid,
           'validInput': pedidoForm.controls.cliente.touched && pedidoForm.controls.cliente.valid
         }"></ion-input>
@@ -32,7 +32,7 @@
 
       <ion-item>
         <ion-label><strong>Info</strong></ion-label>
-        <ion-input #info value={{info}} type="text" placeholder="Información extra" formControlName="info" [ngClass]="{
+        <ion-input #info type="text" value={{info}} placeholder="Información extra" formControlName="info" [ngClass]="{
           'invalidInput': pedidoForm.controls.info.invalid && pedidoForm.controls.info.touched,
           'validInput': pedidoForm.controls.info.valid && pedidoForm.controls.info.touched
         }"></ion-input>
