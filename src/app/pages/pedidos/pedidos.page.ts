@@ -4,6 +4,7 @@ import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 import { ModalPedidosPage } from '../modal-pedidos/modal-pedidos.page';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ModalVentaPage } from '../modal-venta/modal-venta.page';
 
 @Component({
   selector: 'app-pedidos',
@@ -46,6 +47,7 @@ export class PedidosPage implements OnInit {
         let cliente = snapHijo.data().cliente;
         let info = snapHijo.data().info;
         let total = snapHijo.data().total;
+        let recogido = snapHijo.data().recogido;
         let conceptoNombres = "";
 
         // Obtenemos los nombres de los artículos y ofertas del pedido
@@ -65,7 +67,7 @@ export class PedidosPage implements OnInit {
             if(i == concepto.length - 1){
               
               // Nuevo objeto pedido
-              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, false, conceptoNombres); // Ponemos siempre recogido como false
+              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, conceptoNombres); // Ponemos siempre recogido como false
               
               // Lo introducimos en el array
               this.pedidos.push(pedido);
@@ -78,10 +80,16 @@ export class PedidosPage implements OnInit {
     });
   }
 
-  //TODO: Marcar pedido como recogido
+  // Marcar pedido como recogido
   check(uid: string){
     db.collection('pedidos').doc(uid).update({
       recogido: true
+    })
+  }
+
+  uncheck(uid: string){
+    db.collection('pedidos').doc(uid).update({
+      recogido: false
     })
   }
 
@@ -137,7 +145,7 @@ export class PedidosPage implements OnInit {
   //TODO: Presentar modal venta
   async presentModalVenta(){
     const modal = await this.modalController.create({
-      component: ModalPedidosPage
+      component: ModalVentaPage
     });
 
     return await modal.present();
@@ -154,5 +162,10 @@ export class PedidosPage implements OnInit {
       obj.present();
     })
   };
+
+  // Cambiar el color de la fila del pedido
+  setColor(recogido: boolean){
+    if(recogido) return 'green';
+  }
 
 }

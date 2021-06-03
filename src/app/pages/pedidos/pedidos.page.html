@@ -37,8 +37,8 @@
         </ion-col>
       </ion-row>
       
-      <ion-row *ngFor="let pedido of pedidos" [ngClass]="{'pedidoRecogido': pedido.recogido == true}">
-        <ion-col class="tableCol" size="1" >
+      <ion-row *ngFor="let pedido of pedidos" [ngStyle]="{'color': setColor(pedido.recogido)}">
+        <ion-col class="tableCol" size="1">
           <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
         </ion-col>
   
@@ -59,7 +59,9 @@
         </ion-col>
   
         <ion-col size="2.5" class="tableCol">
-          <ion-icon name="checkmark-sharp" (click)="check(pedido.uid)" size="large" class="checkmarkIcon"></ion-icon>
+          <ion-icon name="checkmark-sharp" (click)="check(pedido.uid)" size="large" class="checkmarkIcon" *ngIf="!pedido.recogido"></ion-icon>
+          &nbsp;
+          <ion-icon name="ban" (click)="uncheck(pedido.uid)" size="large" class="uncheckIcon" *ngIf="pedido.recogido"></ion-icon>
           &nbsp;
           <ion-icon name="create" (click)="edit(pedido.uid, pedido.hora)" size="large" class="editIcon"></ion-icon>
           &nbsp;

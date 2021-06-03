@@ -18,13 +18,20 @@
      Inicia sesión o registrate para comenzar
     </ion-card-content>
 
-    <ion-button (click)="navigateLogin()">
-      Iniciar sesión
-    </ion-button>
-
-    <ion-button (click)="navigateRegister()">
-      Registrarse
-    </ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="navigateLogin()" expand='block'>
+            Iniciar sesión
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="navigateRegister()" expand='block'>
+            Registrarse
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
   </ion-card>
 </ion-content>
