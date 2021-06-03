@@ -60,6 +60,10 @@ const routes: Routes = [
     path: 'modal-venta',
     loadChildren: () => import('./pages/modal-venta/modal-venta.module').then( m => m.ModalVentaPageModule)
   },
+  {
+    path: 'venta',
+    loadChildren: () => import('./pages/venta/venta.module').then( m => m.VentaPageModule)
+  },
 
 ];
 
