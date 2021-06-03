@@ -97,7 +97,7 @@ export class ModalPedidosPage implements OnInit {
         this.ofertasArticulos.push(oferta);
 
       })
-    })
+    });
 
     db.collection('articulos').onSnapshot( snap => {
       snap.forEach( snapHijo => {

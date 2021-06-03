@@ -142,7 +142,7 @@ export class PedidosPage implements OnInit {
     return await modal.present();
   }
 
-  //TODO: Presentar modal venta
+  // Presentar modal venta
   async presentModalVenta(){
     const modal = await this.modalController.create({
       component: ModalVentaPage
@@ -165,7 +165,7 @@ export class PedidosPage implements OnInit {
 
   // Cambiar el color de la fila del pedido
   setColor(recogido: boolean){
-    if(recogido) return 'green';
+    if(recogido) return 'darkgreen';
   }
 
 }

@@ -1,10 +1,10 @@
 <ion-content>
   <ion-card>
-    <ion-card-title> &nbsp; Lista de Pedidos</ion-card-title>
+    <ion-card-title> &nbsp; Pedidos</ion-card-title>
   </ion-card>
 
   <ion-button expand="block" (click)="presentModalPedido()">Nuevo pedido</ion-button>
-  <ion-button expand="block" color="success" (click)="presentModalVenta()">Añadir Venta</ion-button>
+  <ion-button expand="block" color="secondary" (click)="presentModalVenta()">Añadir Venta</ion-button>
 
   <ion-card>
 
@@ -37,7 +37,7 @@
         </ion-col>
       </ion-row>
       
-      <ion-row *ngFor="let pedido of pedidos" [ngStyle]="{'color': setColor(pedido.recogido)}">
+      <ion-row *ngFor="let pedido of pedidos" [ngClass]="{'pedidoRecogido': pedido.recogido}">
         <ion-col class="tableCol" size="1">
           <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
         </ion-col>
