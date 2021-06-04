@@ -81,7 +81,7 @@ export class OfertasArticulosPage implements OnInit {
           this.ofertas.push(oferta);
 
         });
-    });
+      });
     });
 
   }

@@ -56,9 +56,6 @@ const routes: Routes = [
   {
     path: 'modal-pedidos',
     loadChildren: () => import('./pages/modal-pedidos/modal-pedidos.module').then( m => m.ModalPedidosPageModule)
-  },  {
-    path: 'modal-venta',
-    loadChildren: () => import('./pages/modal-venta/modal-venta.module').then( m => m.ModalVentaPageModule)
   },
   {
     path: 'venta',

@@ -4,7 +4,6 @@ import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 import { ModalPedidosPage } from '../modal-pedidos/modal-pedidos.page';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { ModalVentaPage } from '../modal-venta/modal-venta.page';
 
 @Component({
   selector: 'app-pedidos',
@@ -137,15 +136,6 @@ export class PedidosPage implements OnInit {
   async presentModalPedido(){
     const modal = await this.modalController.create({
       component: ModalPedidosPage
-    });
-
-    return await modal.present();
-  }
-
-  // Presentar modal venta
-  async presentModalVenta(){
-    const modal = await this.modalController.create({
-      component: ModalVentaPage
     });
 
     return await modal.present();

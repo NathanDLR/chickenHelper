@@ -3,10 +3,26 @@
     <ion-card-title> &nbsp; Venta Extra</ion-card-title>
   </ion-card>
 
-  <ion-button expand="block" color="primary" (click)="presentModalVenta()">Añadir Venta</ion-button>
+  <ion-card>
+    <ion-card-title> &nbsp; Ofertas</ion-card-title>
+    <ion-list>
+      <ion-item *ngFor="let oferta of ofertas">
+        <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
+        <ion-label>{{oferta.precio|currency:'EUR':"symbol"}}</ion-label>
+        <ion-button color="primary" (click)="add(oferta.precio)">Añadir</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
 
   <ion-card>
-    
+    <ion-card-title> &nbsp; Artículos</ion-card-title>
+    <ion-list>
+      <ion-item *ngFor="let articulo of articulos">
+        <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
+        <ion-label>{{articulo.precio|currency:'EUR':"symbol"}}</ion-label>
+        <ion-button color="primary" (click)="add(articulo.precio)">Añadir</ion-button>
+      </ion-item>
+    </ion-list>
   </ion-card>
 
 </ion-content>
