@@ -50,8 +50,8 @@ export class ModalPedidosPage implements OnInit {
     // Minutos que se muestran para escoger la hora del pedido
     this.minutes= [0, 15, 30, 45];
 
-    // Título para nuevo artículo
-    this.title = "Nuevo Artículo";
+    // Título para nuevo pedido
+    this.title = "Nuevo Pedido";
     this.precio = "0";
 
     // Formulario en código

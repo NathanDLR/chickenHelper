@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
 import db from '../../../environments/environment';
@@ -19,7 +21,7 @@ export class ModalVentaPage implements OnInit {
   articulos: Articulo[];
   ofertas: Oferta[];
 
-  constructor() { }
+  constructor(public modalControlller: ModalController, private fireAuth: AngularFireAuth, private toastCtlr: ToastController){}
 
   ngOnInit(){
 
