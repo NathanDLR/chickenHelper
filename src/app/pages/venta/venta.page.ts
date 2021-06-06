@@ -12,6 +12,11 @@ import db from '../../../environments/environment';
 })
 export class VentaPage implements OnInit {
 
+  // Total de la venta del día
+  venta: number = 0;
+  total: number = 0;
+  uidAsador: string = "";
+
   // Usuario y fecha actual
   user: firebase.default.User;
   date = new Date().toLocaleDateString();
@@ -35,6 +40,8 @@ export class VentaPage implements OnInit {
       // Datos del usuario actual
       this.user = data;
       let uid = this.user.uid;
+
+      this.uidAsador = uid;
 
       // Añadimos los datos a nuestro array de artículos para trabajar con ellos
       db.collection('articulos').where("uidAsador", "==", uid).onSnapshot( snap => {
@@ -83,6 +90,36 @@ export class VentaPage implements OnInit {
 
         });
       });
+
+      // id del documento en el que guardaremos la venta del día
+      let id = "";
+
+      // Obtenemos el id del doc en el que guardamos la venta de hoy
+      db.collection('venta').where('uidAsador', '==', uid).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+      snap.forEach(doc => {
+        id = doc.id;
+        this.total = doc.data().total;
+      })
+      }).then(() => {
+
+        if(id == ""){
+          // Creamos el documento con la fecha actual, precio 0 y el uid del asador
+          db.collection('venta').add({
+            fecha: this.date,
+            total: 0,
+            uidAsador: uid
+          });
+        }
+
+        // Si el documento ya se creó podemos obtener la venta del día
+        else{
+          db.collection('venta').doc(id).get().then( (doc) => {
+            this.venta = doc.data().total
+            console.log(this.venta);
+          })
+        }
+
+      });
     });
   }
 
@@ -96,14 +133,47 @@ export class VentaPage implements OnInit {
     let total: number = 0;
 
     // Obtenemos el id del doc en el que guardamos la venta de hoy
-    db.collection('venta').orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+    db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+      snap.forEach(doc => {
+        uid = doc.id;
+        total = doc.data().total;
+      })
+    }).then(() => {
+
+      // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
+      total += parseFloat(precio);
+
+      // Luego actualizamos el total
+      db.collection('venta').doc(uid).update({
+        total: total
+      });
+
+      // Mostramos la venta 
+      this.venta = total;
+
+      // Mensaje para informar al usuario
+      this.presentToast("Se ha añadido la venta");
+
+    });
+  }
+
+  // Desmarcar precio
+  delete(precio: string){
+    // id del doc
+    let uid: string = "";
+
+    // Total venta
+    let total: number = 0;
+
+    // Obtenemos el id del doc en el que guardamos la venta de hoy
+    db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
       snap.forEach(doc => {
         uid = doc.id;
         total = doc.data().total;
       })
     }).then(() => {
       // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
-      total += parseFloat(precio);
+      total -= parseFloat(precio);
 
       if(uid == ""){
         // Creamos el documento y le metemos el precio que se nos ha pasado
@@ -119,8 +189,11 @@ export class VentaPage implements OnInit {
           total: total
         });
 
+        // Mostramos la venta 
+        this.venta = total;
+
         // Mensaje para informar al usuario
-        this.presentToast("Se ha añadido la venta");
+        this.presentToast("Se ha desmarcado la venta");
       }     
 
     });
