@@ -1,12 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Caja</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-card>
-    <ion-card-title>¿Desea terminar el día de hoy?</ion-card-title>
-    <ion-button>Cerrar</ion-button>
+    <ion-card-content>
+      <ion-card-title> &nbsp; Caja</ion-card-title>
+      <br />
+    <ion-button expand="block" (click)="calcTotal()">Hacer Caja</ion-button>
+    </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-label><strong>Total:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
+    </ion-item>
+  </ion-card>
+  
 </ion-content>

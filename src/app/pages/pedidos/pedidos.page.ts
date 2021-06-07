@@ -12,8 +12,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class PedidosPage implements OnInit {
 
-  // Usuario actual
+  // Usuario y fecha actual 
   user: firebase.default.User;
+  date = new Date().toLocaleDateString();
 
   // Array con los pedidos
   pedidos: Pedido[];
@@ -30,9 +31,9 @@ export class PedidosPage implements OnInit {
     // Datos del usuario actual
       this.user = data;
       let uid = this.user.uid;
-      
+      console.log("entra en data")
       // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual para el día de hoy
-      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('hora').onSnapshot(snap => {
+      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('hora').orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').onSnapshot(snap => {
 
       // Vaciamos el array para que no se dupliquen los pedidos
       this.pedidos = [];

@@ -20,6 +20,9 @@ export class ModalPedidosPage implements OnInit {
   user: firebase.default.User;
   minutes: number[]; 
 
+  // Fecha actual
+  date= new Date().toLocaleDateString();
+
   // Uid que obtenemos de la página pedidos
   uid: string;
   hora: Date;
@@ -75,48 +78,54 @@ export class ModalPedidosPage implements OnInit {
       // No ponemos el total como input porque se calcula en base a los artículos y ofertas seleccionados
     })
 
-    // Obtenemos las ofertas y artículos
-    db.collection('ofertas').onSnapshot( snap => {
+    this.fireAuth.user.subscribe(data => {
 
-      // Vacíamos el array para que no se dupliquen los datos
-      this.ofertasArticulos = [];
+        // uid asador
+        let uidAsador = data.uid;
 
-      snap.forEach( snapHijo => {
+        // Obtenemos las ofertas y artículos solo del asador actual
+        db.collection('ofertas').where('uidAsador', '==', uidAsador).onSnapshot( snap => {
 
-        // Obtenemos los datos de la oferta
-        let uid = snapHijo.id;
-        let nombre = snapHijo.data().nombre;
-        let articulos = snapHijo.data().articulos;
-        let precio = snapHijo.data().precio;
-        let uidAsador = snapHijo.data().uidAsador;
+        // Vacíamos el array para que no se dupliquen los datos
+        this.ofertasArticulos = [];
 
-        // Creamos un nuevo objeto oferta
-        let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
+        snap.forEach( snapHijo => {
 
-        // Lo introducimos en nuestro array
-        this.ofertasArticulos.push(oferta);
+          // Obtenemos los datos de la oferta
+          let uid = snapHijo.id;
+          let nombre = snapHijo.data().nombre;
+          let articulos = snapHijo.data().articulos;
+          let precio = snapHijo.data().precio;
+          let uidAsador = snapHijo.data().uidAsador;
 
-      })
-    });
+          // Creamos un nuevo objeto oferta
+          let oferta = new Oferta(uid, nombre, articulos, precio, uidAsador);
 
-    db.collection('articulos').onSnapshot( snap => {
-      snap.forEach( snapHijo => {
-        // Obtenemos los datos del artículo
-        let uid = snapHijo.id;
-        let nombre = snapHijo.data().nombre;
-        let ingredientes = snapHijo.data().ingredientes;
-        let alergenos = snapHijo.data().alergenos;
-        let precio = snapHijo.data().precio;
-        let uidAsador = snapHijo.data().uidAsador;
+          // Lo introducimos en nuestro array
+          this.ofertasArticulos.push(oferta);
 
-        // Creamos un nuevo objeto artículo
-        let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
-
-        // Lo introducimos en nuestro array
-        this.ofertasArticulos.push(articulo);
-
+        })
       });
-    });
+
+      db.collection('articulos').where('uidAsador', '==', uidAsador).onSnapshot( snap => {
+        snap.forEach( snapHijo => {
+          // Obtenemos los datos del artículo
+          let uid = snapHijo.id;
+          let nombre = snapHijo.data().nombre;
+          let ingredientes = snapHijo.data().ingredientes;
+          let alergenos = snapHijo.data().alergenos;
+          let precio = snapHijo.data().precio;
+          let uidAsador = snapHijo.data().uidAsador;
+
+          // Creamos un nuevo objeto artículo
+          let articulo = new Articulo(uid, nombre, ingredientes, alergenos, precio, uidAsador);
+
+          // Lo introducimos en nuestro array
+          this.ofertasArticulos.push(articulo);
+
+        });
+      });
+    })
 
     // Intentamos recoger el uid si nos lo mandan
     if(typeof(this.uid) != 'undefined'){
@@ -176,7 +185,8 @@ export class ModalPedidosPage implements OnInit {
               cliente: cliente,
               info: info,
               total: total,
-              recogido: false
+              recogido: false,
+              fecha: this.date
             });
           }
         })

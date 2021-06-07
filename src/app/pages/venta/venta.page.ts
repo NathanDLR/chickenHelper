@@ -115,7 +115,6 @@ export class VentaPage implements OnInit {
         else{
           db.collection('venta').doc(id).get().then( (doc) => {
             this.venta = doc.data().total
-            console.log(this.venta);
           })
         }
 
