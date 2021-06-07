@@ -31,10 +31,10 @@ export class PedidosPage implements OnInit {
     // Datos del usuario actual
       this.user = data;
       let uid = this.user.uid;
-      console.log("entra en data")
-      // Obtenemos los datos de la colección de pedidos TODO: Mostrar solo los pedidos de el asador actual para el día de hoy
-      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('hora').orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').onSnapshot(snap => {
-
+      
+      // Obtenemos los datos de la colección de pedidos
+      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('fecha').orderBy('hora').startAt(this.date).endAt(this.date+'\uf8ff').onSnapshot(snap => {
+        
       // Vaciamos el array para que no se dupliquen los pedidos
       this.pedidos = [];
 
