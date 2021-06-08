@@ -1,28 +1,28 @@
 <ion-content>
   <ion-card>
-    <ion-card-title> &nbsp; Venta Extra - {{date}}</ion-card-title>
+    <ion-card-title class="redTitle"> &nbsp; Venta Extra - {{date}}</ion-card-title>
   </ion-card>
 
   <ion-card>
-    <ion-card-title> &nbsp; Ofertas</ion-card-title>
+    <ion-card-title class="redTitle"> &nbsp; Ofertas</ion-card-title>
     <ion-list>
       <ion-item *ngFor="let oferta of ofertas">
         <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
         <ion-label>{{oferta.precio|currency:'EUR':"symbol"}}</ion-label>
-        <ion-button color="primary" (click)="add(oferta.precio)">Añadir</ion-button>
-        <ion-button color="danger" (click)="delete(oferta.precio)">Desmarcar</ion-button>
+        <button class="btnBlue" (click)="add(oferta.precio)">Añadir</button> &nbsp;
+        <button class="btnRed" (click)="delete(oferta.precio)">Desmarcar</button>
       </ion-item>
     </ion-list>
   </ion-card>
 
   <ion-card>
-    <ion-card-title> &nbsp; Artículos</ion-card-title>
+    <ion-card-title class="redTitle"> &nbsp; Artículos</ion-card-title>
     <ion-list>
       <ion-item *ngFor="let articulo of articulos">
         <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
         <ion-label>{{articulo.precio|currency:'EUR':"symbol"}}</ion-label>
-        <ion-button color="primary" (click)="add(articulo.precio)">Añadir</ion-button>
-        <ion-button color="danger" (click)="delete(articulo.precio)">Desmarcar</ion-button>
+        <button class="btnBlue" (click)="add(articulo.precio)">Añadir</button> &nbsp;
+        <button class="btnRed" (click)="delete(articulo.precio)">Desmarcar</button>
       </ion-item>
     </ion-list>
   </ion-card>

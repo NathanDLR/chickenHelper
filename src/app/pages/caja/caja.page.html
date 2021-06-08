@@ -1,32 +1,34 @@
-<ion-content>
-  <ion-card>
-    <ion-card-content>
-      <ion-card-title> &nbsp; Caja</ion-card-title>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button expand="block" (click)="calcTotal()">Hacer Caja</ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button expand="block" (click)="update()">Actualizar</ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button expand="block" color="secondary" (click)="correct()">Corregir</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+<ion-card>
+  <ion-card-title class="redTitle"> &nbsp; Caja</ion-card-title>
 
-  <ion-card>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="calcTotal()">Hacer Caja</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" (click)="update()" >Actualizar</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" (click)="correct()" >Corregir</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
     <ion-item>
       <ion-label><strong>Total:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
     </ion-item>
     <ion-item *ngIf="corregir">
       <ion-label><strong>Introduce el nuevo total</strong></ion-label>
       <ion-input #total type="text" palceholder="Nuevo total"></ion-input> <br />
-      <ion-button (click)="updateTotal(total.value)">Actualizar total</ion-button>
+      <button class="btnBlue" (click)="updateTotal(total.value)">Actualizar total</button>
     </ion-item>
-  </ion-card>
+
+
+  </ion-card-content>
+
+</ion-card>
+
+
   
-</ion-content>

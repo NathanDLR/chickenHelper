@@ -14,13 +14,10 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-card-title{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
 
 ion-title {
-    color: cadetblue; font-family: 'Raleway',sans-serif; font-size: 130%; font-weight: 800; margin: 10 10 10px; text-align: center; text-transform: uppercase;
+    color: white; font-family: 'Raleway',sans-serif; font-size: 130%; font-weight: 800; margin: 10 10 10px; text-align: center; text-transform: uppercase; 
+    background-color: rgb(65, 85, 94);
 }
 
 ion-button{
@@ -58,3 +55,66 @@ ion-row{
 .uncheckIcon{
     color: darkred;
 }
+
+.redTitle{
+    background-color: rgba(189, 22, 22, 0.815);
+    color: white
+}
+
+.btnBlue {
+	box-shadow: 0px 1px 0px 0px #276873;
+	background-color:transparent;
+	border-radius:6px;
+	border:1px solid #29668f;
+	display:inline-block;
+	cursor:pointer;
+	color:#47577d;
+	font-family:Arial;
+	font-size:15px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.btnBlue:hover {
+	background-color:#29668f;
+    color: white;
+}
+.btnBlue:active {
+	position:relative;
+	top:1px;
+}
+
+
+.btnRed {
+	box-shadow: 0px 1px 0px 0px #cf866c;
+	background-color:transparent;
+	border-radius:6px;
+	border:1px solid #942911;
+	display:inline-block;
+	cursor:pointer;
+	color:#a86262;
+	font-family:Arial;
+	font-size:15px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #854629;
+}
+.btnRed:hover {
+	background-color:#942911;
+    color: white;
+}
+.btnRed:active {
+	position:relative;
+	top:1px;
+}
+
+
+
+
+
+
+
+
+
+
+
