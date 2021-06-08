@@ -5,8 +5,8 @@
     <ion-list>
       <ion-item *ngFor="let oferta of ofertas">
         <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
-        <button color="primary" (click)="editOferta(oferta.uid)" class="btnBlue">Ver Info o Editar</button> &nbsp;
-        <button color="danger" (click)="deleteOferta(oferta.uid)" class="btnRed" >Eliminar</button>
+        <button (click)="editOferta(oferta.uid)" class="btnBlue">Ver Info o Editar</button> &nbsp;
+        <button (click)="deleteOferta(oferta.uid)" class="btnRed" >Eliminar</button>
       </ion-item>
       </ion-list>
   </ion-card>
@@ -19,8 +19,8 @@
     <ion-list>
       <ion-item *ngFor="let articulo of articulos">
         <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
-        <button color="primary" (click)="editArticulo(articulo.uid)" class="btnBlue">Ver Info o Editar</button> &nbsp;
-        <button color="danger" (click)="deleteArticulo(articulo.uid)" class="btnRed" >Eliminar</button>
+        <button (click)="editArticulo(articulo.uid)" class="btnBlue">Ver Info o Editar</button> &nbsp;
+        <button (click)="deleteArticulo(articulo.uid)" class="btnRed" >Eliminar</button>
       </ion-item>
       </ion-list>
 
