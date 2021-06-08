@@ -1,6 +1,6 @@
 <ion-content>
   <ion-card>
-    <ion-card-title class="redTitle">&nbsp; Lista de Ofertas</ion-card-title>
+    <ion-card-title class="demo">&nbsp; Lista de Ofertas</ion-card-title>
     <ion-card-content *ngIf="ofertas.length == 0">Todavía no has añadido ninguna oferta</ion-card-content>
     <ion-list>
       <ion-item *ngFor="let oferta of ofertas">
@@ -14,7 +14,7 @@
   <ion-button (click)="presentModalOferta()" expand="block">Añadir Oferta</ion-button>
 
   <ion-card>
-    <ion-card-title class="redTitle"> &nbsp;  Lista de Artículos</ion-card-title>
+    <ion-card-title class="demo"> &nbsp;  Lista de Artículos</ion-card-title>
     <ion-card-content *ngIf="articulos.length == 0">Todavía no has añadido ningún artículo</ion-card-content>
     <ion-list>
       <ion-item *ngFor="let articulo of articulos">
