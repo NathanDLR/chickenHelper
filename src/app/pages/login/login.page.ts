@@ -67,7 +67,7 @@ export class LoginPage implements OnInit {
 
   // Redirigir usuario a la página que queramos según si está verificado
   private redirectUser(verfied: Boolean){
-      // Si el usuario está verificado lo redirigimos a la página principal 
+      // Si el usuario está verificado lo redirigimos a la página de ofertas-artículos
       if(verfied){
         this.router.navigate(['tabs/ofertas-articulos']);
       }

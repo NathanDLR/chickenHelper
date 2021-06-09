@@ -1,9 +1,57 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login para clientes</ion-title>
+    <ion-title>Iniciar sesión - Clientes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div>
 
+    <form [formGroup]="loginClientForm">
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-input #email placeholder="Escribe tu email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Contraseña</ion-label>
+        <ion-input type="password" #pwd placeholder="Escribe tu contraseña" formControlName="pwd" ></ion-input>
+      </ion-item>
+
+    </form>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="login(email.value, pwd.value)" type="submit" expand="block" >
+        Iniciar Sesión
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <p class="ion-text-end">
+          <a routerLink="/forgot-pwd">¿Has olvidado tu contraseña?</a>
+        </p>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" (click)="loginGoogle(email, pwd)" expand="block">
+          <ion-icon name="logo-google"></ion-icon>
+          &nbsp; Iniciar sesión con Google
+        </ion-button><br/>  
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>    
+        <p class="ion-text-end">
+          <a routerLink="/register-client">¿Todavía no te has registrado? Crea tu cuenta</a>
+        </p>   
+      </ion-col>
+    </ion-row>
+
+  </div>
 </ion-content>
