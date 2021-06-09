@@ -13,7 +13,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class AuthService {
 
-  public user$:Observable<User>;
+  public user$:Observable<any>;
 
   constructor(public fireAuth: AngularFireAuth, private afs:AngularFirestore, private alert: AlertController) {
     this.user$ = this.fireAuth.authState.pipe(
@@ -64,6 +64,18 @@ export class AuthService {
     }
   }
 
+  // Registro con google
+  async loginGoogleClient(): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider);
+      this.updateUserDataClient(user);
+      return user;
+    }
+    catch(error){
+      console.log('Error: ', error)
+    }
+  }
+
   // Registro
   async register(email: string, password:string): Promise<User>{
     try{
@@ -106,6 +118,7 @@ export class AuthService {
   async logout(): Promise<void>{
     try{
       await this.fireAuth.signOut();
+      console.log("Se ha cerrado la sesión");
     }
     catch(error){
       console.log('Error: ', error);
@@ -114,15 +127,28 @@ export class AuthService {
 
   private updateUserData(user:User){
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-    const data: User = {
+    const data = {
       uid: user.uid,
       email: user.email,
       emailVerified: user.emailVerified,
-      displayName: user.displayName
+      displayName: user.displayName,
+      tipo: 0
     };
 
     return userRef.set(data, {merge: true});
+  }
 
+  private updateUserDataClient(user:User){
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+    const data = {
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      displayName: user.displayName,
+      tipo: 1
+    };
+
+    return userRef.set(data, {merge: true});
   }
 
   // Control de errores

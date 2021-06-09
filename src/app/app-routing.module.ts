@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ClientAuthGuardService } from './services/client-auth-guard.service';
 import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
@@ -35,7 +36,8 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'pedidos',
@@ -60,6 +62,22 @@ const routes: Routes = [
   {
     path: 'venta',
     loadChildren: () => import('./pages/venta/venta.module').then( m => m.VentaPageModule)
+  },
+  {
+    path: 'login-client',
+    loadChildren: () => import('./pages/login-client/login-client.module').then( m => m.LoginClientPageModule)
+  },
+  {
+    path: 'register-client',
+    loadChildren: () => import('./pages/register-client/register-client.module').then( m => m.RegisterClientPageModule)
+  },
+  {
+    path: 'order',
+    loadChildren: () => import('./pages/order/order.module').then( m => m.OrderPageModule),
+    canActivate: [ClientAuthGuardService]
+  },  {
+    path: 'modal-info',
+    loadChildren: () => import('./pages/modal-info/modal-info.module').then( m => m.ModalInfoPageModule)
   },
 
 ];

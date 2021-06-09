@@ -19,11 +19,18 @@ export class AuthGuard implements CanActivate {
     return this.auth.user$.pipe(
       take(1),
       map(user => {
-        if (user) return true;
+        if (user){
+          if(user.tipo == 0) return true;
+          else{
+            // Redirigimos al inicio
+            this.router.navigate(['home']);
+            return false;
+          }
+        }
         else{
-          // Redirigimos al login
-          this.router.navigate(['login'])
-          return false
+          // Redirigimos al inicio
+          this.router.navigate(['home']);
+          return false;
         }
       })
     );
