@@ -15,23 +15,52 @@
     </ion-card-header>
 
     <ion-card-content>
-     Inicia sesión o registrate para comenzar
+     Inicia sesión o registrate para comenzar <br/> Si tienes cuenta de Google puedes iniciar sesión directamente
     </ion-card-content>
 
     <ion-grid>
+
+      <ion-row>
+        <ion-label>
+          ¿Eres el propietario de un asador?
+        </ion-label>
+      </ion-row>
+
       <ion-row>
         <ion-col>
           <ion-button (click)="navigateLogin()" expand='block'>
-            Iniciar sesión
+            Iniciar sesión como dueño
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="navigateRegister()" expand='block'>
-            Registrarse
+            Registro para empresas
           </ion-button>
         </ion-col>
       </ion-row>
+
+      <ion-row>
+        <ion-label>
+          ¿Eres cliente?
+        </ion-label>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button color="secondary" (click)="navigateLoginClient()" expand='block'>
+            Iniciar sesión como cliente
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button color="secondary" (click)="navigateRegisterClient()" expand='block'>
+            Registro para clientes
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
     </ion-grid>
 
   </ion-card>
+  <br/>
 </ion-content>

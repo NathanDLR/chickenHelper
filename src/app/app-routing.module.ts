@@ -35,7 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'pedidos',
@@ -60,7 +61,15 @@ const routes: Routes = [
   {
     path: 'venta',
     loadChildren: () => import('./pages/venta/venta.module').then( m => m.VentaPageModule)
+  },  {
+    path: 'login-client',
+    loadChildren: () => import('./pages/login-client/login-client.module').then( m => m.LoginClientPageModule)
   },
+  {
+    path: 'register-client',
+    loadChildren: () => import('./pages/register-client/register-client.module').then( m => m.RegisterClientPageModule)
+  },
+
 
 ];
 

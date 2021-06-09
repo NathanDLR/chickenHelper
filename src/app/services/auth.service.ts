@@ -106,6 +106,7 @@ export class AuthService {
   async logout(): Promise<void>{
     try{
       await this.fireAuth.signOut();
+      console.log("Se ha cerrado la sesión");
     }
     catch(error){
       console.log('Error: ', error);
