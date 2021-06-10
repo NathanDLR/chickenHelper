@@ -11,20 +11,19 @@
     <ion-card-content>
       <ion-item>
         <ion-label>Asadores</ion-label>
-        <ion-select #asador placeholder="Selecciona" cancelText="Cancelar" doneText="OK">
-          <ion-select-option>Los pollitos de mi compare</ion-select-option>
-          <ion-select-option>Los pollitos de mi compare 2</ion-select-option>
-          <ion-select-option>Los pollitos de mi compare 3 </ion-select-option>
-          <ion-select-option>Los pollitos de mi compare 4</ion-select-option>
+        <ion-select #asador placeholder="Selecciona" cancelText="Cancelar" doneText="OK" (ionChange)="loadOfertasArticulos(asador.value)">
+          <ion-select-option *ngFor="let i of asadores" value="{{i.uid}}" >{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-title class="redTitle"> &nbsp; Haz tu pedido</ion-card-title>
-    <ion-card-content>
-      
-    </ion-card-content>
+  <ion-card *ngIf='ofertas.length > 0'>
+    <ion-card-title class="redTitle" > &nbsp; Ofertas </ion-card-title>
+    <ion-list>
+      <ion-item *ngFor="let oferta of ofertas">
+        <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
+      </ion-item>
+    </ion-list>
   </ion-card>
 </ion-content>

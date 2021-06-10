@@ -8,6 +8,8 @@ import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 
+import db from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,50 +54,6 @@ export class AuthService {
     }
   }
 
-  // Registro con google
-  async loginGoogle(): Promise<User>{
-    try{
-      const {user} = await this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider);
-      this.updateUserData(user);
-      return user;
-    }
-    catch(error){
-      console.log('Error: ', error)
-    }
-  }
-
-  // Registro con google
-  async loginGoogleClient(): Promise<User>{
-    try{
-      const {user} = await this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider);
-      this.updateUserDataClient(user);
-      return user;
-    }
-    catch(error){
-      console.log('Error: ', error)
-    }
-  }
-
-  // Registro
-  async register(email: string, password:string): Promise<User>{
-    try{
-      const {user} = await this.fireAuth.createUserWithEmailAndPassword(email, password);
-
-      // Enviamos un email de verificación cuando el usuario se registre
-      await this.sendVerificationEmail();
-
-      return user;
-    }
-    catch(error){
-      // Comprobamos los posibles errores
-      console.log('Error code: ', error.code)
-
-      let errorCode = error.code 
-
-      this.getError(errorCode);
-    }
-  }
-
   // Login 
   async login(email: string, password: string): Promise<User>{
     try{
@@ -114,6 +72,90 @@ export class AuthService {
     }
   }
 
+  // Login 
+  async loginClient(email: string, password: string): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.signInWithEmailAndPassword(email, password);
+      this.updateUserDataClient(user);
+      return user;
+    }
+    catch(error){
+      // Comprobamos los posibles errores
+      console.log('Error code: ', error.code);
+
+      let errorCode = error.code;
+
+      this.getError(errorCode)
+
+    }
+  }
+
+  // Registro con google
+  async loginGoogle(): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider);
+      this.updateUserData(user);
+      return user;
+    }
+    catch(error){
+      console.log('Error: ', error)
+    }
+  }
+
+  async loginGoogleClient(): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider);
+      this.updateUserDataClient(user);
+      return user;
+    }
+    catch(error){
+      console.log('Error: ', error)
+    }
+  }
+
+
+  // Registro
+  async register(email: string, password:string): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.createUserWithEmailAndPassword(email, password);
+      this.insertData(user);
+
+      // Enviamos un email de verificación cuando el usuario se registre
+      await this.sendVerificationEmail();
+
+      return user;
+    }
+    catch(error){
+      // Comprobamos los posibles errores
+      console.log('Error code: ', error.code)
+
+      let errorCode = error.code 
+
+      this.getError(errorCode);
+    }
+  }
+
+  // Registro clientes
+  async registerClient(email: string, password:string): Promise<User>{
+    try{
+      const {user} = await this.fireAuth.createUserWithEmailAndPassword(email, password);
+      this.insertDataClient(user);
+
+      // Enviamos un email de verificación cuando el usuario se registre
+      await this.sendVerificationEmail();
+
+      return user;
+    }
+    catch(error){
+      // Comprobamos los posibles errores
+      console.log('Error code: ', error.code)
+
+      let errorCode = error.code 
+
+      this.getError(errorCode);
+    }
+  }
+
   // Log out 
   async logout(): Promise<void>{
     try{
@@ -125,30 +167,66 @@ export class AuthService {
     }
   }
 
+  // Update Data
   private updateUserData(user:User){
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-    const data = {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      displayName: user.displayName,
-      tipo: 0
-    };
+    
+    db.collection('users').doc(user.uid).get().then(doc => {
+      let tipo: number;
+      
+      if(doc.exists == false) tipo = 0;
+      else tipo = doc.data().tipo;
 
-    return userRef.set(data, {merge: true});
+      const data = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        displayName: user.displayName, 
+        tipo: tipo
+      };
+  
+      return userRef.set(data, {merge: true});
+    });
   }
 
+  // Update Data Client
   private updateUserDataClient(user:User){
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-    const data = {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      displayName: user.displayName,
-      tipo: 1
-    };
+    
+    db.collection('users').doc(user.uid).get().then(doc => {
+      let tipo: number;
+      
+      if(doc.exists == false) tipo = 1;
+      else tipo = doc.data().tipo;
 
-    return userRef.set(data, {merge: true});
+      const data = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        displayName: user.displayName, 
+        tipo: tipo
+      };
+  
+      return userRef.set(data, {merge: true});
+    });
+  }
+
+  // Insert data empresa
+  private insertData(user: User){
+    const userRef: AngularFirestoreDocument = this.afs.doc(`users/${user.uid}`);
+
+    userRef.set({
+      tipo: 0
+    })
+  }
+
+  // Insert data clientes
+  private insertDataClient(user: User){
+    const userRef: AngularFirestoreDocument = this.afs.doc(`users/${user.uid}`);
+
+    userRef.set({
+      tipo: 1
+    })
   }
 
   // Control de errores
