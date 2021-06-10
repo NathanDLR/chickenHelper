@@ -18,12 +18,38 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card *ngIf="ofertas.length == 0 && articulos.length == 0">
+    <ion-card-content>
+      <ion-label>Selecciona un asador para ver sus ofertas y artículos</ion-label>
+    </ion-card-content>
+  </ion-card>
+
   <ion-card *ngIf='ofertas.length > 0'>
     <ion-card-title class="redTitle" > &nbsp; Ofertas </ion-card-title>
     <ion-list>
       <ion-item *ngFor="let oferta of ofertas">
         <ion-label><strong>·</strong> {{oferta.nombre}}</ion-label>
+        <ion-label>{{oferta.precio |currency:'EUR':"symbol"}}</ion-label>
+        <button class="btnBlue">Información</button> &nbsp; &nbsp;
+        <button class="btnBlue">Añadir</button>
       </ion-item>
     </ion-list>
   </ion-card>
+
+  <ion-card *ngIf="articulos.length > 0">
+    <ion-card-title class="redTitle" > &nbsp; Artículos </ion-card-title>
+    <ion-list>
+      <ion-item *ngFor="let articulo of articulos">
+        <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
+        <ion-label>{{articulo.precio |currency:'EUR':"symbol"}}</ion-label>
+        <button class="btnBlue">Información</button> &nbsp; &nbsp;
+        <button class="btnBlue">Añadir</button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card>
+
+  </ion-card>
+
 </ion-content>

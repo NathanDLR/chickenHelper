@@ -54,8 +54,6 @@ export class OrderPage implements OnInit {
   // Cargar los artículos y ofertas del asador
   loadOfertasArticulos(id: string){
     
-    console.log(id);
-    
     this.fireAuth.user.subscribe(data => {
 
       // Vacíamos ambas listas
@@ -82,7 +80,18 @@ export class OrderPage implements OnInit {
         });
       });
 
-      console.log(this.ofertas)
+      // Cargamos los artículos
+      db.collection('articulos').where('uidAsador', '==', id).onSnapshot(snap => {
+        snap.forEach( doc =>{
+          
+          // Creamos un nuevo objeto oferta
+          let articulo = new Articulo(doc.id, doc.data().nombre, doc.data().ingredientes, doc.data().alergenos, doc.data().precio, doc.data().uidAsador);
+
+          // Lo Añadimos a nuestro array
+          this.articulos.push(articulo);
+
+        })
+      })
 
 
     })

@@ -75,11 +75,7 @@ const routes: Routes = [
     path: 'order',
     loadChildren: () => import('./pages/order/order.module').then( m => m.OrderPageModule),
     canActivate: [ClientAuthGuardService]
-  },  {
-    path: 'modal-info',
-    loadChildren: () => import('./pages/modal-info/modal-info.module').then( m => m.ModalInfoPageModule)
-  },
-
+  }
 ];
 
 @NgModule({
