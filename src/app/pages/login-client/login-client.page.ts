@@ -34,7 +34,7 @@ export class LoginClientPage implements OnInit {
   // Login cliente
   async login(email: string, pwd: string){
     try{
-      const user = await this.auth.login(email, pwd);
+      const user = await this.auth.loginClient(email, pwd);
       if(user){
         // Comprobamos si se ha verificado el correo
         const verified = this.auth.isEmailVerified(user);

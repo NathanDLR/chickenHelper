@@ -7,9 +7,13 @@
 <ion-content *ngIf="user$ | async as user " >
   <ion-row>
     <ion-col>
-      <h2>Gracias por registrarte!</h2>
-      <p>Se ha enviado un correo de confirmación a <strong>{{user.email}}</strong></p>
-      <p>Por favor, comprueba tu correo y verifica tu dirección de email</p>
+      <ion-card>
+        <ion-card-content>
+          <h2>Gracias por registrarte!</h2>
+          <p>Se ha enviado un correo de confirmación a <strong>{{user.email}}</strong></p>
+          <p>Por favor, comprueba tu correo y verifica tu dirección de email</p>
+        </ion-card-content>
+      </ion-card>
     </ion-col>
   </ion-row>
 
