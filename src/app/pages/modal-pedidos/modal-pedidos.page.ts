@@ -181,6 +181,7 @@ export class ModalPedidosPage implements OnInit {
             db.collection('pedidos').add({
               uidAsador: uid,
               hora: date,
+              horaCorta: date.toTimeString().substring(0, 5), // Añadimos este campo para que sea más fácil comprobar las horas disponibles para hacer los pedidos
               concepto: concepto,
               cliente: cliente,
               info: info,
@@ -233,6 +234,7 @@ export class ModalPedidosPage implements OnInit {
             // Modificamos el pedido
             db.collection('pedidos').doc(this.uid).update({
               hora: date,
+              horaCorta: date.toTimeString().substring(0, 5), // Añadimos este campo para que sea más fácil comprobar las horas disponibles para hacer los pedidos
               concepto: concepto,
               cliente: cliente,
               info: info,
