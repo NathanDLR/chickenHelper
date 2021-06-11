@@ -19,6 +19,9 @@ export class OrderPage implements OnInit {
   ofertas: Oferta[];
   articulos: Articulo[];
 
+  // Lista pedido con las ofertas y artículos que va a comprar el cliente
+  pedido: any[];
+
   constructor(private fireAuth: AngularFireAuth) { }
 
   ngOnInit() {
@@ -27,6 +30,7 @@ export class OrderPage implements OnInit {
     this.asadores = [];
     this.ofertas = [];
     this.articulos = [];
+    this.pedido = [];
 
     // Cargamos los asadores
     db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
@@ -95,6 +99,11 @@ export class OrderPage implements OnInit {
 
 
     })
+
+  }
+
+  // Añadir al pedido
+  add(id: string){
 
   }
 
