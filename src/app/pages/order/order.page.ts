@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AlertController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
+import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 
 @Component({
@@ -19,18 +21,26 @@ export class OrderPage implements OnInit {
   ofertas: Oferta[];
   articulos: Articulo[];
 
-  // Lista pedido con las ofertas y artículos que va a comprar el cliente
+  // Lista del pedido
   pedido: any[];
+  concepto: string[];
 
-  constructor(private fireAuth: AngularFireAuth) { }
+  minutes: number[];
+  total: number;
+
+  constructor(private fireAuth: AngularFireAuth, private alert: AlertController) { }
 
   ngOnInit() {
+
+    this.minutes= [0, 15, 30, 45];
+    this.total = 0;
 
     // Inicializar el array
     this.asadores = [];
     this.ofertas = [];
     this.articulos = [];
     this.pedido = [];
+    this.concepto= [];
 
     // Cargamos los asadores
     db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
@@ -102,9 +112,79 @@ export class OrderPage implements OnInit {
 
   }
 
-  // Añadir al pedido
-  add(id: string){
+  // Añadir al pedido un artículo u oferta
+  add(id: string, nombre: string, precio: string){
+    // Añadimos el id a la lista concepto para luego mandarlo a la bd
+    this.concepto.push(id);
+
+    this.pedido.push({id, nombre, precio})
+
+    // Añadimos el precio al total
+    this.total += parseFloat(precio);
 
   }
+
+  // Hacer pedido
+  order(cliente:string, uid:string, hora:string, info: string){
+
+    // Datos que necesitamos: Cliente, concepto, fecha, hora, horaCorta, info, recogido, total y uidAsador
+    let date = new Date(hora).toTimeString().substring(0, 5);
+    let ok: boolean = false
+
+    // Primero comprobamos si el asador puede aceptar el pedido
+    db.collection('pedidos').where('uidAsador', '==', uid).where('horaCorta', '==', date).get().then(snap =>{
+      
+      // Mostramos un mensaje para que el cliente escoja otra hora
+      if(snap.size >= 5){
+        this.presentAlert('Lo sentimos', 'El asador no puede recibir más pedidos a la hora seleccionada, por favor, selecciona otra hora');
+        ok = false
+      }
+      else ok = true;
+    }).then(() => {
+      
+      // Si el asador puede recibir el pedido lo añadimos a su lista de pedidos
+      if(ok){
+
+        // Añadimos el pedido a la base de datos
+        db.collection('pedidos').add({
+          cliente: cliente,
+          concepto: this.concepto,
+          fecha: new Date(hora).toLocaleDateString(),
+          hora: new Date(hora),
+          horaCorta: date,
+          info: info,
+          recogido: false,
+          total: this.total,
+          uidAsador: uid
+        });
+
+      }
+
+    });
+    
+  }
+
+  // Borrar oferta/articulo del pedido
+  delete(nombre: string, precio: string){
+    // Obtenemos el índice en el que se encuentra el elemento a borrar y lo eliminamos del array
+    let i = this.pedido.indexOf(nombre);
+    this.pedido.splice(i, 1);
+
+    // Restamos el precio al total
+    this.total -= parseFloat(precio);
+  }
+
+  // Presentar alert
+  async presentAlert(title: string, msg: string){
+    const alert = await this.alert.create({
+      header: title,
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+  }
+
 
 }

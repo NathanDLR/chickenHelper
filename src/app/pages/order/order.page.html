@@ -5,18 +5,18 @@
 </ion-header>
 
 <ion-content>
-
   <ion-card>
-    <ion-card-title class="redTitle">&nbsp; Selecciona un asador</ion-card-title>
+    <ion-card-title class="redTitle">&nbsp; Asador Y Hora</ion-card-title>
     <ion-card-content>
       <ion-item>
-        <ion-label><strong>Asadores</strong></ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-select #asador placeholder="Selecciona" cancelText="Cancelar" doneText="OK" (ionChange)="loadOfertasArticulos(asador.value)">
+        <ion-select #asador interface="popover" placeholder="Asador" cancelText="Cancelar" doneText="OK" (ionChange)="loadOfertasArticulos(asador.value)">
           <ion-select-option *ngFor="let i of asadores" value="{{i.uid}}" >{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-item>
+        <ion-datetime #hora formControlname="hora" displayFormat="H:mm" placeholder="Hora" minuteValues="{{minutes}}" cancelText="Cancelar" doneText="OK"></ion-datetime>
+      </ion-item>
+
     </ion-card-content>
   </ion-card>
 
@@ -42,7 +42,7 @@
           <ion-row>
             <ion-col>
               <button class="btnBlue">Información</button> &nbsp; &nbsp;
-              <button class="btnBlue" (click)="add(oferta.uid)">Añadir</button>
+              <button class="btnBlue" (click)="add(oferta.uid, oferta.nombre, oferta.precio)">Añadir</button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -57,7 +57,7 @@
         <ion-grid>
           <ion-row>
             <ion-col col-12 col-xl-2 col-lg-3 col-md-4>
-              <ion-label><strong>·</strong> {{articulo.nombre}}</ion-label>
+              <ion-label><strong>· </strong> {{articulo.nombre}}</ion-label>
             </ion-col>
             <ion-col col-12 col-xl-2 col-lg-3 col-md-4>
               <ion-label>{{articulo.precio |currency:'EUR':"symbol"}}</ion-label>
@@ -66,12 +66,24 @@
           <ion-row>
             <ion-col>
               <button class="btnBlue">Información</button> &nbsp; &nbsp;
-              <button class="btnBlue" (click)="add(articulo.uid)">Añadir</button>
+              <button class="btnBlue" (click)="add(articulo.uid, articulo.nombre, articulo.precio)">Añadir</button>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-item> <br/>
     </ion-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-title class="redTitle" > &nbsp;Tus Datos </ion-card-title>
+    <ion-card-content>
+      <ion-item>
+        <ion-input #nombre placeholder="Nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input #info placeholder="Info extra sobre tu pedido"></ion-input>
+      </ion-item>
+    </ion-card-content>
   </ion-card>
 
   <ion-card>
@@ -83,12 +95,22 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card-content>
-      <ion-list *ngIf="pedido.length > 0">
+    <ion-card-content *ngIf="pedido.length > 0">
+      <ion-list >
         <ion-item *ngFor="let i of pedido">
-          <ion-label><strong>·</strong>{{pedido}}</ion-label>
+          <ion-label><strong>· &nbsp;</strong>{{i.nombre}}</ion-label>
+          <ion-icon name="trash" (click)="delete(i, i.precio)" size="large" class="deleteIcon"></ion-icon>
         </ion-item>
       </ion-list>
+
+      <br />
+      <ion-item>
+        <ion-label><strong>Total: </strong>{{total | currency:'EUR':"symbol"}}</ion-label>
+      </ion-item>
+
+      <br />
+      <button class="btnRed" (click)="order(nombre.value, asador.value, hora.value, info.value)">Hacer Pedido</button>
+
     </ion-card-content>
   </ion-card>
 
