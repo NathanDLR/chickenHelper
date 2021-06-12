@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
+import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 
 @Component({
@@ -22,6 +23,7 @@ export class OrderPage implements OnInit {
 
   // Lista del pedido
   pedido: any[];
+  concepto: string[];
 
   minutes: number[];
   total: number;
@@ -38,6 +40,7 @@ export class OrderPage implements OnInit {
     this.ofertas = [];
     this.articulos = [];
     this.pedido = [];
+    this.concepto= [];
 
     // Cargamos los asadores
     db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
@@ -111,24 +114,20 @@ export class OrderPage implements OnInit {
 
   // Añadir al pedido un artículo u oferta
   add(id: string, nombre: string, precio: string){
-    // Añadimos el nombre a la lista de nombres para mostrarlo
-    //this.nombres.push(nombre);
-    
-
     // Añadimos el id a la lista concepto para luego mandarlo a la bd
-    //this.concepto.push(id);
+    this.concepto.push(id);
 
     this.pedido.push({id, nombre, precio})
 
     // Añadimos el precio al total
     this.total += parseFloat(precio);
 
-    console.log(this.pedido);
   }
 
   // Hacer pedido
-  order(uid:string, hora:any){
+  order(cliente:string, uid:string, hora:string, info: string){
 
+    // Datos que necesitamos: Cliente, concepto, fecha, hora, horaCorta, info, recogido, total y uidAsador
     let date = new Date(hora).toTimeString().substring(0, 5);
     let ok: boolean = false
 
@@ -146,6 +145,19 @@ export class OrderPage implements OnInit {
       // Si el asador puede recibir el pedido lo añadimos a su lista de pedidos
       if(ok){
 
+        // Añadimos el pedido a la base de datos
+        db.collection('pedidos').add({
+          cliente: cliente,
+          concepto: this.concepto,
+          fecha: new Date(hora).toLocaleDateString(),
+          hora: new Date(hora),
+          horaCorta: date,
+          info: info,
+          recogido: false,
+          total: this.total,
+          uidAsador: uid
+        });
+
       }
 
     });
@@ -155,7 +167,7 @@ export class OrderPage implements OnInit {
   // Borrar oferta/articulo del pedido
   delete(nombre: string, precio: string){
     // Obtenemos el índice en el que se encuentra el elemento a borrar y lo eliminamos del array
-    let i = this.pedido.indexOf(nombre); console.log(nombre);
+    let i = this.pedido.indexOf(nombre);
     this.pedido.splice(i, 1);
 
     // Restamos el precio al total

@@ -5,7 +5,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-card>
     <ion-card-title class="redTitle">&nbsp; Asador Y Hora</ion-card-title>
     <ion-card-content>
@@ -76,6 +75,18 @@
   </ion-card>
 
   <ion-card>
+    <ion-card-title class="redTitle" > &nbsp;Tus Datos </ion-card-title>
+    <ion-card-content>
+      <ion-item>
+        <ion-input #nombre placeholder="Nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input #info placeholder="Info extra sobre tu pedido"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
     <ion-card-title class="redTitle"> &nbsp; Tu Pedido</ion-card-title>
 
     <ion-card *ngIf="pedido.length == 0">
@@ -98,7 +109,7 @@
       </ion-item>
 
       <br />
-      <button class="btnRed" (click)="order(asador.value, hora.value)">Hacer Pedido</button>
+      <button class="btnRed" (click)="order(nombre.value, asador.value, hora.value, info.value)">Hacer Pedido</button>
 
     </ion-card-content>
   </ion-card>
