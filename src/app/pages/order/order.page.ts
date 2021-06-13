@@ -60,6 +60,8 @@ export class OrderPage implements OnInit {
         // Lo introducimos en el array
         this.asadores.push(asador);
 
+        // 
+
       })
     })
 
