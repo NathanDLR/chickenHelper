@@ -99,7 +99,7 @@
       <ion-list >
         <ion-item *ngFor="let i of pedido">
           <ion-label><strong>· &nbsp;</strong>{{i.nombre}}</ion-label>
-          <ion-icon name="trash" (click)="delete(i, i.precio)" size="large" class="deleteIcon"></ion-icon>
+          <ion-icon name="trash" (click)="delete(i, i.precio, i.id)" size="large" class="deleteIcon"></ion-icon>
         </ion-item>
       </ion-list>
 
@@ -109,7 +109,18 @@
       </ion-item>
 
       <br />
-      <button class="btnRed" (click)="order(nombre.value, asador.value, hora.value, info.value)">Hacer Pedido</button>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button class="btnBlue" (click)="order(nombre.value, asador.value, hora.value, info.value)">Hacer Pedido</button>
+          </ion-col>
+          <ion-col>
+            <button class="btnRed" (click)="deleteOrder()">Borrar Pedido</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
 
     </ion-card-content>
   </ion-card>

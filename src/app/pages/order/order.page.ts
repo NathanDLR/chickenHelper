@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
@@ -28,7 +29,7 @@ export class OrderPage implements OnInit {
   minutes: number[];
   total: number;
 
-  constructor(private fireAuth: AngularFireAuth, private alert: AlertController) { }
+  constructor(private fireAuth: AngularFireAuth, private alert: AlertController, private toast: ToastController, private router: Router) { }
 
   ngOnInit() {
 
@@ -68,6 +69,9 @@ export class OrderPage implements OnInit {
   // Cargar los artículos y ofertas del asador
   loadOfertasArticulos(id: string){
     
+    // Cada vez que se cambie de asador borramos la lista de pedido y el total
+    this.deleteOrder();
+
     this.fireAuth.user.subscribe(data => {
 
       // Vacíamos ambas listas
@@ -104,11 +108,9 @@ export class OrderPage implements OnInit {
           // Lo Añadimos a nuestro array
           this.articulos.push(articulo);
 
-        })
-      })
-
-
-    })
+        });
+      });
+    });
 
   }
 
@@ -145,33 +147,83 @@ export class OrderPage implements OnInit {
       // Si el asador puede recibir el pedido lo añadimos a su lista de pedidos
       if(ok){
 
-        // Añadimos el pedido a la base de datos
-        db.collection('pedidos').add({
-          cliente: cliente,
-          concepto: this.concepto,
-          fecha: new Date(hora).toLocaleDateString(),
-          hora: new Date(hora),
-          horaCorta: date,
-          info: info,
-          recogido: false,
-          total: this.total,
-          uidAsador: uid
-        });
+        ok = this.validate(cliente, info, hora);
 
+        if(ok){
+          // Añadimos el pedido a la base de datos
+            db.collection('pedidos').add({
+            cliente: cliente,
+            concepto: this.concepto,
+            fecha: new Date(hora).toLocaleDateString(),
+            hora: new Date(hora),
+            horaCorta: date,
+            info: info,
+            recogido: false,
+            total: this.total,
+            uidAsador: uid
+          });
+
+          // Enviamos al cliente un correo en el que confirmamos todos los datos del pedido
+
+          // Enviamos al cliente a una página en la que le confirmamos que se ha realizado su pedido
+          this.router.navigate(['order-confirm']);
+          
+        }
       }
-
     });
-    
+  }
+
+  // Validación de los datos del cliente y la hora
+  validate(cliente: string, info: string, hora: string): boolean{
+
+    let ok = true;
+
+    // Comprobamos que se ha rellenado el nombre del cliente y la info extra
+    if(cliente == "" || info == ""){
+      ok = false;
+      this.presentToast('Por favor, rellena los campos nombre e información extra');
+    }
+
+    // Comprobamos que se haya seleccionado hora
+    if(ok && typeof(hora) == 'undefined'){
+      ok = false;
+      this.presentToast('Por favor, escoja una hora para recoger su pedido');
+    }
+
+    return ok;
+
   }
 
   // Borrar oferta/articulo del pedido
-  delete(nombre: string, precio: string){
+  delete(nombre: string, precio: string, uid: string){
     // Obtenemos el índice en el que se encuentra el elemento a borrar y lo eliminamos del array
     let i = this.pedido.indexOf(nombre);
     this.pedido.splice(i, 1);
 
     // Restamos el precio al total
     this.total -= parseFloat(precio);
+
+    // Eliminamos el id de la lista de conceptos
+    let ind = this.concepto.indexOf(uid);
+    this.concepto.splice(ind, 1);
+
+  }
+
+  // Borrar el pedido para que el cliente pueda comenzar de nuevo
+  deleteOrder(){
+    this.pedido = [];
+    this.total = 0;
+    this.concepto = [];
+  }
+
+  // Presentar toast
+  async presentToast(msg: string){
+    const toast = await this.toast.create({
+      message: msg,
+      duration: 2000
+    });
+
+    await toast.present();
   }
 
   // Presentar alert
