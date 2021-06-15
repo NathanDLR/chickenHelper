@@ -63,7 +63,7 @@ export class OrderPage implements OnInit {
 
           // Datos del asador
           let uid = snapHijo.id
-          let nombre = snapHijo.data().displayName;
+          let nombre = snapHijo.data().name;
 
           // Objeto asador
           let asador = new Asador(uid, nombre);

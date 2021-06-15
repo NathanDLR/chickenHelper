@@ -93,7 +93,11 @@ const routes: Routes = [
     path: 'client-main',
     loadChildren: () => import('./pages/client-main/client-main.module').then( m => m.ClientMainPageModule),
     canActivate: [ClientAuthGuardService]
+  },  {
+    path: 'modal-info-pedido',
+    loadChildren: () => import('./pages/modal-info-pedido/modal-info-pedido.module').then( m => m.ModalInfoPedidoPageModule)
   }
+
 
 ];
 

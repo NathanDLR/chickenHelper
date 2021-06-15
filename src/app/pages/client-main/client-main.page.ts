@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
+import { ModalInfoPedidoPage } from '../modal-info-pedido/modal-info-pedido.page';
 
 @Component({
   selector: 'app-client-main',
@@ -18,7 +20,7 @@ export class ClientMainPage implements OnInit {
   // Lista de pedidos
   pedidos: Pedido[];
 
-  constructor(private fireAuth: AngularFireAuth, private router: Router){}
+  constructor(private fireAuth: AngularFireAuth, private router: Router, private modal: ModalController){}
 
   ngOnInit(){
     // Inicializamos los arrays
@@ -36,7 +38,7 @@ export class ClientMainPage implements OnInit {
       // this.nombre = this.user.displayName;
 
       // Obtenemos los pedidos que ha hecho el cliente de la base de datos 
-      db.collection('pedidos').where('uidCliente', '==', this.user.uid).get().then(snap => {
+      db.collection('pedidos').where('uidCliente', '==', this.user.uid).orderBy('hora', 'desc').limit(3).get().then(snap => {
         snap.forEach(doc => {
 
           // Creamos el objeto pedido
@@ -87,8 +89,15 @@ export class ClientMainPage implements OnInit {
   }
 
   // Info
-  showInfo(concepto: string){
-    console.log(concepto);
+  async showInfo(uid: string){
+    const modal = await this.modal.create({
+      component: ModalInfoPedidoPage,
+      componentProps: {
+        'uid': uid
+      }
+    });
+
+    return await modal.present();
   }
 
 }

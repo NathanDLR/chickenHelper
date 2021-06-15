@@ -16,9 +16,9 @@
       </ion-card>
 
       <ion-list *ngIf="pedidos.length > 0">
-        <ion-item *ngFor="let pedido of pedidos" (click)="showInfo(pedido.conceptoNombres)">
+        <ion-item *ngFor="let pedido of pedidos" (click)="showInfo(pedido.uid)">
           <ion-label>{{pedido.conceptoNombres}}</ion-label>
-          <ion-label>{{pedido.hora | date:'short'}}</ion-label>
+          <ion-label>{{pedido.hora | date:'shortDate'}}</ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
