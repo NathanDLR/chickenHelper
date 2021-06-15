@@ -8,6 +8,7 @@ import { Oferta } from 'src/app/classes/oferta';
 import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
 import { ModalInfoAsadorPage } from '../modal-info-asador/modal-info-asador.page';
+import { ModalInfoPage } from '../modal-info/modal-info.page';
 
 @Component({
   selector: 'app-order',
@@ -251,6 +252,20 @@ export class OrderPage implements OnInit {
     });
 
     await modal.present();
+  }
+
+  // Presentar modal info oferta-articulo
+  async presentModalInfo(uid: string, tipo: number){
+    const modal = await this.modal.create({
+      component: ModalInfoPage,
+      componentProps: {
+        'uid': uid,
+        'tipo': tipo
+      }
+    });
+
+    await modal.present();
+
   }
 
   // Get type

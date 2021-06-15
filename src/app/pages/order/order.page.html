@@ -18,9 +18,7 @@
       </ion-item>
 
       <br/>
-      <br/>
-
-      &nbsp; <button *ngIf="asador.value" class="btnBlue" (click)="presentModalInfoAsador(asador.value)">Información del Asador</button>
+      &nbsp; <button *ngIf="asador.value" class="btnBlue" (click)="presentModalInfoAsador(asador.value)" expand="block">Información del Asador</button>
 
     </ion-card-content>
   </ion-card>
@@ -46,7 +44,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <button class="btnBlue">Información</button> &nbsp; &nbsp;
+              <button class="btnBlue" (click)="presentModalInfo(oferta.uid, 0)">Información</button> &nbsp; &nbsp;
               <button class="btnBlue" (click)="add(oferta.uid, oferta.nombre, oferta.precio)">Añadir</button>
             </ion-col>
           </ion-row>
@@ -70,7 +68,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <button class="btnBlue">Información</button> &nbsp; &nbsp;
+              <button class="btnBlue" (click)="presentModalInfo(articulo.uid, 1)">Información</button> &nbsp; &nbsp;
               <button class="btnBlue" (click)="add(articulo.uid, articulo.nombre, articulo.precio)">Añadir</button>
             </ion-col>
           </ion-row>
