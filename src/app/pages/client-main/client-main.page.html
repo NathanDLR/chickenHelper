@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Chicken Helper</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-title class="redTitle"> &nbsp;Últimos Pedidos</ion-card-title>
+    <ion-card-content>
+      <ion-label *ngIf="pedidos.length == 0">Todavía nos has hecho ningún pedido. ¡Empieza uno nuevo!</ion-label>  
+
+      <ion-card *ngIf="pedidos.length > 0">
+        <h2>Pulsa para ver más info</h2>
+      </ion-card>
+
+      <ion-list *ngIf="pedidos.length > 0">
+        <ion-item *ngFor="let pedido of pedidos" (click)="showInfo(pedido.conceptoNombres)">
+          <ion-label>{{pedido.conceptoNombres}}</ion-label>
+          <ion-label>{{pedido.hora | date:'short'}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button (click)="newOrder()" expand="block">Nuevo Pedido</ion-button>
+
+</ion-content>

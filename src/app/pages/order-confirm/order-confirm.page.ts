@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-confirm',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderConfirmPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  // My Orders
+  myOrders(){
+    // Dirigimos al cliente a la página en la que podrá ver sus pedidos
+    this.router.navigate(['client-main'])
   }
 
 }
