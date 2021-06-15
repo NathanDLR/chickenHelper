@@ -17,6 +17,11 @@
         <ion-datetime #hora formControlname="hora" displayFormat="H:mm" placeholder="Hora" minuteValues="{{minutes}}" cancelText="Cancelar" doneText="OK"></ion-datetime>
       </ion-item>
 
+      <br/>
+      <br/>
+
+      &nbsp; <button *ngIf="asador.value" class="btnBlue" (click)="presentModalInfoAsador(asador.value)">Información del Asador</button>
+
     </ion-card-content>
   </ion-card>
 

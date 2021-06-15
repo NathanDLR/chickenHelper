@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
 import { Pedido } from 'src/app/classes/pedido';
 import db from '../../../environments/environment';
+import { ModalInfoAsadorPage } from '../modal-info-asador/modal-info-asador.page';
 
 @Component({
   selector: 'app-order',
@@ -29,7 +30,7 @@ export class OrderPage implements OnInit {
   minutes: number[];
   total: number;
 
-  constructor(private fireAuth: AngularFireAuth, private alert: AlertController, private toast: ToastController, private router: Router) { }
+  constructor(private fireAuth: AngularFireAuth, private alert: AlertController, private toast: ToastController, private router: Router, private modal: ModalController) { }
 
   ngOnInit() {
 
@@ -238,6 +239,23 @@ export class OrderPage implements OnInit {
 
     await alert.present();
 
+  }
+
+  // Presentar modal info asador
+  async presentModalInfoAsador(uid: string){
+    const modal = await this.modal.create({
+      component: ModalInfoAsadorPage,
+      componentProps: {
+        'uid': uid
+      }
+    });
+
+    await modal.present();
+  }
+
+  // Get type
+  getType(element){
+    return typeof(element);
   }
 
 
