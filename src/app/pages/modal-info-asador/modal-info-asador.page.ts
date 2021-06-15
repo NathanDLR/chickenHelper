@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import db from '../../../environments/environment';
 
 @Component({
@@ -15,8 +16,8 @@ export class ModalInfoAsadorPage implements OnInit {
   name: string;
   schedule: string;
   address: string;
-
-  constructor() { }
+  
+  constructor(private modal: ModalController) { }
 
   ngOnInit(){
 
@@ -24,10 +25,16 @@ export class ModalInfoAsadorPage implements OnInit {
     db.collection('users').doc(this.uid).get().then(doc => {
 
       this.name = doc.data().name;
-
+      this.schedule = doc.data().schedule;
+      this.address = doc.data().address;
 
     });
 
+  }
+
+  // Dismiss modal
+  dismiss(){
+    this.modal.dismiss();
   }
 
 }
