@@ -69,7 +69,7 @@ export class LoginClientPage implements OnInit {
   private redirectUser(verified: Boolean){
     // Si el usuario está verificado lo dirigimos a la página order
     if(verified){
-      this.router.navigate(['order']);
+      this.router.navigate(['client-main']);
     }
     else{
       // De lo contrario lo redirigimos a la página que verifica el correo

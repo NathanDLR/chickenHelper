@@ -65,6 +65,12 @@ export class OrderPage implements OnInit {
           let uid = snapHijo.id
           let nombre = snapHijo.data().displayName;
 
+<<<<<<< HEAD
+        // 
+
+      })
+    })
+=======
           // Objeto asador
           let asador = new Asador(uid, nombre);
 
@@ -75,6 +81,7 @@ export class OrderPage implements OnInit {
       });
 
     });   
+>>>>>>> test
 
   }
 

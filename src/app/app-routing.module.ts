@@ -80,13 +80,19 @@ const routes: Routes = [
     path: 'order-confirm',
     loadChildren: () => import('./pages/order-confirm/order-confirm.module').then( m => m.OrderConfirmPageModule),
     canActivate: [ClientAuthGuardService]
-  },  {
+  },
+  {
     path: 'modal-info-asador',
     loadChildren: () => import('./pages/modal-info-asador/modal-info-asador.module').then( m => m.ModalInfoAsadorPageModule)
   },
   {
     path: 'modal-info',
     loadChildren: () => import('./pages/modal-info/modal-info.module').then( m => m.ModalInfoPageModule)
+  },
+  {
+    path: 'client-main',
+    loadChildren: () => import('./pages/client-main/client-main.module').then( m => m.ClientMainPageModule),
+    canActivate: [ClientAuthGuardService]
   }
 
 ];

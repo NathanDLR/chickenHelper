@@ -31,9 +31,6 @@ export class OrderPage implements OnInit {
   minutes: number[];
   total: number;
 
-  // Usuario actual
-  user: firebase.default.User;
-
   constructor(private fireAuth: AngularFireAuth, private alert: AlertController, private toast: ToastController, private router: Router, private modal: ModalController) { }
 
   ngOnInit() {
@@ -48,33 +45,28 @@ export class OrderPage implements OnInit {
     this.pedido = [];
     this.concepto= [];
 
-    this.fireAuth.user.subscribe(data => {
+    // Cargamos los asadores
+    db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
 
-      // Datos del usuario actual
-      this.user = data;
+      // Vacíamos el array para que no se dupliquen los datos
+      this.asadores = [];
 
-      // Cargamos los asadores
-      db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
+      snap.forEach(snapHijo => {
 
-        // Vacíamos el array para que no se dupliquen los datos
-        this.asadores = [];
+        // Datos del asador
+        let uid = snapHijo.id
+        let nombre = snapHijo.data().displayName;
 
-        snap.forEach(snapHijo => {
+        // Objeto asador
+        let asador = new Asador(uid, nombre);
 
-          // Datos del asador
-          let uid = snapHijo.id
-          let nombre = snapHijo.data().displayName;
+        // Lo introducimos en el array
+        this.asadores.push(asador);
 
-          // Objeto asador
-          let asador = new Asador(uid, nombre);
+        // 
 
-          // Lo introducimos en el array
-          this.asadores.push(asador);
-
-        });
-      });
-
-    });   
+      })
+    })
 
   }
 
@@ -162,7 +154,7 @@ export class OrderPage implements OnInit {
         ok = this.validate(cliente, info, hora);
 
         if(ok){
-          // Añadimos el pedido a la base de datos a la colección pedidos
+          // Añadimos el pedido a la base de datos
             db.collection('pedidos').add({
             cliente: cliente,
             concepto: this.concepto,
@@ -172,9 +164,10 @@ export class OrderPage implements OnInit {
             info: info,
             recogido: false,
             total: this.total,
-            uidAsador: uid,
-            uidCliente: this.user.uid
+            uidAsador: uid
           });
+
+          // Enviamos al cliente un correo en el que confirmamos todos los datos del pedido
 
           // Enviamos al cliente a una página en la que le confirmamos que se ha realizado su pedido
           this.router.navigate(['order-confirm']);
