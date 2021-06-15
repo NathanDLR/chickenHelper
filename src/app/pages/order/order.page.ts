@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
@@ -240,12 +240,20 @@ export class OrderPage implements OnInit {
   }
 
   // Presentar modal info asador
-  async presentModalInfoAsador(){
+  async presentModalInfoAsador(uid: string){
     const modal = await this.modal.create({
-      component: ModalInfoAsadorPage
+      component: ModalInfoAsadorPage,
+      componentProps: {
+        'uid': uid
+      }
     });
 
     await modal.present();
+  }
+
+  // Get type
+  getType(element){
+    return typeof(element);
   }
 
 

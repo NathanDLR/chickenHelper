@@ -20,7 +20,7 @@
       <br/>
       <br/>
 
-      <button class="btnBlue" (click)="presentModalInfoAsador()">Información del Asador</button>
+      &nbsp; <button *ngIf="asador.value" class="btnBlue" (click)="presentModalInfoAsador(asador.value)">Información del Asador</button>
 
     </ion-card-content>
   </ion-card>
