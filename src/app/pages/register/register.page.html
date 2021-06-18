@@ -1,12 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Registrarse</ion-title>
+    <ion-title>Chicken Helper</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div>
-    <form [formGroup]="registerForm"> 
+  <ion-card> 
+
+    <ion-card-title class="redTitle">&nbsp;Registro</ion-card-title>
+
+    <form [formGroup]="registerForm" (keyup.enter)="register(email.value, pwd.value)"> 
       
       <ion-item>
         <ion-label>Email</ion-label>
@@ -18,21 +21,22 @@
         <ion-input type="password" #pwd placeholder="Escribe tu contraseña" formControlName="pwd"></ion-input>
       </ion-item>
 
+      <br />
+
       <ion-button (click)="register(email.value, pwd.value)" type="submit" expand="block">
         Registrarse
-      </ion-button><br />
+      </ion-button>
 
     </form>
 
     <ion-row>
       <ion-col>
-        <p class="ion-text-end">
+        <p class="ion-text-center">
         <a routerLink="/login">¿Ya tienes una cuenta?</a>
         </p>
       </ion-col>
     </ion-row>
 
-
-
-  </div>
+  </ion-card>
+  
 </ion-content>

@@ -6,6 +6,7 @@ import db from '../../../environments/environment';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class OfertasArticulosPage implements OnInit {
   // Usuario actual
   user: firebase.default.User;
 
-  constructor(public modalController: ModalController, private toastCtrl: ToastController, private alertCtrl: AlertController, private fireAuth: AngularFireAuth) { }
+  constructor(public modalController: ModalController, private toastCtrl: ToastController, private alertCtrl: AlertController, private fireAuth: AngularFireAuth, private router: Router) { }
 
   ngOnInit() {
     // Inicializamos los arrays
@@ -82,6 +83,10 @@ export class OfertasArticulosPage implements OnInit {
 
         });
       });
+
+      // Comprobamos si el asador ha rellenado toda la info necesaria
+      this.checkData();
+
     });
 
   }
@@ -141,7 +146,7 @@ export class OfertasArticulosPage implements OnInit {
           text: 'Borrar',
           handler: () => {
             // Borramos el documento que representa la oferta
-            db.collection('oferta').doc(uid).delete();
+            db.collection('ofertas').doc(uid).delete();
             this.presentToast("Oferta borrada correctamente");
           }
         },
@@ -198,5 +203,39 @@ export class OfertasArticulosPage implements OnInit {
     })
     
   }
+
+  async checkData(){
+    // Comprobamos que el asador haya rellenado la información
+    db.collection('users').doc(this.user.uid).get().then(doc => {
+      // Si alguno de los datos falta mostramos un mensaje al usuario y lo redirigimos a la configuración
+      let name = doc.data().name;
+      let address = doc.data().address;
+      let tlf = doc.data().tlf;
+      let schedule = doc.data().schedule;
+
+      if(name == "" || address == "" || tlf == "" || schedule == "" || typeof(name)=='undefined' || typeof(address)=='undefined' || typeof(tlf)=='undefined' || typeof(schedule)=='undefined'){
+        this.presentDataAlert();
+      }
+
+    });
+  }
   
+  async presentDataAlert(){
+    const alert = await this.alertCtrl.create({
+      header: '¡Atención!',
+      message: "Todavía nos has configurado los datos de tu asador",
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.router.navigate(['tabs/configuracion']);
+          }
+
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 }

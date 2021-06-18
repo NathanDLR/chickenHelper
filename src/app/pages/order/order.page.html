@@ -44,7 +44,9 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <button class="btnBlue" (click)="presentModalInfo(oferta.uid, 0)">Información</button> &nbsp; &nbsp;
+              <button class="btnBlue" (click)="presentModalInfo(oferta.uid, 0)">Información</button>
+            </ion-col>
+            <ion-col>
               <button class="btnBlue" (click)="add(oferta.uid, oferta.nombre, oferta.precio)">Añadir</button>
             </ion-col>
           </ion-row>
@@ -68,7 +70,9 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <button class="btnBlue" (click)="presentModalInfo(articulo.uid, 1)">Información</button> &nbsp; &nbsp;
+              <button class="btnBlue" (click)="presentModalInfo(articulo.uid, 1)">Información</button>
+            </ion-col>
+            <ion-col>
               <button class="btnBlue" (click)="add(articulo.uid, articulo.nombre, articulo.precio)">Añadir</button>
             </ion-col>
           </ion-row>
