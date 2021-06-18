@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AlertController, IonSelect, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonInput, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Asador } from 'src/app/classes/asador';
 import { Oferta } from 'src/app/classes/oferta';
@@ -34,6 +34,8 @@ export class OrderPage implements OnInit {
   // Usuario actual
   user: firebase.default.User;
 
+  @ViewChild('nombre') nombreInput: IonInput;
+
   constructor(private fireAuth: AngularFireAuth, private alert: AlertController, private toast: ToastController, private router: Router, private modal: ModalController) { }
 
   ngOnInit() {
@@ -52,6 +54,7 @@ export class OrderPage implements OnInit {
 
       // Datos del usuario actual
       this.user = data;
+      this.nombreInput.value = this.user.displayName;
 
       // Cargamos los asadores
       db.collection('users').where('tipo', '==', 0).onSnapshot(snap =>{
@@ -64,9 +67,12 @@ export class OrderPage implements OnInit {
           // Datos del asador
           let uid = snapHijo.id
           let nombre = snapHijo.data().name;
+          let direccion = snapHijo.data().address;
+          let horario = snapHijo.data().schedule;
+          let tlf = snapHijo.data().tlf;
 
           // Objeto asador
-          let asador = new Asador(uid, nombre);
+          let asador = new Asador(uid, nombre, direccion, horario, tlf);
 
           // Lo introducimos en el array
           this.asadores.push(asador);

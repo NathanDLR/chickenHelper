@@ -12,7 +12,9 @@
       <ion-label *ngIf="pedidos.length == 0">Todavía nos has hecho ningún pedido. ¡Empieza uno nuevo!</ion-label>  
 
       <ion-card *ngIf="pedidos.length > 0">
-        <h2>Pulsa para ver más info</h2>
+        <ion-card-content>
+          <h2>Selecciona un pedido para ver más info</h2>
+        </ion-card-content>
       </ion-card>
 
       <ion-list *ngIf="pedidos.length > 0">
@@ -25,5 +27,18 @@
   </ion-card>
 
   <ion-button (click)="newOrder()" expand="block">Nuevo Pedido</ion-button>
+
+  <br />
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block">Sobre Chicken Helper</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" (click)="logout()">Cerrar sesión</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
