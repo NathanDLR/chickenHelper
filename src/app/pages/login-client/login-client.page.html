@@ -1,13 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Iniciar sesión - Clientes</ion-title>
+    <ion-title>Chicken Helper</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div>
+  <ion-card>
 
-    <form [formGroup]="loginClientForm">
+    <ion-card-title class="redTitle">&nbsp; Iniciar Sesión</ion-card-title>
+
+    <form [formGroup]="loginClientForm" (keyup.enter)="login(email.value, pwd.value)">
       <ion-item>
         <ion-label>Email</ion-label>
         <ion-input #email placeholder="Escribe tu email" formControlName="email"></ion-input>
@@ -30,14 +32,6 @@
 
     <ion-row>
       <ion-col>
-        <p class="ion-text-end">
-          <a routerLink="/forgot-pwd">¿Has olvidado tu contraseña?</a>
-        </p>
-      </ion-col>
-    </ion-row>
-    
-    <ion-row>
-      <ion-col>
         <ion-button type="submit" color="danger" (click)="loginGoogle(email, pwd)" expand="block">
           <ion-icon name="logo-google"></ion-icon>
           &nbsp; Iniciar sesión con Google
@@ -46,12 +40,18 @@
     </ion-row>
 
     <ion-row>
+      <ion-col>
+        <p class="ion-text-center">
+          <a routerLink="/forgot-pwd">¿Has olvidado tu contraseña?</a>
+        </p>
+      </ion-col>
+
       <ion-col>    
-        <p class="ion-text-end">
+        <p class="ion-text-center">
           <a routerLink="/register-client">¿Todavía no te has registrado? Crea tu cuenta</a>
         </p>   
       </ion-col>
-    </ion-row>
+    </ion-row>   
 
-  </div>
+  </ion-card>
 </ion-content>
