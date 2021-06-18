@@ -28,6 +28,11 @@ const routes: Routes = [
         path: 'caja',
         loadChildren: () => import('../caja/caja.module').then(m => m.CajaPageModule),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'configuracion',
+        loadChildren: () => import('../configuracion/configuracion.module').then(m => m.ConfiguracionPageModule),
+        canActivate: [AuthGuard]
       }
     ]
   },

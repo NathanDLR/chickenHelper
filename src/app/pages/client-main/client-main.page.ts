@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { IonInput, ModalController } from '@ionic/angular';
 import { Pedido } from 'src/app/classes/pedido';
+import { AuthService } from 'src/app/services/auth.service';
 import db from '../../../environments/environment';
 import { ModalInfoPedidoPage } from '../modal-info-pedido/modal-info-pedido.page';
 
@@ -20,7 +21,7 @@ export class ClientMainPage implements OnInit {
   // Lista de pedidos
   pedidos: Pedido[];
 
-  constructor(private fireAuth: AngularFireAuth, private router: Router, private modal: ModalController){}
+  constructor(private fireAuth: AngularFireAuth, private router: Router, private modal: ModalController, private auth: AuthService){}
 
   ngOnInit(){
     // Inicializamos los arrays
@@ -35,7 +36,6 @@ export class ClientMainPage implements OnInit {
     // Obtenemos el nombre del usuario
     this.fireAuth.user.subscribe(data => {
       this.user = data;
-      // this.nombre = this.user.displayName;
 
       // Obtenemos los pedidos que ha hecho el cliente de la base de datos 
       db.collection('pedidos').where('uidCliente', '==', this.user.uid).orderBy('hora', 'desc').limit(3).get().then(snap => {
@@ -98,6 +98,11 @@ export class ClientMainPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  // Log out
+  logout(){
+    this.auth.logout();
   }
 
 }

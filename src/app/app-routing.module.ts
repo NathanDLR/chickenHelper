@@ -41,11 +41,13 @@ const routes: Routes = [
   },
   {
     path: 'pedidos',
-    loadChildren: () => import('./pages/pedidos/pedidos.module').then( m => m.PedidosPageModule)
+    loadChildren: () => import('./pages/pedidos/pedidos.module').then( m => m.PedidosPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'caja',
-    loadChildren: () => import('./pages/caja/caja.module').then( m => m.CajaPageModule)
+    loadChildren: () => import('./pages/caja/caja.module').then( m => m.CajaPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'modal-articulo',
@@ -61,7 +63,8 @@ const routes: Routes = [
   },
   {
     path: 'venta',
-    loadChildren: () => import('./pages/venta/venta.module').then( m => m.VentaPageModule)
+    loadChildren: () => import('./pages/venta/venta.module').then( m => m.VentaPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login-client',
@@ -93,9 +96,15 @@ const routes: Routes = [
     path: 'client-main',
     loadChildren: () => import('./pages/client-main/client-main.module').then( m => m.ClientMainPageModule),
     canActivate: [ClientAuthGuardService]
-  },  {
+  },
+  {
     path: 'modal-info-pedido',
     loadChildren: () => import('./pages/modal-info-pedido/modal-info-pedido.module').then( m => m.ModalInfoPedidoPageModule)
+  },
+  {
+    path: 'configuracion',
+    loadChildren: () => import('./pages/configuracion/configuracion.module').then( m => m.ConfiguracionPageModule),
+    canActivate: [AuthGuard]
   }
 
 

@@ -1,0 +1,55 @@
+<ion-content>
+
+  <ion-card>
+    <ion-card-title class="redTitle">
+      &nbsp; Datos de tu Asador
+    </ion-card-title>
+
+    <ion-card-content>
+      <h2>Tus clientes podrán ver estos datos cuando hagan sus pedidos</h2>
+    </ion-card-content>
+
+    <ion-card>
+      <ion-list>
+
+        <ion-item>
+          <ion-input #name placeholder="Nombre del Asador"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input #address placeholder="Dirección"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input #tlf placeholder="Número de teléfono"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input #schedule placeholder="Horario"></ion-input>
+        </ion-item>
+
+        <br />
+
+      </ion-list>
+    </ion-card>
+
+    <ion-button expand="block" (click)="updateData(name.value, address.value, tlf.value, schedule.value)">Actualizar mis datos</ion-button>
+
+    <br/>
+
+  </ion-card>  
+
+  <ion-card>
+
+    <ion-card-title class="redTitle"> &nbsp; Uso de Datos</ion-card-title>
+
+    <ion-card-content>
+      Al usar esta aplicación aceptas que los clientes puedan ver información sobre tu asador con el fin de que puedan realizar sus pedidos. <br /> 
+      Los clientes solo verán los datos que se introduzcan en el formulario anterior. 
+    </ion-card-content>
+  
+  </ion-card>
+
+  <ion-button expand="block" (click)="logOut()">Cerrar sesión</ion-button>
+
+</ion-content>

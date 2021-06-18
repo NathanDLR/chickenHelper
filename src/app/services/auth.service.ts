@@ -9,6 +9,7 @@ import { switchMap} from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
 
 import db from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthService {
 
   public user$:Observable<any>;
 
-  constructor(public fireAuth: AngularFireAuth, private afs:AngularFirestore, private alert: AlertController) {
+  constructor(public fireAuth: AngularFireAuth, private afs:AngularFirestore, private alert: AlertController, private router: Router) {
     this.user$ = this.fireAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
@@ -160,7 +161,8 @@ export class AuthService {
   async logout(): Promise<void>{
     try{
       await this.fireAuth.signOut();
-      console.log("Se ha cerrado la sesión");
+      // console.log("Se ha cerrado la sesión");
+      this.router.navigate(['home']);
     }
     catch(error){
       console.log('Error: ', error);
