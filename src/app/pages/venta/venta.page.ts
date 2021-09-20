@@ -198,6 +198,64 @@ export class VentaPage implements OnInit {
     });
   }
 
+  // Resetear venta
+  resetVenta(){
+    // Ponemos el contador de la venta a 0, pero primero pedimos confirmación
+    // console.log("Resetear venta");
+
+    // Presentamos el alert para preguntar al usuario
+    this.alertCtrl.create({
+      header: "Reinicio de Venta",
+      message: "¿Seguro que quieres reiniciar la venta? El contador se pondrá a 0",
+      buttons: [
+        {
+         text: 'Reiniciar',
+         handler: () => {      
+
+          // Vamos a actualizar el total del día, poniéndolo a 0
+          // id del doc
+          let uid: string = "";
+
+          // Total venta
+          let total: number = 0;
+
+          // Obtenemos el id del doc en el que guardamos la venta de hoy
+          db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+            snap.forEach(doc => {
+              uid = doc.id;
+              total = doc.data().total;
+            })
+          }).then(() => {
+
+            // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
+            total = 0;
+
+            // Luego actualizamos el total
+            db.collection('venta').doc(uid).update({
+              total: total
+            });
+
+            // Mostramos la venta 
+            this.venta = total;
+
+            // Mensaje para informar al usuario
+            this.presentToast("Se ha reiniciado la venta");
+
+          });
+        } 
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+
+    }).then( obj => {
+      obj.present();
+    })
+
+  }
+
   // Toast message
   presentToast(message: string){
     this.toastCtrl.create({
