@@ -29,9 +29,14 @@
 
   <ion-card>
     <ion-item>
-      <ion-label><strong>Total:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
+      <ion-label><strong>Otra cantidad</strong></ion-label>
+      <ion-input #cant type="text" placeholder="€0.00"></ion-input> 
+      <button class="btnBlue" (click)="add(cant.value)">Añadir</button> &nbsp;
+      <button class="btnRed" (click)="delete(cant.value)">Desmarcar</button>
     </ion-item>
+    <br />
     <ion-item>
+      <ion-label><strong>Total:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
       <button class="btnRed" (click)="resetVenta()">Reiniciar venta</button>
     </ion-item>
   </ion-card>
