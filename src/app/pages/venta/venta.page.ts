@@ -15,6 +15,7 @@ export class VentaPage implements OnInit {
   // Total de la venta del día
   venta: number = 0;
   total: number = 0;
+  cant: number = 0;
   uidAsador: string = "";
 
   // Usuario y fecha actual
@@ -206,7 +207,7 @@ export class VentaPage implements OnInit {
     // Presentamos el alert para preguntar al usuario
     this.alertCtrl.create({
       header: "Reinicio de Venta",
-      message: "¿Seguro que quieres reiniciar la venta? El contador se pondrá a 0",
+      message: "¿Seguro que quieres reiniciar la venta? El total se eliminará",
       buttons: [
         {
          text: 'Reiniciar',
