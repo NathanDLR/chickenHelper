@@ -34,8 +34,6 @@ export class ModalOfertaPage implements OnInit {
       this.user = data;
     });
 
-
-
   }
 
   ngOnInit() {

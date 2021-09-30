@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonInput, ModalController, ToastController } from '@ionic/angular';
 import { Articulo } from 'src/app/classes/articulo';
 import { Oferta } from 'src/app/classes/oferta';
 import db from '../../../environments/environment';
@@ -25,6 +25,9 @@ export class VentaPage implements OnInit {
   // Array con la venta extra del día 
   ofertas: Oferta[];
   articulos: Articulo[];
+
+  // Cantidad cualquiera que el usuario marca
+  @ViewChild('cant') cantInput: IonInput;
 
   constructor(public modalController: ModalController, private toastCtrl: ToastController, private fireAuth: AngularFireAuth, private alertCtrl: AlertController){
 
@@ -125,7 +128,7 @@ export class VentaPage implements OnInit {
 
   // Añadir precio
   add(precio: string){
-
+    
     // id del doc
     let uid: string = "";
 
@@ -148,6 +151,11 @@ export class VentaPage implements OnInit {
         total: total
       });
 
+      // Cuando hayamos actualizado el total borramos el input de cantidad extra si hay algo en él
+      if(this.cantInput.value != ''){
+       this.cantInput.value = '';
+      }
+
       // Mostramos la venta 
       this.venta = total;
 
@@ -155,6 +163,25 @@ export class VentaPage implements OnInit {
       this.presentToast("Se ha añadido la venta");
 
     });
+  }
+
+  // Añadir otra cantidad
+  addAnotherAmount(precio: string){
+    // Comprobamos que se haya introducido un número en el input
+    if(precio != '' && parseFloat(precio)){
+      // Llamamos al método add para que añada la cantidad marcada
+      this.add(precio);
+
+      // Borramos el valor del input
+      this.cantInput.value = '';
+    }
+    else{
+      // Pedimos al usuario que rellene el input
+      this.presentToast('Debes introducir una cantidad');
+
+      // Borramos el valor del input
+      this.cantInput.value = '';
+    }
   }
 
   // Desmarcar precio
@@ -199,11 +226,28 @@ export class VentaPage implements OnInit {
     });
   }
 
+  // Desmarcar otra cantidad
+  deleteAnotherAmount(precio: string){
+    // Comprobamos que se haya introducido un número en el input
+    if(precio != '' && parseFloat(precio)){
+      // Llamamos al método add para que añada la cantidad marcada
+      this.delete(precio);
+
+      // Borramos el valor del input
+      this.cantInput.value = '';
+    }
+    else{
+      // Pedimos al usuario que rellene el input
+      this.presentToast('Debes introducir una cantidad');
+
+      // Borramos el valor del input
+      this.cantInput.value = '';
+    }
+  }
+
   // Resetear venta
   resetVenta(){
     // Ponemos el contador de la venta a 0, pero primero pedimos confirmación
-    // console.log("Resetear venta");
-
     // Presentamos el alert para preguntar al usuario
     this.alertCtrl.create({
       header: "Reinicio de Venta",
