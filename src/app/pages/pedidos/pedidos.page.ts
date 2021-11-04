@@ -159,4 +159,9 @@ export class PedidosPage implements OnInit {
     if(recogido) return 'darkgreen';
   }
 
+  // Card Payment: Gets order price and adds it to card total
+  cardPayment(){
+    console.log("Registering Payment...")
+  }
+
 }
