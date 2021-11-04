@@ -14,7 +14,7 @@
           <ion-header>Hora</ion-header>
         </ion-col>
   
-        <ion-col class="tableHeader" size="2.5">
+        <ion-col class="tableHeader" size="3.5">
           <ion-header>Concepto</ion-header>
         </ion-col>
   
@@ -30,7 +30,7 @@
           <ion-header>Total</ion-header>
         </ion-col>
   
-        <ion-col class="tableHeader" size="3.5" text-align="center">
+        <ion-col class="tableHeader" size="2.5" text-align="center">
           <ion-header>Editar</ion-header>
         </ion-col>
       </ion-row>
@@ -40,7 +40,7 @@
           <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
         </ion-col>
   
-        <ion-col class="tableCol" size="2.5">
+        <ion-col class="tableCol" size="3.5">
           <ion-label>{{pedido.conceptoNombres}}</ion-label>
         </ion-col>
   
@@ -56,21 +56,14 @@
           <ion-label>{{pedido.total|currency:'EUR':"symbol"}}</ion-label>
         </ion-col>
   
-        <ion-col size="3.5" class="tableCol" class="blankCell">
-          <ion-row>
-            <ion-icon name="checkmark-sharp" (click)="check(pedido.uid)" size="large" class="checkmarkIcon" *ngIf="!pedido.recogido"></ion-icon>
+        <ion-col size="2.5" class="tableCol" class="blankCell">
+          <ion-icon name="checkmark-sharp" (click)="check(pedido.uid)" size="large" class="checkmarkIcon" *ngIf="!pedido.recogido"></ion-icon>
           &nbsp;
           <ion-icon name="ban" (click)="uncheck(pedido.uid)" size="large" class="uncheckIcon" *ngIf="pedido.recogido"></ion-icon>
           &nbsp;
-          
-            <ion-icon name="create" (click)="edit(pedido.uid, pedido.hora)" size="large" class="editIcon"></ion-icon>
+          <ion-icon name="create" (click)="edit(pedido.uid, pedido.hora)" size="large" class="editIcon"></ion-icon>
           &nbsp;
-          </ion-row>
-          <ion-row>
           <ion-icon name="trash" (click)="delete(pedido.uid)" size="large" class="deleteIcon"></ion-icon>
-          &nbsp;
-          <ion-icon name="card" (click)="delete(pedido.uid)" size="large" class="cardIcon"></ion-icon>
-          </ion-row>
         </ion-col>
   
       </ion-row>    
