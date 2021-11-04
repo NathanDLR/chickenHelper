@@ -150,7 +150,7 @@ export class ModalPedidosPage implements OnInit {
     let total = 0;
 
     // Validamos los inputs
-    let ok = this.validate(hora, concepto, cliente, info);
+    let ok = this.validate(hora, concepto, cliente);
 
     // Si todo es correcto añadimos el pedido a la base de datos
     if(ok){
@@ -209,7 +209,7 @@ export class ModalPedidosPage implements OnInit {
     let total = 0;
 
     // Validamos los inputs
-    let ok = this.validate(hora, concepto, cliente, info);
+    let ok = this.validate(hora, concepto, cliente);
 
     if(ok){
       // Convertimos la hora a Date
@@ -254,11 +254,11 @@ export class ModalPedidosPage implements OnInit {
   }
 
   // Validación del formulario
-  validate(hora: string, concepto: string[], cliente: string, info: string): Boolean{
+  validate(hora: string, concepto: string[], cliente: string): Boolean{
     let ok = true;
     
     // Comprobamos que todos los campos estén rellenos
-    if(hora == "" || typeof(concepto) == 'undefined' || cliente == "" || info == ""){
+    if(hora == "" || typeof(concepto) == 'undefined' || cliente == ""){
       this.presentToast("Debes rellenar todos los campos")
       ok = false
     }
