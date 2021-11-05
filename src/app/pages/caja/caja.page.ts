@@ -43,8 +43,8 @@ export class CajaPage implements OnInit {
   }
 
   // Calcular la caja
-  calcTotal(){
-
+  calcTotal(change: number, expenses: number){
+    console.log(`Cambio ${change}, gastos: ${expenses}`)
     // Tenemos que sumar el precio de todos los pedidos y de la venta extra
     this.fireAuth.user.subscribe( data => {
       
