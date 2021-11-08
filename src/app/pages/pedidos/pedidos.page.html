@@ -65,7 +65,7 @@
             <ion-icon name="create" (click)="edit(pedido.uid, pedido.hora)" size="large" class="editIcon"></ion-icon>
             &nbsp;
             <ion-icon name="trash" (click)="delete(pedido.uid)" size="large" class="deleteIcon"></ion-icon>
-            <ion-icon name="card" (click)="cardPayment()" size="large" class="cardIcon"></ion-icon>
+            <ion-icon name="card" (click)="cardPayment(pedido.uid, pedido.cardPayed)" size="large" class="cardIcon"></ion-icon>
           </div>
         </ion-col>
   

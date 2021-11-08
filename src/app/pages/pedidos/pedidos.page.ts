@@ -48,6 +48,7 @@ export class PedidosPage implements OnInit {
         let info = snapHijo.data().info;
         let total = snapHijo.data().total;
         let recogido = snapHijo.data().recogido;
+        let cardPayed = snapHijo.data().cardPayed;
         let conceptoNombres = "";
 
         // Obtenemos los nombres de los artículos y ofertas del pedido
@@ -67,7 +68,7 @@ export class PedidosPage implements OnInit {
             if(i == concepto.length - 1){
               
               // Nuevo objeto pedido
-              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, conceptoNombres); // Ponemos siempre recogido como false
+              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, cardPayed, conceptoNombres); // Ponemos siempre recogido como false
               
               // Lo introducimos en el array
               this.pedidos.push(pedido);
@@ -87,10 +88,28 @@ export class PedidosPage implements OnInit {
     })
   }
 
+  // Marcar pedido como no recogido
   uncheck(uid: string){
     db.collection('pedidos').doc(uid).update({
       recogido: false
     })
+  }
+
+  // Marcar pedido como pagado con tarjeta
+  cardPayment(uid:string, cardPayed: boolean){
+    console.log(`ORDER ID: ${uid}, Card Payed: ${cardPayed}`);
+    if(cardPayed){
+      db.collection('pedidos').doc(uid).update({
+        cardPayed: false
+      })
+      this.presentToast("Se ha desmarcado el pago con tarjeta");
+    }
+    else{
+      db.collection('pedidos').doc(uid).update({
+        cardPayed: true
+      })
+      this.presentToast("Se ha marcado el pago con tarjeta");
+    }
   }
 
   // Editar pedido
@@ -157,11 +176,6 @@ export class PedidosPage implements OnInit {
   // Cambiar el color de la fila del pedido
   setColor(recogido: boolean){
     if(recogido) return 'darkgreen';
-  }
-
-  // Card Payment: Gets order price and adds it to card total
-  cardPayment(){
-    console.log("Registering Payment...")
   }
 
 }

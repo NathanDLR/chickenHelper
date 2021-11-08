@@ -13,6 +13,8 @@ export class CajaPage implements OnInit {
 
   // Total de venta
   venta: number = 0;
+  cardTotal: number = 0;
+  total: number = 0;
 
   // Boolean corregir para mostrar el ion-item que permite corregir la venta
   corregir: Boolean = false;
@@ -35,6 +37,7 @@ export class CajaPage implements OnInit {
         if(snap.size > 0){
           snap.forEach(doc => {
             this.venta = doc.data().total;
+            this.cardTotal = doc.data().cardTotal;
           })
         }
     });
@@ -43,25 +46,28 @@ export class CajaPage implements OnInit {
   }
 
   // Calcular la caja
-  calcTotal(){
-
+  calcTotal(change: number, expenses: number){
+    console.log(`Cambio ${change}, gastos: ${expenses}`)
     // Tenemos que sumar el precio de todos los pedidos y de la venta extra
     this.fireAuth.user.subscribe( data => {
       
       this.user = data;
       let uid = this.user.uid;
       let venta = 0;
+      let cardTotal = 0;
 
       // Empezamos por la venta extra
       db.collection('venta').where('uidAsador', '==', uid).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( snap => {
         snap.forEach(doc => {
           venta = doc.data().total;
+          cardTotal = doc.data().cardTotal;
         })
       }).then( () => {
         // Sumamos el precio de cada pedido
         db.collection('pedidos').where("uidAsador", "==", uid).orderBy('fecha').orderBy('hora').startAt(this.date).endAt(this.date+'\uf8ff').get().then(snap => {
           snap.forEach(doc =>{
-          venta += doc.data().total;
+            if(doc.data().cardPayed == false) venta += doc.data().total;
+            else cardTotal += doc.data().total;
         });
       }).then(() => {
         // Creamos el nuevo documento para guardar la caja de hoy, pero comprobamos que no se haya guardado ya
@@ -69,11 +75,13 @@ export class CajaPage implements OnInit {
           if(snap.size == 0){
 
             this.venta = venta;
+            this.cardTotal = cardTotal;
 
             db.collection('caja').add({
               uidAsador: uid,
               fecha: this.date,
-              total: this.venta
+              total: this.venta,
+              cardTotal: this.cardTotal
             })
           }
         });
@@ -92,17 +100,20 @@ export class CajaPage implements OnInit {
       this.user = data;
       let uid = this.user.uid;
       let venta = 0;
+      let cardTotal = 0;
 
       // Empezamos por la venta extra
       db.collection('venta').where('uidAsador', '==', uid).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( snap => {
         snap.forEach(doc => {
           venta = doc.data().total;
+          cardTotal = doc.data().cardTotal;
         })
       }).then( () => {
         // Sumamos el precio de cada pedido
         db.collection('pedidos').where("uidAsador", "==", uid).orderBy('fecha').orderBy('hora').startAt(this.date).endAt(this.date+'\uf8ff').get().then(snap => {
           snap.forEach(doc =>{
-          venta += doc.data().total;
+            if(doc.data().cardPayed == false) venta += doc.data().total;
+            else cardTotal += doc.data().total;
         });
       }).then(() => {
         // Creamos el nuevo documento para guardar la caja de hoy, pero comprobamos que no se haya guardado ya
@@ -113,6 +124,7 @@ export class CajaPage implements OnInit {
           else{
 
             this.venta = venta;
+            this.cardTotal = cardTotal;
 
             let id = "";
 
@@ -122,7 +134,8 @@ export class CajaPage implements OnInit {
 
             // Actualizamos la caja
             db.collection('caja').doc(id).update({
-              total: this.venta
+              total: this.venta,
+              cardTotal: this.cardTotal
             });
 
             // Mensaje para el usuario
