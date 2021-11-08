@@ -187,6 +187,7 @@ export class ModalPedidosPage implements OnInit {
               info: info,
               total: total,
               recogido: false,
+              cardPayed: false,
               fecha: this.date
             });
           }

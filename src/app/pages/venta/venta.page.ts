@@ -15,6 +15,7 @@ export class VentaPage implements OnInit {
   // Total de la venta del día
   venta: number = 0;
   total: number = 0;
+  cardTotal: number = 0;
   cant: number = 0;
   uidAsador: string = "";
 
@@ -28,6 +29,9 @@ export class VentaPage implements OnInit {
 
   // Cantidad cualquiera que el usuario marca
   @ViewChild('cant') cantInput: IonInput;
+
+  // Cantidad de cobro con tarjeta que marca el usuario
+  @ViewChild('cardCant') cardCantInput: IonInput;
 
   constructor(public modalController: ModalController, private toastCtrl: ToastController, private fireAuth: AngularFireAuth, private alertCtrl: AlertController){
 
@@ -111,6 +115,7 @@ export class VentaPage implements OnInit {
           db.collection('venta').add({
             fecha: this.date,
             total: 0,
+            cardTotal: 0,
             uidAsador: uid
           });
         }
@@ -118,7 +123,8 @@ export class VentaPage implements OnInit {
         // Si el documento ya se creó podemos obtener la venta del día
         else{
           db.collection('venta').doc(id).get().then( (doc) => {
-            this.venta = doc.data().total
+            this.venta = doc.data().total;
+            this.cardTotal = doc.data().cardTotal;
           })
         }
 
@@ -184,6 +190,55 @@ export class VentaPage implements OnInit {
     }
   }
 
+  // Añadir cobro con tarjeta
+  addCardPayment(precio: string){
+
+    // Comprobamos que se haya introducido un número en el input
+    if(precio != '' && parseFloat(precio)){
+      
+      // id del doc
+      let uid: string = "";
+
+      // Total venta
+      let cardTotal: number = 0;
+
+      // Obtenemos el id del doc en el que guardamos la venta de hoy
+      db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+        snap.forEach(doc => {
+          uid = doc.id;
+          cardTotal = doc.data().cardTotal;
+        })
+      }).then(() => {
+
+        // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
+        cardTotal += parseFloat(precio);
+
+        // Luego actualizamos el total
+        db.collection('venta').doc(uid).update({
+          cardTotal: cardTotal
+        });
+
+        // Mostramos el total de cobros con tarjeta
+        this.cardTotal = cardTotal;
+
+        // Mensaje para informar al usuario
+        this.presentToast("Se ha añadido el cobro con tarjeta");
+
+      });
+
+        // Borramos el valor del input
+        this.cardCantInput.value = '';
+    }
+    else{
+      // Pedimos al usuario que rellene el input
+      this.presentToast('Debes introducir una cantidad');
+
+      // Borramos el valor del input
+      this.cardCantInput.value = '';
+    }    
+
+  }
+
   // Desmarcar precio
   delete(precio: string){
     // id del doc
@@ -245,13 +300,60 @@ export class VentaPage implements OnInit {
     }
   }
 
+  // Desmarcar una cantidad cobrada con tarjeta
+  deleteCardPayment(precio :string){
+    // Comprobamos que se haya introducido un número en el input
+    if(precio != '' && parseFloat(precio)){
+      
+      // id del doc
+      let uid: string = "";
+
+      // Total venta
+      let cardTotal: number = 0;
+
+      // Obtenemos el id del doc en el que guardamos la venta de hoy
+      db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
+        snap.forEach(doc => {
+          uid = doc.id;
+          cardTotal = doc.data().cardTotal;
+        })
+      }).then(() => {
+
+        // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
+        cardTotal -= parseFloat(precio);
+
+        // Luego actualizamos el total
+        db.collection('venta').doc(uid).update({
+          cardTotal: cardTotal
+        });
+
+        // Mostramos el total de cobros con tarjeta
+        this.cardTotal = cardTotal;
+
+        // Mensaje para informar al usuario
+        this.presentToast("Se ha desmarcado el cobro con tarjeta");
+
+      });
+
+        // Borramos el valor del input
+        this.cardCantInput.value = '';
+    }
+    else{
+      // Pedimos al usuario que rellene el input
+      this.presentToast('Debes introducir una cantidad');
+
+      // Borramos el valor del input
+      this.cardCantInput.value = '';
+    }
+  }
+
   // Resetear venta
   resetVenta(){
     // Ponemos el contador de la venta a 0, pero primero pedimos confirmación
     // Presentamos el alert para preguntar al usuario
     this.alertCtrl.create({
       header: "Reinicio de Venta",
-      message: "¿Seguro que quieres reiniciar la venta? El total se eliminará",
+      message: "¿Seguro que quieres reiniciar la venta? Los totales se eliminarán",
       buttons: [
         {
          text: 'Reiniciar',
@@ -261,8 +363,9 @@ export class VentaPage implements OnInit {
           // id del doc
           let uid: string = "";
 
-          // Total venta
+          // Total venta efectivo y total tarjeta
           let total: number = 0;
+          let cardTotal: number = 0;
 
           // Obtenemos el id del doc en el que guardamos la venta de hoy
           db.collection('venta').where('uidAsador', '==', this.uidAsador).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( (snap) => {
@@ -272,16 +375,19 @@ export class VentaPage implements OnInit {
             })
           }).then(() => {
 
-            // Sumamos al total el precio que se nos haya pasado y actualizamos el documento
+            // Ponemos el total efectivo a 0 y también el total con tarjeta
             total = 0;
+            cardTotal = 0;
 
             // Luego actualizamos el total
             db.collection('venta').doc(uid).update({
-              total: total
+              total: total,
+              cardTotal: cardTotal
             });
 
             // Mostramos la venta 
             this.venta = total;
+            this.cardTotal = cardTotal;
 
             // Mensaje para informar al usuario
             this.presentToast("Se ha reiniciado la venta");
