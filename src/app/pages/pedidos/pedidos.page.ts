@@ -91,13 +91,14 @@ export class PedidosPage implements OnInit {
   // Marcar pedido como no recogido
   uncheck(uid: string){
     db.collection('pedidos').doc(uid).update({
-      recogido: false
+      recogido: false,
+      cardPayed: false
     })
   }
 
   // Marcar pedido como pagado con tarjeta
   cardPayment(uid:string, cardPayed: boolean){
-    console.log(`ORDER ID: ${uid}, Card Payed: ${cardPayed}`);
+    // console.log(`ORDER ID: ${uid}, Card Payed: ${cardPayed}`);
     if(cardPayed){
       db.collection('pedidos').doc(uid).update({
         cardPayed: false

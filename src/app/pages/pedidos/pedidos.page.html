@@ -35,7 +35,7 @@
         </ion-col>
       </ion-row>
       
-      <ion-row *ngFor="let pedido of pedidos" [ngClass]="{'pedidoRecogido': pedido.recogido}">
+      <ion-row *ngFor="let pedido of pedidos" [ngClass]="{'pedidoRecogido': pedido.recogido, 'cardPayed': pedido.cardPayed && pedido.recogido}">
         <ion-col class="tableCol" size="1">
           <ion-label>{{pedido.hora | date:'shortTime'}}</ion-label>
         </ion-col>
@@ -65,7 +65,7 @@
             <ion-icon name="create" (click)="edit(pedido.uid, pedido.hora)" size="large" class="editIcon"></ion-icon>
             &nbsp;
             <ion-icon name="trash" (click)="delete(pedido.uid)" size="large" class="deleteIcon"></ion-icon>
-            <ion-icon name="card" (click)="cardPayment(pedido.uid, pedido.cardPayed)" size="large" class="cardIcon"></ion-icon>
+            <ion-icon name="card" (click)="cardPayment(pedido.uid, pedido.cardPayed)" size="large" class="cardIcon" *ngIf="pedido.recogido"></ion-icon>
           </div>
         </ion-col>
   
