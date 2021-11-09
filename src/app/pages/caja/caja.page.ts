@@ -15,6 +15,7 @@ export class CajaPage implements OnInit {
   venta: number = 0;
   cardTotal: number = 0;
   total: number = 0;
+  suma: number = 0;
 
   // Boolean corregir para mostrar el ion-item que permite corregir la venta
   corregir: Boolean = false;
@@ -38,6 +39,7 @@ export class CajaPage implements OnInit {
           snap.forEach(doc => {
             this.venta = doc.data().total;
             this.cardTotal = doc.data().cardTotal;
+            this.suma = doc.data().sum;
           })
         }
     });
@@ -47,7 +49,7 @@ export class CajaPage implements OnInit {
 
   // Calcular la caja
   calcTotal(change: number, expenses: number){
-    console.log(`Cambio ${change}, gastos: ${expenses}`)
+    // console.log(`Cambio ${change}, gastos: ${expenses}`)
     // Tenemos que sumar el precio de todos los pedidos y de la venta extra
     this.fireAuth.user.subscribe( data => {
       
@@ -55,6 +57,7 @@ export class CajaPage implements OnInit {
       let uid = this.user.uid;
       let venta = 0;
       let cardTotal = 0;
+      let suma = 0;
 
       // Empezamos por la venta extra
       db.collection('venta').where('uidAsador', '==', uid).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( snap => {
@@ -76,12 +79,15 @@ export class CajaPage implements OnInit {
 
             this.venta = venta;
             this.cardTotal = cardTotal;
+            suma = venta + cardTotal;
+            this.suma = suma;
 
             db.collection('caja').add({
               uidAsador: uid,
               fecha: this.date,
               total: this.venta,
-              cardTotal: this.cardTotal
+              cardTotal: this.cardTotal,
+              sum: this.suma
             })
           }
         });
@@ -101,6 +107,7 @@ export class CajaPage implements OnInit {
       let uid = this.user.uid;
       let venta = 0;
       let cardTotal = 0;
+      let suma = 0;
 
       // Empezamos por la venta extra
       db.collection('venta').where('uidAsador', '==', uid).orderBy('fecha').startAt(this.date).endAt(this.date+'\uf8ff').get().then( snap => {
@@ -125,6 +132,8 @@ export class CajaPage implements OnInit {
 
             this.venta = venta;
             this.cardTotal = cardTotal;
+            suma = venta + cardTotal;
+            this.suma = suma;
 
             let id = "";
 
@@ -135,7 +144,8 @@ export class CajaPage implements OnInit {
             // Actualizamos la caja
             db.collection('caja').doc(id).update({
               total: this.venta,
-              cardTotal: this.cardTotal
+              cardTotal: this.cardTotal,
+              sum: this.suma
             });
 
             // Mensaje para el usuario
