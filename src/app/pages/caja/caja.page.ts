@@ -48,8 +48,7 @@ export class CajaPage implements OnInit {
   }
 
   // Calcular la caja
-  calcTotal(change: number, expenses: number){
-    // console.log(`Cambio ${change}, gastos: ${expenses}`)
+  calcTotal(change: string, expenses: string){
     // Tenemos que sumar el precio de todos los pedidos y de la venta extra
     this.fireAuth.user.subscribe( data => {
       
@@ -87,7 +86,9 @@ export class CajaPage implements OnInit {
               fecha: this.date,
               total: this.venta,
               cardTotal: this.cardTotal,
-              sum: this.suma
+              sum: this.suma,
+              change: parseFloat(change),
+              expenses: parseFloat(expenses)
             })
           }
         });
@@ -99,7 +100,7 @@ export class CajaPage implements OnInit {
   }
 
   // Actualizar el total, si se han metido pedidos nuevos o marcado venta nueva
-  update(){
+  update(change: string, expenses: string){
     // Tenemos que sumar el precio de todos los pedidos y de la venta extra
     this.fireAuth.user.subscribe( data => {
       
@@ -145,7 +146,9 @@ export class CajaPage implements OnInit {
             db.collection('caja').doc(id).update({
               total: this.venta,
               cardTotal: this.cardTotal,
-              sum: this.suma
+              sum: this.suma,
+              change: parseFloat(change),
+              expenses: parseFloat(expenses)
             });
 
             // Mensaje para el usuario
@@ -165,17 +168,20 @@ export class CajaPage implements OnInit {
   }
 
   // Actualizar el total
-  updateTotal(total: string){
+  updateTotal(cash: string, card: string){
     
 
     // Comprobamos que se haya introducido un número
-    let ok = this.validate(total);
-
-    if(ok){
+    if(this.validate(cash) && this.validate(card)){
 
       this.fireAuth.user.subscribe(data => {
         this.user = data;
         let uid = this.user.uid;
+
+        // Actualizamos los totales 
+        this.venta = parseFloat(cash);
+        this.cardTotal = parseFloat(card);
+        this.suma = this.venta + this.cardTotal;
 
         // Introducimos el nuevo total en la bd
         db.collection('caja').where('uidAsador', '==', uid).where('fecha', '==', this.date).get().then(snap => {
@@ -187,13 +193,13 @@ export class CajaPage implements OnInit {
               let id = doc.id;
 
               db.collection('caja').doc(id).update({
-                total: total
+                total: this.venta,
+                cardTotal: this.cardTotal,
+                sum: this.suma
               })
 
               // Mensaje para el usuario
               this.presentToast("Se ha modificado la caja")
-
-              this.venta = parseFloat(total);
 
               // Ocultamos el item
               this.corregir = false;
@@ -201,13 +207,7 @@ export class CajaPage implements OnInit {
             });
           }
         });
-
-        
-
-
       });
-
-      
     }
 
   }
@@ -219,12 +219,12 @@ export class CajaPage implements OnInit {
 
     if(total == ""){
       ok = false;
-      this.presentToast("Debes rellenar el campo");
+      this.presentToast("Debes rellenar todos los campos");
     }
 
     if(isNaN(parseInt(total)) && ok == true){
       ok = false;
-      this.presentToast("El total debe ser un número");
+      this.presentToast("Debes introducir números, no letras");
     }
 
     return ok;
