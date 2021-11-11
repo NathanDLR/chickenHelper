@@ -3,64 +3,74 @@
 
   <ion-card-content>
     <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label><strong>Cambio:</strong></ion-label>
-            <ion-input #change placeholder="0.00€"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
 
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label><strong>Gastos:</strong></ion-label>
-            <ion-input #expenses placeholder="0.00€"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      
       <ion-row>
         <ion-col>
           <ion-button expand="block" (click)="calcTotal(change.value, expenses.value)">Hacer Caja</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button expand="block" (click)="update()" >Actualizar</ion-button>
+          <ion-button expand="block" (click)="update(change.value, expenses.value)">Actualizar</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button expand="block" (click)="correct()" >Corregir</ion-button>
+          <ion-button expand="block" (click)="correct()">Corregir</ion-button>
         </ion-col>
       </ion-row>
-    </ion-grid>
 
-    <ion-card>
-      <ion-card-title class="redTitle"> &nbsp; Resumen del Total</ion-card-title>
-      <ion-card-content>
-        <ion-item>
-          <ion-label><strong>Efectivo:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
-        </ion-item>
+      <ion-row>
+        <ion-col>
+            <ion-item>
+              <ion-label><strong>Cambio:</strong></ion-label>
+              <ion-input #change placeholder="0.00€"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label><strong>Gastos:</strong></ion-label>
+              <ion-input #expenses placeholder="0.00€"></ion-input>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row *ngIf="corregir">
+        <ion-col>
+          <ion-item >
+            <ion-label><strong>Dinero en Efectivo:</strong></ion-label>
+            <ion-input #cash type="text" placeholder="€0.00"></ion-input>
+          </ion-item>
+          <ion-item >
+            <ion-label><strong>Dinero en Tarjetas:</strong></ion-label>
+            <ion-input #card type="text" placeholder="€0.00"></ion-input>
+          </ion-item> <br/>
+          <ion-item>
+            <button class="btnBlue" (click)="updateTotal(cash.value, card.value)">Actualizar Datos</button>
+          </ion-item>
+        </ion-col>
+      </ion-row> 
 
-        <ion-item>
-          <ion-label><strong>Tarjetas: </strong> {{cardTotal |currency:'EUR':"symbol"}}</ion-label>
-        </ion-item>
+      <ion-row>
+
+        <ion-col>
+          <ion-item>
+            <ion-label><strong>Efectivo:</strong> {{venta |currency:'EUR':"symbol"}}</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item>
+            <ion-label><strong>Tarjetas: </strong> {{cardTotal |currency:'EUR':"symbol"}}</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item>
+            <ion-label><strong>Total: </strong> {{suma |currency:'EUR':"symbol"}}</ion-label>
+          </ion-item>
+        </ion-col>        
         
-        <ion-item>
-          <ion-label><strong>Total: </strong> {{suma |currency:'EUR':"symbol"}}</ion-label>
-        </ion-item>
+      </ion-row>      
 
-      </ion-card-content>
-    </ion-card>
-
-    <ion-item *ngIf="corregir">
-      <ion-label><strong>Introduce el nuevo total</strong></ion-label>
-      <ion-input #total type="text" palceholder="Nuevo total"></ion-input> <br />
-      <button class="btnBlue" (click)="updateTotal(total.value)">Actualizar total</button>
-    </ion-item>
-
-
+    </ion-grid>
   </ion-card-content>
-
 </ion-card>
 
 
