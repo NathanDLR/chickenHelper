@@ -16,6 +16,7 @@ export class ModalInfoAsadorPage implements OnInit {
   name: string;
   schedule: string;
   address: string;
+  addressUrl: string;
   tlf: string;
   
   constructor(private modal: ModalController) { }
@@ -28,6 +29,7 @@ export class ModalInfoAsadorPage implements OnInit {
       this.name = doc.data().name;
       this.schedule = doc.data().schedule;
       this.address = doc.data().address;
+      this.addressUrl = doc.data().addressUrl;
       this.tlf = doc.data().tlf;
 
     });

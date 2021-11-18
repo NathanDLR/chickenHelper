@@ -20,7 +20,7 @@
       <ion-list *ngIf="pedidos.length > 0">
         <ion-item *ngFor="let pedido of pedidos" (click)="showInfo(pedido.uid)">
           <ion-label>{{pedido.conceptoNombres}}</ion-label>
-          <ion-label>{{pedido.hora | date:'shortDate'}}</ion-label>
+          <ion-label>{{pedido.hora | date:'dd/MM/yy'}}</ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>

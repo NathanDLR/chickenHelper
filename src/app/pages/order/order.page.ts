@@ -145,7 +145,7 @@ export class OrderPage implements OnInit {
   }
 
   // Hacer pedido
-  order(cliente:string, uid:string, hora:string, info: string){
+  order(cliente:string, uid:string, hora:string, info: string, tlf: string){
 
     // Datos que necesitamos: Cliente, concepto, fecha, hora, horaCorta, info, recogido, total y uidAsador
     let date = new Date(hora).toTimeString().substring(0, 5);
@@ -165,7 +165,11 @@ export class OrderPage implements OnInit {
       // Si el asador puede recibir el pedido lo añadimos a su lista de pedidos
       if(ok){
 
-        ok = this.validate(cliente, info, hora);
+        ok = this.validate(cliente, tlf, hora);
+
+        // Mostramos el tlf del cliente junto con la información extra
+        if(info == '') info = tlf
+        else info += '\n - ' + tlf
 
         if(ok){
           // Añadimos el pedido a la base de datos a la colección pedidos
@@ -191,14 +195,14 @@ export class OrderPage implements OnInit {
   }
 
   // Validación de los datos del cliente y la hora
-  validate(cliente: string, info: string, hora: string): boolean{
+  validate(cliente: string, tlf: string, hora: string): boolean{
 
     let ok = true;
 
-    // Comprobamos que se ha rellenado el nombre del cliente y la info extra
-    if(cliente == "" || info == ""){
+    // Comprobamos que se ha rellenado el nombre del cliente y su número de tlf
+    if(cliente == "" || tlf == ""){
       ok = false;
-      this.presentToast('Por favor, rellena los campos nombre e información extra');
+      this.presentToast('Por favor, rellena los campos nombre y teléfono');
     }
 
     // Comprobamos que se haya seleccionado hora
