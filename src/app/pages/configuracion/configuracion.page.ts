@@ -19,6 +19,7 @@ export class ConfiguracionPage implements OnInit {
   @ViewChild('address') addressInput: IonInput;
   @ViewChild('tlf') tlfInput: IonInput;
   @ViewChild('schedule') scheduleInput: IonInput;
+  @ViewChild('addressUrl') adressUrlInput: IonInput;
 
   constructor(private fireAuth: AngularFireAuth, private auth: AuthService, private router: Router, private toast: ToastController) { }
 
@@ -32,6 +33,7 @@ export class ConfiguracionPage implements OnInit {
       db.collection('users').doc(this.user.uid).onSnapshot(doc => {
         this.nameInput.value = doc.data().name;
         this.addressInput.value = doc.data().address;
+        this.adressUrlInput.value = doc.data().addressUrl;
         this.tlfInput.value = doc.data().tlf;
         this.scheduleInput.value = doc.data().schedule;
       });
@@ -44,7 +46,7 @@ export class ConfiguracionPage implements OnInit {
   updateData(name: string, address: string, addressUrl: string, tlf: string, schedule: string){
 
     // Validamos los datos que se nos pasan
-    let ok = this.validate(name, address, tlf, schedule);
+    let ok = this.validate(name, address, addressUrl, tlf, schedule);
 
     if(ok){
       // Si los datos son correctos los metemos en la bd
@@ -64,11 +66,11 @@ export class ConfiguracionPage implements OnInit {
   }
 
   // Validación de los datos
-  validate(name: string, address: string, tlf: string, schedule: string): boolean{
+  validate(name: string, address: string, addressUrl: string, tlf: string, schedule: string): boolean{
     let ok = true;
 
     // Comprobamos que todos los campos estén rellenos
-    if(name == "" || address == "" || tlf == "" || schedule == ""){
+    if(name == "" || address == "" || addressUrl == "" || tlf == "" || schedule == ""){
       this.presentToast("Debes rellenar todos los campos");
       ok = false
     }
