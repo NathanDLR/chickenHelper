@@ -21,6 +21,10 @@
         </ion-item>
 
         <ion-item>
+          <ion-input #addressUrl placeholder="Enlace a Google Maps"></ion-input>
+        </ion-item>
+
+        <ion-item>
           <ion-input #tlf placeholder="Número de teléfono"></ion-input>
         </ion-item>
 
@@ -33,7 +37,7 @@
       </ion-list>
     </ion-card>
 
-    <ion-button expand="block" (click)="updateData(name.value, address.value, tlf.value, schedule.value)">Actualizar mis datos</ion-button>
+    <ion-button expand="block" (click)="updateData(name.value, address.value, addressUrl.value, tlf.value, schedule.value)">Actualizar mis datos</ion-button>
 
     <br/>
 

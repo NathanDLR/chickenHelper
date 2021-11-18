@@ -41,7 +41,7 @@ export class ConfiguracionPage implements OnInit {
   }
 
   // Update data
-  updateData(name: string, address: string, tlf: string, schedule: string){
+  updateData(name: string, address: string, addressUrl: string, tlf: string, schedule: string){
 
     // Validamos los datos que se nos pasan
     let ok = this.validate(name, address, tlf, schedule);
@@ -51,6 +51,7 @@ export class ConfiguracionPage implements OnInit {
       db.collection('users').doc(this.user.uid).update({
         name: name,
         address: address,
+        addressUrl: addressUrl,
         tlf: tlf,
         schedule: schedule
       });

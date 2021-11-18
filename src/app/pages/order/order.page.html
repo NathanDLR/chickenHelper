@@ -17,8 +17,12 @@
         <ion-datetime #hora formControlname="hora" displayFormat="H:mm" placeholder="Hora" minuteValues="{{minutes}}" cancelText="Cancelar" doneText="OK"></ion-datetime>
       </ion-item>
 
-      <br/>
-      &nbsp; <button *ngIf="asador.value" class="btnBlue" (click)="presentModalInfoAsador(asador.value)" expand="block">Información del Asador</button>
+      <div *ngIf="asador.value">
+        <br/>
+        &nbsp; <button  class="btnBlue" (click)="presentModalInfoAsador(asador.value)" expand="block">Información del Asador</button>
+      </div>
+
+      
 
     </ion-card-content>
   </ion-card>
@@ -126,7 +130,7 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <button class="btnBlue" (click)="order(nombre.value, asador.value, hora.value, info.value)">Hacer Pedido</button>
+            <button class="btnBlue" (click)="order(nombre.value, asador.value, hora.value, info.value, tlf.value)">Hacer Pedido</button>
           </ion-col>
           <ion-col>
             <button class="btnRed" (click)="deleteOrder()">Borrar Pedido</button>
