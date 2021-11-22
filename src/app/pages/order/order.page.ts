@@ -142,6 +142,9 @@ export class OrderPage implements OnInit {
     // Añadimos el precio al total
     this.total += parseFloat(precio);
 
+    // Mostramos un toast para informar al cliente que se ha añadido el artículo/oferta al pedido
+    this.presentToast("¡Añadido al pedido!");
+
   }
 
   // Hacer pedido
@@ -181,6 +184,7 @@ export class OrderPage implements OnInit {
             horaCorta: date,
             info: info,
             recogido: false,
+            needsConfirmation: true, // El asador tiene que confirmar que ha recibido el pedido
             total: this.total,
             uidAsador: uid,
             uidCliente: this.user.uid
@@ -202,7 +206,7 @@ export class OrderPage implements OnInit {
     // Comprobamos que se ha rellenado el nombre del cliente y su número de tlf
     if(cliente == "" || tlf == ""){
       ok = false;
-      this.presentToast('Por favor, rellena los campos nombre y teléfono');
+      this.presentToast('Por favor, rellena los campos nombre y teléfono para hacer el pedido');
     }
 
     // Comprobamos que se haya seleccionado hora
@@ -227,6 +231,9 @@ export class OrderPage implements OnInit {
     // Eliminamos el id de la lista de conceptos
     let ind = this.concepto.indexOf(uid);
     this.concepto.splice(ind, 1);
+
+    // Toast para informar al cliente
+    this.presentToast("Eliminado correctamente")
 
   }
 

@@ -6,8 +6,11 @@
 
 <ion-content>
 
+  <br/>
+  <ion-button (click)="newOrder()" expand="block">Nuevo Pedido</ion-button>
+
   <ion-card>
-    <ion-card-title class="redTitle"> &nbsp;Últimos Pedidos</ion-card-title>
+    <ion-card-title class="redTitle"> &nbsp;Pedidos recientes</ion-card-title>
     <ion-card-content>
       <ion-label *ngIf="pedidos.length == 0">Todavía nos has hecho ningún pedido. ¡Empieza uno nuevo!</ion-label>  
 
@@ -26,21 +29,11 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="newOrder()" expand="block">Nuevo Pedido</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <br />
-
   <ion-card>
     <ion-card-title class="redTitle">&nbsp; Uso de Datos</ion-card-title>
     <ion-card-content>
-      Los datos que introduces al hacer los pedidos son visibles para el asador, pero no tiene acceso directo a ellos. <br /> Al usar esta aplicación 
-      aceptas que el asador pueda ver la información que introduces en el formulario. <br/> <br/>
+      Los datos que introduces al hacer los pedidos son visibles para el asador, pero no tiene acceso directo a ellos. <br/><br/> Al usar esta aplicación 
+      aceptas que el asador pueda ver la información que introduces al hacer tus pedidos. <br/> <br/>
 
       ¿Dudas o sugerencias? <a href="mailto:infochickenhelper@gmail.com">infochickenhelper@gmail.com</a>
     </ion-card-content>
