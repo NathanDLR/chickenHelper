@@ -50,6 +50,7 @@ export class ClientMainPage implements OnInit {
           let total = doc.data().total;
           let recogido = doc.data().recogido;
           let cardPayed = doc.data().cardPayed;
+          let needsConfirmation = doc.data().needsConfirmation;
           let conceptoNombres = "";
 
           // Obtenemos los nombres de los artículos y ofertas del pedido
@@ -69,7 +70,7 @@ export class ClientMainPage implements OnInit {
               if(i == concepto.length - 1){
                 
                 // Nuevo objeto pedido
-                let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, cardPayed, conceptoNombres); // Ponemos siempre recogido como false
+                let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, cardPayed, needsConfirmation, conceptoNombres); // Ponemos siempre recogido como false
                 
                 // Lo introducimos en el array
                 this.pedidos.push(pedido);

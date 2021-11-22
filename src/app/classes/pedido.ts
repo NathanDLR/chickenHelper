@@ -11,10 +11,11 @@ export class Pedido {
     private total: number;
     private recogido: boolean;
     private cardPayed: boolean;
+    private needsConfirmation: boolean;
     private conceptoNombres: string;
 
     // Constructor
-    constructor(uid: string, hora: IonDatetime, concepto: string, cliente: string, info: string, total: number, recogido: boolean, cardPayed: boolean, conceptoNombres: string){
+    constructor(uid: string, hora: IonDatetime, concepto: string, cliente: string, info: string, total: number, recogido: boolean, cardPayed: boolean, needsConfirmation: boolean, conceptoNombres: string){
         this.uid = uid;
         this.hora = hora;
         this.concepto = concepto;
@@ -23,6 +24,7 @@ export class Pedido {
         this.total = total;
         this.recogido = recogido;
         this.cardPayed = cardPayed;
+        this.needsConfirmation = needsConfirmation;
         this.conceptoNombres = conceptoNombres;
     }
 

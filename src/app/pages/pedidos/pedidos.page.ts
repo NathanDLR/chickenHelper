@@ -49,6 +49,7 @@ export class PedidosPage implements OnInit {
         let total = snapHijo.data().total;
         let recogido = snapHijo.data().recogido;
         let cardPayed = snapHijo.data().cardPayed;
+        let needsConfirmation = snapHijo.data().needsConfirmation;
         let conceptoNombres = "";
 
         // Obtenemos los nombres de los artículos y ofertas del pedido
@@ -68,7 +69,7 @@ export class PedidosPage implements OnInit {
             if(i == concepto.length - 1){
               
               // Nuevo objeto pedido
-              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, cardPayed, conceptoNombres); // Ponemos siempre recogido como false
+              let pedido = new Pedido(uid, hora, concepto, cliente, info, total, recogido, cardPayed, needsConfirmation, conceptoNombres); // Ponemos siempre recogido como false
               
               // Lo introducimos en el array
               this.pedidos.push(pedido);
@@ -81,8 +82,15 @@ export class PedidosPage implements OnInit {
     });
   }
 
+  // Confirm order
+  confirmOrder(uid: string){
+    db.collection('pedidos').doc(uid).update({
+      needsConfirmation: false
+    })
+  }
+
   // Marcar pedido como recogido
-  check(uid: string){
+  check(uid: string, conf: string){
     db.collection('pedidos').doc(uid).update({
       recogido: true
     })
