@@ -37,14 +37,35 @@
         </ion-item>
     
       </ion-list>
+
+      <ion-card>
+        <ion-card-content>
+          <ion-label *ngIf="needsConfirmation"> 
+            <strong>El pedido no ha sido confirmado todavía...  </strong>
+            <img src="https://i.gifer.com/H0bj.gif" width="8%" height="8%"/>
+          </ion-label>
+  
+          <ion-label *ngIf="!needsConfirmation"> 
+            <strong>
+              ¡Pedido confirmado!
+            </strong>
+            <ion-icon name="checkmark-circle-outline" class="checkmarkIcon"></ion-icon>
+          </ion-label>
+        </ion-card-content>
+      </ion-card>
+
     </ion-card-content>
   </ion-card>
 
-  <!--
-    
-  <ion-button (click)="dismiss()" expand="block">Editar</ion-button>
-  <ion-button (click)="dismiss()" expand="block" color="danger">Cancelar Pedido</ion-button> <br/>
-  --> 
+  <ion-card>
+    <ion-card-content>
+      <ion-label>
+        Si necesitas hacer algún cambio en tu pedido, cancelarlo o confirmar que lo han recibido,
+        llama al asador
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+
   <ion-button (click)="dismiss()" expand="block">OK</ion-button>
 
 </ion-content>
