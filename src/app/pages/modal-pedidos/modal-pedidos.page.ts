@@ -19,9 +19,11 @@ export class ModalPedidosPage implements OnInit {
   precio: string;
   user: firebase.default.User;
   minutes: number[]; 
+  hours: number[];
 
-  // Fecha actual
+  // Fecha y hora actual
   date= new Date().toLocaleDateString();
+  timeNow = new Date().getHours();
 
   // Uid que obtenemos de la página pedidos
   uid: string;
@@ -52,6 +54,9 @@ export class ModalPedidosPage implements OnInit {
 
     // Minutos que se muestran para escoger la hora del pedido
     this.minutes= [0, 15, 30, 45];
+
+    // Valores de las horas que se muestran para recoger los pedidos
+    this.hours = this.getHourValues();
 
     // Título para nuevo pedido
     this.title = "Nuevo Pedido";
@@ -254,13 +259,24 @@ export class ModalPedidosPage implements OnInit {
     }
   }
 
+  // Get hour values
+  getHourValues(): number[]{
+    // Array con los valores de las horas disponibles para recoger los pedidos
+    let hourValues: number[] = [];
+    
+    // Usamos la hora actual para llenar el array con los valores adecuados
+    for(let i = this.timeNow; i<= 24; i++) hourValues.push(i);
+
+    return hourValues;
+  }
+
   // Validación del formulario
   validate(hora: string, concepto: string[], cliente: string): Boolean{
     let ok = true;
-    
-    // Comprobamos que todos los campos estén rellenos
+
+    // Comprobamos que  los campos estén rellenos
     if(hora == "" || typeof(concepto) == 'undefined' || cliente == ""){
-      this.presentToast("Debes rellenar todos los campos")
+      this.presentToast("Debes rellenar los campos")
       ok = false
     }
 
