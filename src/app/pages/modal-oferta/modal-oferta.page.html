@@ -35,9 +35,30 @@
         </ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label><strong>¿Esta oferta lleva pollo?</strong></ion-label>
+        <ion-list>
+          <ion-radio-group #hasChicken value="0" formControlName="hasChicken"> 
+          <ion-item>
+            <ion-label>Sí</ion-label>
+            <ion-radio value="1"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio value="0"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+        </ion-list>
+      </ion-item>
+
+      <ion-item *ngIf="hasChicken.value == 1">
+        <ion-label><strong>¿Cuántos?</strong></ion-label>
+        <ion-input #howManyChickens type="text" placeholder="Número de pollos" formControlName="howManyChickens" value="cuantos">hola</ion-input>
+      </ion-item>
+
     </form>
 
-    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addOferta(name.value, articles.value, price.value)">
+    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addOferta(name.value, articles.value, price.value, hasChicken.value, howManyChickens.value)">
       Añadir
     </ion-button>
 
