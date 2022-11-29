@@ -275,7 +275,7 @@ export class ModalPedidosPage implements OnInit {
     let ok = true;
 
     // Comprobamos que  los campos estén rellenos
-    if(hora == "" || typeof(concepto) == 'undefined' || cliente == ""){
+    if(hora == undefined || typeof(concepto) == 'undefined' || cliente == ""){
       this.presentToast("Debes rellenar los campos")
       ok = false
     }

@@ -19,11 +19,27 @@
 
       <ion-item>
         <ion-label><strong>Artículos</strong></ion-label>
-        <ion-input #articles type="text" value={{articulos}} placeholder="Todos los artículos que forman la oferta" formControlName="name" [ngClass]="{
-          'invalidInput': ofertaForm.controls.name.invalid && ofertaForm.controls.name.touched,
-          'validInput': ofertaForm.controls.name.valid && ofertaForm.controls.name.touched
+        <ion-input #articles type="text" value={{articulos}} placeholder="Todos los artículos que forman la oferta" formControlName="articles" [ngClass]="{
+          'invalidInput': ofertaForm.controls.articles.invalid && ofertaForm.controls.articles.touched,
+          'validInput': ofertaForm.controls.articles.valid && ofertaForm.controls.articles.touched
         }">
         </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Opciones</ion-label>
+        <ion-radio-group #options value={{opciones}}>
+          <ion-item>
+            <ion-label>Si</ion-label>
+            <ion-radio slot="end" value="si"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio slot="end" value="no"></ion-radio>
+          </ion-item>
+
+        </ion-radio-group>
       </ion-item>
 
       <ion-item>

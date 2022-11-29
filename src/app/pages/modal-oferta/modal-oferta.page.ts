@@ -51,6 +51,10 @@ export class ModalOfertaPage implements OnInit {
         Validators.required
       ]),
 
+      options: new FormControl('', [
+        Validators.required
+      ]),
+
       price: new FormControl('', [
         Validators.required
       ]),
