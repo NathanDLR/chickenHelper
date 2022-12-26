@@ -28,7 +28,7 @@
 
       <ion-item>
         <ion-label>Opciones</ion-label>
-        <ion-radio-group #options value={{opciones}}>
+        <ion-radio-group #options value={{opciones}} mode="md">
           <ion-item>
             <ion-label>Si</ion-label>
             <ion-radio slot="end" value="si"></ion-radio>
@@ -40,6 +40,10 @@
           </ion-item>
 
         </ion-radio-group>
+      </ion-item>
+
+      <ion-item *ngIf="options.value == 'si'">
+        <ion-label>Primera opción</ion-label>
       </ion-item>
 
       <ion-item>
@@ -74,7 +78,7 @@
 
     </form>
 
-    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addOferta(name.value, articles.value, price.value, hasChicken.value, howManyChickens.value)">
+    <ion-button expand="block" *ngIf="getType(uid) == 'undefined'" (click)="addOferta(name.value, articles.value, price.value)">
       Añadir
     </ion-button>
 

@@ -108,8 +108,7 @@ export class ModalOfertaPage implements OnInit {
   }
 
   // Añadir oferta
-  addOferta(name: string, articles: string, price: string, hasChicken: string, howManyChickens: string){
-    console.log(hasChicken, howManyChickens);
+  addOferta(name: string, articles: string, price: string){
     // Validación de los inputs
     let ok = this.validate(name, articles, price);
 

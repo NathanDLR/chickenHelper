@@ -28,5 +28,10 @@ export class Pedido {
         this.conceptoNombres = conceptoNombres;
     }
 
+    // Getters & Setters
+    public getHora(): IonDatetime{
+        return this.hora;
+    }
+
 
 }
