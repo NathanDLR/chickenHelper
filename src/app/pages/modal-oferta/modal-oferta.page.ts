@@ -51,9 +51,22 @@ export class ModalOfertaPage implements OnInit {
         Validators.required
       ]),
 
+      options: new FormControl('', [
+        Validators.required
+      ]),
+
       price: new FormControl('', [
         Validators.required
-      ])  
+      ]),
+
+      hasChicken: new FormControl('', [
+        Validators.required
+      ]),
+
+      howManyChickens: new FormControl('', [
+        Validators.required
+      ])
+
     })
 
     // Intentamos recoger el uid si nos lo mandan
@@ -96,7 +109,6 @@ export class ModalOfertaPage implements OnInit {
 
   // Añadir oferta
   addOferta(name: string, articles: string, price: string){
-
     // Validación de los inputs
     let ok = this.validate(name, articles, price);
 

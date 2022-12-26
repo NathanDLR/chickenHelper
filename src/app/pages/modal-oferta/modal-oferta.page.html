@@ -19,11 +19,31 @@
 
       <ion-item>
         <ion-label><strong>Artículos</strong></ion-label>
-        <ion-input #articles type="text" value={{articulos}} placeholder="Todos los artículos que forman la oferta" formControlName="name" [ngClass]="{
-          'invalidInput': ofertaForm.controls.name.invalid && ofertaForm.controls.name.touched,
-          'validInput': ofertaForm.controls.name.valid && ofertaForm.controls.name.touched
+        <ion-input #articles type="text" value={{articulos}} placeholder="Todos los artículos que forman la oferta" formControlName="articles" [ngClass]="{
+          'invalidInput': ofertaForm.controls.articles.invalid && ofertaForm.controls.articles.touched,
+          'validInput': ofertaForm.controls.articles.valid && ofertaForm.controls.articles.touched
         }">
         </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Opciones</ion-label>
+        <ion-radio-group #options value={{opciones}} mode="md">
+          <ion-item>
+            <ion-label>Si</ion-label>
+            <ion-radio slot="end" value="si"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio slot="end" value="no"></ion-radio>
+          </ion-item>
+
+        </ion-radio-group>
+      </ion-item>
+
+      <ion-item *ngIf="options.value == 'si'">
+        <ion-label>Primera opción</ion-label>
       </ion-item>
 
       <ion-item>
@@ -34,6 +54,27 @@
           }">
         </ion-input>
       </ion-item>
+
+      <!-- <ion-item>
+        <ion-label><strong>¿Esta oferta lleva pollo?</strong></ion-label>
+        <ion-list>
+          <ion-radio-group #hasChicken value="0" formControlName="hasChicken"> 
+          <ion-item>
+            <ion-label>Sí</ion-label>
+            <ion-radio value="1"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio value="0"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+        </ion-list>
+      </ion-item>
+
+      <ion-item *ngIf="hasChicken.value == 1">
+        <ion-label><strong>¿Cuántos?</strong></ion-label>
+        <ion-input #howManyChickens type="text" placeholder="Número de pollos" formControlName="howManyChickens" value="cuantos"></ion-input>
+      </ion-item> -->
 
     </form>
 

@@ -33,7 +33,7 @@ export class PedidosPage implements OnInit {
       let uid = this.user.uid;
       
       // Obtenemos los datos de la colección de pedidos
-      db.collection('pedidos').where("uidAsador", "==", uid).orderBy('fecha').orderBy('hora').startAt(this.date).endAt(this.date+'\uf8ff').onSnapshot(snap => {
+      db.collection('pedidos').orderBy('fecha').orderBy('hora').where("uidAsador", "==", uid).startAt(this.date).endAt(this.date+'\uf8ff').onSnapshot(snap => {
         
       // Vaciamos el array para que no se dupliquen los pedidos
       this.pedidos = [];
@@ -73,6 +73,9 @@ export class PedidosPage implements OnInit {
               
               // Lo introducimos en el array
               this.pedidos.push(pedido);
+
+              this.pedidos.sort((a, b) => Number(a.getHora()) - Number(b.getHora()));
+
             }
           });
         }        
